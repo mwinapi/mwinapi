@@ -1,0 +1,47 @@
+<project SchemaVersion="1.3">
+    <assemblies>
+        <assembly location=".\ManagedWinapi\bin\Debug\ManagedWinapi.dll" documentation=".\ManagedWinapi\bin\Debug\ManagedWinapi.xml" />
+    </assemblies>
+    <documenters>
+        <documenter name="Linear Html">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="Title" value="An NDoc Documented Class Library" />
+        </documenter>
+        <documenter name="JavaDoc">
+            <property name="OutputDirectory" value=".\doc\" />
+        </documenter>
+        <documenter name="LaTeX">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="TextFileFullName" value="Documentation.tex" />
+            <property name="TexFileBaseName" value="Documentation" />
+            <property name="LatexCompiler" value="latex" />
+            <property name="TexFileFullPath" value=".\doc\Documentation.tex" />
+        </documenter>
+        <documenter name="MSDN">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="ManagedWinapi" />
+            <property name="Title" value="An NDoc Documented Class Library" />
+            <property name="OutputTarget" value="HtmlHelp" />
+            <property name="DocumentInheritedMembers" value="False" />
+            <property name="DocumentInheritedFrameworkMembers" value="False" />
+            <property name="FeedbackEmailAddress" value="schierlm@users.sourceforge.net" />
+            <property name="IncludeDefaultThreadSafety" value="False" />
+            <property name="StaticMembersDefaultToSafe" value="False" />
+            <property name="CleanIntermediates" value="True" />
+        </documenter>
+        <documenter name="Intellisense">
+            <property name="OutputDirectory" value=".\intellisense\" />
+        </documenter>
+        <documenter name="VS.NET 2003">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="Documentation" />
+            <property name="Title" value="An NDoc documented library" />
+        </documenter>
+        <documenter name="MSDN 2003">
+            <property name="OutputDirectory" value=".\doc\" />
+            <property name="HtmlHelpName" value="ManagedWinapi" />
+            <property name="Title" value="An NDoc Documented Class Library" />
+            <property name="OutputTarget" value="Web" />
+        </documenter>
+    </documenters>
+</project>
