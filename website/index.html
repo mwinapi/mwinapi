@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Managed Windows API</title>
+<style type="text/css">
+body {font-family: verdana, arial, helvetica, sans-serif;}
+</style>
+</head>
+<body>
+<h1>Managed Windows API</h1>
+<p><i>A collection of .NET components that wrap PInvoke calls to
+    access native API by managed code.</i></p>
+
+<h2>What is "Managed Windows API" good for?</h2>
+
+<h3>The Problem</h3>
+
+<p>If you want use Windows functionality in a .NET application which is
+not covered by the .NET framework (there is no "managed API" available
+for it), you usually have to use PInvoke, an interface that allows to
+invoke raw API functions from C# and VB.NET.</p>
+
+<p>However, this is quite
+cumbersome. <a href="http://www.pinvoke.net/">pinvoke.net</a> does a
+great job in helping you to get the correct PInvoke declaration, but
+still you have to do lots of error-checking and ensure that you did
+not forget to handle all the corner cases. When accessing PInvoke
+declarations directly, this may lead to low-level code spread all
+over your apllication.</p>
+
+<p>To avoid that, you usually write your own C# classes or .NET
+  components to wrap all PInvoke stuff and provide the caller with a
+  nice, high-level interface for the low-level API (that uses enums
+  for enumerated values, reports errors by throwing exceptions,
+  etc.)</p>
+
+<p>However, if every developer does this for every API he uses, lots
+  of time and energy is wasted for reinventing the wheel.</p>
+
+<h3>The solution</h3>
+
+<p>"Managed Windows API" is a collection of C# components that wrap
+  Windows API functionality. It contains those features the author
+  needed for his C# development (<a href="#features">Look at a list of API
+  currently provided</a>), but if you have components yourself you
+  want to share, please submit them so that this project can grow.</p>
+
+<h2>Where can I download those components?</h2>
+
+<p><a
+href="http://prdownloads.sourceforge.net/mwinapi/managedwinapi-0.1.zip?download">Binary
+download (including HTML-help documentation)</a> (Version 0.1, 67 KB)</p>
+
+<p><a
+href="http://prdownloads.sourceforge.net/mwinapi/managedwinapi-src-0.1.zip?download">Source
+download</a> (Version 0.1, 26 KB)</p>
+
+<h2 id="features">What components are included?</h2>
+
+<table border="1">
+<tr><th>Component</th><th>Description</th></tr>
+<tr><td>ClipboardNotifier</td><td>Specifies a component that monitors
+    the system clipboard for changes.</td></tr>
+<tr><td>Hotkey</td><td>Specifies a component that creates a global
+    keyboard hotkey.</td></tr>
+<tr><td>LockKeyResetter</td><td>Utility class that can be used to
+    create key events with all current locking keys (like Caps Lock) disabled. Other modifier keys (like Ctrl
+or Shift) are also ignored if they are currently pressed on the "real"
+keyboard.</td></tr>
+<tr><td>SendKeysEscaper</td><td>Utility class to escape literal strings
+    so that they can be used for the SendKeys class.</td></tr>
+<tr><td>SystemWindow</td><td>Represents any window used by Windows, including those from other applications.</td></tr>
+</table>
+
+<p>The <a href="doc/index.html">HTML documentation</a> (generated
+by <a href="http://ndoc.sourceforge.net">ndoc</a>)</p>
+
+
+<h2>What is the license of these components?</h2>
+
+<p>These components are licensed by the GNU Lesser General Public License
+(LGPL) which allows to use these componenst both in open-source and
+commercial projects. The full license text (for your lawyer) is
+<a href="http://www.gnu.org/licenses/lgpl.html">available at the GNU
+  website</a>, a short summary can be
+  found <a
+  href="http://creativecommons.org/licenses/LGPL/2.1/deed.en"> on the Creative
+  Commons website</a>.</p>
+
+<h3>So, may I include these components into commercial, closed source,
+  software?</h3>
+
+<p>Yes, you may use the binary download (i. e. the .dll) include into
+any piece of software, as long as it remains unmodified. You must as
+well allow the end user to replace this .dll (i. e. you may not
+include it into your .exe file) but usually this is the case
+anyway.</p>
+
+<p>However, if you want to modify those files (and sending these
+  modifications to the project for inclusion is no option for you),
+  you will have to give these modifications (i. e. all files you need
+  to build your modified .dll) to everyone who gets your program (or
+  include a written offer for that). So usually, sending these
+  modifications to the project is much less work - and helps much
+  more people.</p>
+
+<h3>And if my program is open source (GPL'ed)?</h3>
+
+If your program is GPL'ed, you will have to include your source code
+anyway. In this case, you may as well link these components into your
+assembly statically (for example by copying the .cs files into your
+project folder).
+
+<h2>Subversion</h2>
+
+<p>You can get the latest source code (and check in your additions if you 
+are a developer) from subversion.</p>
+
+<p>Anonymous access: Use <br/>
+<tt>svn co https://svn.sourceforge.net/svnroot/mwinapi/trunk mwinapi</tt><br/>
+to check out the latest version. You can also use GUI programs like 
+<a href="http://tortoisesvn.tigris.org">TortoiseSVN (Explorer plugin)</a> or
+<a href="http://ankhsvn.tigris.org">AnkhSVN (Visual Studio plugin)</a>.</p>
+
+<p>Developer access: Contact me so that I can add you to this project. You will
+need a sourceforge.net account for this. Or submit your changes by e-mail; then I will
+commit them.</p>
+
+<p>You can also <a href="http://svn.sourceforge.net/viewvc/mwinapi/">browse 
+the repository</a>.</p>
+
+<h2>Contact me</h2>
+
+If you want to contact me or want to submit your own code to this
+project, please contact me at <a
+href="mailto:schierlm@users.sourceforge.net">schierlm@users.sourceforge.net</a>. Have fun!
+
+<p><a href="http://sourceforge.net/"> <img
+src="http://sflogo.sourceforge.net/sflogo.php?group_id=127523&amp;type=5"
+width="210" height="62" border="0" alt="SourceForge.net Logo" /></a></p>
+</body>
+</html>

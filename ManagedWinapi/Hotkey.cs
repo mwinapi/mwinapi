@@ -28,6 +28,13 @@ using ManagedWinapi.Windows;
 namespace ManagedWinapi
 {
 
+
+    /// <summary>
+    /// The exception is thrown when a hotkey should be registered that
+    /// has already been registered by another application.
+    /// </summary>
+    public class HotkeyAlreadyInUseException : Exception { }
+
     /// <summary>
     /// Specifies a component that creates a global keyboard hotkey.
     /// </summary>
@@ -43,7 +50,7 @@ namespace ManagedWinapi
         private static int hotkeyCounter = 0xA000;
 
         private int hotkeyIndex;
-        private bool isDisposed = false, isEnabled = false, isRegistered = false, registerFailed = false;
+        private bool isDisposed = false, isEnabled = false, isRegistered = false;
         private Keys _keyCode;
         private bool _ctrl, _alt, _shift, _windows;
         private readonly IntPtr hWnd;
@@ -106,15 +113,6 @@ namespace ManagedWinapi
         }
 
         /// <summary>
-        /// Whether the hotkey could not be registered. Test this value after you set 
-        /// the <see cref="Enabled"/> property.
-        /// </summary>
-        public bool RegisterFailed
-        {
-            get { return registerFailed; }
-        }
-
-        /// <summary>
         /// Whether the shortcut includes the Control modifier.
         /// </summary>
         public bool Ctrl {
@@ -173,7 +171,6 @@ namespace ManagedWinapi
 
         private void updateHotkey(bool reregister)
         {
-            if (registerFailed) return;
             bool shouldBeRegistered = isEnabled && !isDisposed && !DesignMode;
             if (isRegistered && (!shouldBeRegistered || reregister))
             {
@@ -188,7 +185,7 @@ namespace ManagedWinapi
                 bool success = winapiCall("RegisterHotKey", RegisterHotKey(hWnd, hotkeyIndex, 
                     (_shift ? MOD_SHIFT : 0) + (_ctrl ? MOD_CONTROL : 0) +
                     (_alt ? MOD_ALT : 0) + (_windows ? MOD_WIN : 0), (int)_keyCode));
-                if (!success) registerFailed = true;
+                if (!success) throw new HotkeyAlreadyInUseException();
                 isRegistered = true;
             }
         }
