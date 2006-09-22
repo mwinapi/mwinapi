@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace ManagedWinapi.Windows
 {
@@ -222,7 +223,67 @@ namespace ManagedWinapi.Windows
             return wnds.ToArray();
         }
 
+        /// <summary>
+        /// Finds the system window below the given point. This need not be a
+        /// toplevel window; disabled windows are not returned either.
+        /// If you have problems with transparent windows that cover nontransparent
+        /// windows, consider using <see cref="FromPointEx"/>, since that method
+        /// tries hard to avoid this problem.
+        /// </summary>
+        /// <param name="x">X coordinate</param>
+        /// <param name="y">Y coordinate</param>
+        /// <returns></returns>
+        public static SystemWindow FromPoint(int x, int y)
+        {
+            IntPtr hwnd = WindowFromPoint(new POINT(x, y));
+            if (hwnd.ToInt64() == 0)
+            {
+                return null;
+            }
+            return new SystemWindow(hwnd);
+        }
 
+        /// <summary>
+        /// Finds the system window below the given point. This method uses a more
+        /// sophisticated algorithm than <see cref="FromPoint"/>, but is slower.
+        /// </summary>
+        /// <param name="x">X coordinate</param>
+        /// <param name="y">Y coordinate</param>
+        /// <param name="toplevel">Whether to return the toplevel window.</param>
+        /// <param name="enabledOnly">Whether to return enabled windows only.</param>
+        /// <returns></returns>
+        public static SystemWindow FromPointEx(int x, int y, bool toplevel, bool enabledOnly) {
+            SystemWindow sw = FromPoint(x, y);
+            if (sw == null) return null;
+            while (sw.ParentSymmetric != null)
+                sw = sw.ParentSymmetric;
+            if (toplevel)
+                return sw;
+            int area;
+                area = getArea(sw);
+            SystemWindow result = sw;
+            foreach(SystemWindow w in sw.AllDescendantWindows) {
+                if (w.Visible && (w.Enabled || !enabledOnly))
+                {
+                    if (w.Rectangle.ToRectangle().Contains(x, y))
+                    {
+                        int ar2 = getArea(sw);
+                        if (ar2 <= area)
+                        {
+                            area = ar2;
+                            result = w;
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+        private static int getArea(SystemWindow sw)
+        {
+            RECT rr = sw.Rectangle;
+            return rr.Height * rr.Width;
+        }
 
         /// <summary>
         /// Create a new SystemWindow instance from a window handle.
@@ -435,6 +496,20 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// The window's position in absolute screen coordinates. Use 
+        /// <see cref="Position"/> if you want to use the relative position.
+        /// </summary>
+        public RECT Rectangle
+        {
+            get
+            {
+                RECT r = new RECT();
+                GetWindowRect(_hwnd, out r);
+                return r;
+            }
+        }
+
+        /// <summary>
         /// Check whether this window is a descendant of <c>ancestor</c>
         /// </summary>
         /// <param name="ancestor">The suspected ancestor</param>
@@ -443,6 +518,20 @@ namespace ManagedWinapi.Windows
         {
             return IsChild(ancestor._hwnd, _hwnd);
         }
+
+        /// <summary>
+        /// The process which created this window.
+        /// </summary>
+        public Process Process
+        {
+            get
+            {
+                int pid;
+                GetWindowThreadProcessId(HWnd, out pid);
+                return Process.GetProcessById(pid);
+            }
+        }
+
 
         #region Equals and HashCode
 
@@ -590,6 +679,14 @@ namespace ManagedWinapi.Windows
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool EnumChildWindows(IntPtr hwndParent, EnumWindowsProc lpEnumFunc, IntPtr lParam);
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr WindowFromPoint(POINT Point);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+
+        [DllImport("user32.dll")]
+        static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
         #endregion
     }
 }
