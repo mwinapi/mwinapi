@@ -1,4 +1,4 @@
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -42,6 +42,12 @@
     <Compile Include="ClipboardNotifier.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Crosshair.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Crosshair.Designer.cs">
+      <DependentUpon>Crosshair.cs</DependentUpon>
+    </Compile>
     <Compile Include="PInvokeTypes.cs" />
     <Compile Include="SendKeysEscaper.cs" />
     <Compile Include="EventDispatchingNativeWindow.cs" />
@@ -52,6 +58,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemWindow.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Crosshair.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Crosshair.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="crosshair.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="crosshair.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
