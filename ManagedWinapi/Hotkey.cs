@@ -28,13 +28,6 @@ using ManagedWinapi.Windows;
 namespace ManagedWinapi
 {
 
-
-    /// <summary>
-    /// The exception is thrown when a hotkey should be registered that
-    /// has already been registered by another application.
-    /// </summary>
-    public class HotkeyAlreadyInUseException : Exception { }
-
     /// <summary>
     /// Specifies a component that creates a global keyboard hotkey.
     /// </summary>
@@ -211,4 +204,10 @@ namespace ManagedWinapi
 
         #endregion
     }
+
+    /// <summary>
+    /// The exception is thrown when a hotkey should be registered that
+    /// has already been registered by another application.
+    /// </summary>
+    public class HotkeyAlreadyInUseException : Exception { }
 }
