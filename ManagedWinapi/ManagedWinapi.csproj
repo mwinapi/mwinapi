@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiHelper.cs" />
     <Compile Include="ClipboardNotifier.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -375,9 +375,17 @@ namespace ManagedWinapi.Windows
         {
             get
             {
-                StringBuilder sb = new StringBuilder(256);
-                GetClassName(_hwnd, sb, sb.Capacity);
-                return sb.ToString();
+                int length = 64;
+                while (true)
+                {
+                    StringBuilder sb = new StringBuilder(length);
+                    ApiHelper.FailIfZero(GetClassName(_hwnd, sb, sb.Capacity));
+                    if (sb.Length != length - 1)
+                    {
+                        return sb.ToString();
+                    }
+                    length *= 2;
+                }
             }
         }
 
@@ -565,6 +573,9 @@ namespace ManagedWinapi.Windows
             }
         }
 
+        /// <summary>
+        /// Whether this window can be moved on the screen by the user.
+        /// </summary>
         public bool Movable
         {
             get
@@ -573,6 +584,10 @@ namespace ManagedWinapi.Windows
             }
         }
 
+        /// <summary>
+        /// Whether this window can be resized by the user. Resizing a window that
+        /// cannot be resized by the user works, but may be irritating to the user.
+        /// </summary>
         public bool Resizable
         {
             get
