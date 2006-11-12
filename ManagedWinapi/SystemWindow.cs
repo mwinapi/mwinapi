@@ -532,6 +532,54 @@ namespace ManagedWinapi.Windows
             }
         }
 
+        /// <summary>
+        /// Whether this window is minimized or maximized.
+        /// </summary>
+        public FormWindowState WindowState 
+        {
+            get {
+                WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
+                wp.length = Marshal.SizeOf(wp);
+                GetWindowPlacement(HWnd, ref wp);
+                switch (wp.showCmd % 4) {
+                    case 2: return FormWindowState.Minimized;
+                    case 3: return FormWindowState.Maximized;
+                    default: return FormWindowState.Normal;
+                }
+            }
+            set {
+                int showCommand;
+                switch(value) {
+                    case FormWindowState.Normal:
+                        showCommand = 1;
+                        break;
+                    case FormWindowState.Minimized:
+                       showCommand=2;
+                        break;
+                    case FormWindowState.Maximized:
+                        showCommand=3;
+                        break;
+                    default: return;
+                }
+                ShowWindow(HWnd, showCommand);
+            }
+        }
+
+        public bool Movable
+        {
+            get
+            {
+                return (Style & WindowStyleFlags.SYSMENU) != 0;
+            }
+        }
+
+        public bool Resizable
+        {
+            get
+            {
+                return (Style & WindowStyleFlags.THICKFRAME) != 0;
+            }
+        }
 
         #region Equals and HashCode
 
@@ -687,6 +735,9 @@ namespace ManagedWinapi.Windows
 
         [DllImport("user32.dll")]
         static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
         #endregion
     }
 }
