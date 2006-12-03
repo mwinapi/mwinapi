@@ -23,6 +23,8 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace ManagedWinapi.Windows
 {
@@ -596,6 +598,53 @@ namespace ManagedWinapi.Windows
             }
         }
 
+        /// <summary>
+        /// An image of this window.
+        /// </summary>
+        public Image Image
+        {
+            get
+            {
+                Bitmap bmp = new Bitmap(Position.Width, Position.Height);
+                Graphics g = Graphics.FromImage(bmp);
+                IntPtr pTarget = g.GetHdc();
+                IntPtr pSource = CreateCompatibleDC(pTarget);
+                IntPtr pOrig = SelectObject(pSource, bmp.GetHbitmap());
+                PrintWindow(HWnd, pTarget, 0);
+                IntPtr pNew = SelectObject(pSource, pOrig);
+                DeleteObject(pOrig);
+                DeleteObject(pNew);
+                DeleteObject(pSource);
+                g.ReleaseHdc(pTarget);
+                g.Dispose();
+                return bmp;
+            }
+        }
+
+        /// <summary>
+        /// The window's visible region.
+        /// </summary>
+        public Region Region
+        {
+            get
+            {
+                IntPtr rgn = CreateRectRgn(0, 0, 0, 0);
+                int r = GetWindowRgn(HWnd, rgn);
+                if (r == (int)GetWindowRegnReturnValues.ERROR)
+                {
+                    return null;
+                }
+                return Region.FromHrgn(rgn);
+            }
+            set
+            {
+                Bitmap bmp = new Bitmap(1,1);
+                Graphics g = Graphics.FromImage(bmp);
+                SetWindowRgn(HWnd, value.GetHrgn(g), true);
+                g.Dispose();
+            }
+        }
+
         #region Equals and HashCode
 
         ///
@@ -753,6 +802,68 @@ namespace ManagedWinapi.Windows
 
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("gdi32.dll")]
+        static extern IntPtr CreateRectRgn(int nLeftRect, int nTopRect, int nRightRect,
+           int nBottomRect);
+
+        [DllImport("user32.dll")]
+        static extern int GetWindowRgn(IntPtr hWnd, IntPtr hRgn);
+
+        [DllImport("user32.dll")]
+        static extern int SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool bRedraw);
+
+        [DllImport("gdi32.dll")]
+        static extern bool BitBlt(IntPtr hObject, int nXDest, int nYDest, int nWidth,
+           int nHeight, IntPtr hObjSource, int nXSrc, int nYSrc, int dwRop);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool PrintWindow(IntPtr hwnd, IntPtr hDC, uint nFlags);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetWindowDC(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        static extern IntPtr CreateCompatibleDC(IntPtr hdc);
+
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        static extern bool DeleteDC(IntPtr hdc);
+
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        static extern IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+
+        [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
+        static extern bool DeleteObject(IntPtr hObject);
+
+        enum TernaryRasterOperations : uint
+        {
+            SRCCOPY = 0x00CC0020,
+            SRCPAINT = 0x00EE0086,
+            SRCAND = 0x008800C6,
+            SRCINVERT = 0x00660046,
+            SRCERASE = 0x00440328,
+            NOTSRCCOPY = 0x00330008,
+            NOTSRCERASE = 0x001100A6,
+            MERGECOPY = 0x00C000CA,
+            MERGEPAINT = 0x00BB0226,
+            PATCOPY = 0x00F00021,
+            PATPAINT = 0x00FB0A09,
+            PATINVERT = 0x005A0049,
+            DSTINVERT = 0x00550009,
+            BLACKNESS = 0x00000042,
+            WHITENESS = 0x00FF0062
+        }
+
+        enum GetWindowRegnReturnValues : int
+        {
+            ERROR = 0,
+            NULLREGION = 1,
+            SIMPLEREGION = 2,
+            COMPLEXREGION = 3
+        }
         #endregion
     }
 }
