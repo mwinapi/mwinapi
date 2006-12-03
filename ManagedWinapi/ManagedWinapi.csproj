@@ -49,6 +49,9 @@
     <Compile Include="Crosshair.Designer.cs">
       <DependentUpon>Crosshair.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mixer.cs" />
+    <Compile Include="MixerControl.cs" />
+    <Compile Include="MixerLine.cs" />
     <Compile Include="PInvokeTypes.cs" />
     <Compile Include="SendKeysEscaper.cs" />
     <Compile Include="EventDispatchingNativeWindow.cs" />
