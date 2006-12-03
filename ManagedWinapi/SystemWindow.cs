@@ -25,6 +25,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using ManagedWinapi.Windows.Contents;
 
 namespace ManagedWinapi.Windows
 {
@@ -645,6 +646,78 @@ namespace ManagedWinapi.Windows
             }
         }
 
+        /// <summary>
+        /// The character used to mask passwords, if this control is
+        /// a text field. May be used for different purpose by other
+        /// controls.
+        /// </summary>
+        public char PasswordCharacter
+        {
+            get
+            {
+                return (char)SendGetMessage(EM_GETPASSWORDCHAR);
+            }
+            set
+            {
+                SendSetMessage(EM_SETPASSWORDCHAR, value);
+            }
+        }
+
+        /// <summary>
+        /// Get the window that is below this window in the Z order,
+        /// or null if this is the lowest window.
+        /// </summary>
+        public SystemWindow WindowBelow
+        {
+            get
+            {
+                IntPtr res = GetWindow(HWnd, (uint)GetWindow_Cmd.GW_HWNDNEXT);
+                if (res == IntPtr.Zero) return null;
+                return new SystemWindow(res);
+            }
+        }
+
+        /// <summary>
+        /// Get the window that is above this window in the Z order,
+        /// or null, if this is the foreground window.
+        /// </summary>
+        public SystemWindow WindowAbove
+        {
+            get
+            {
+                IntPtr res = GetWindow(HWnd, (uint)GetWindow_Cmd.GW_HWNDPREV);
+                if (res == IntPtr.Zero) return null;
+                return new SystemWindow(res);
+            }
+        }
+
+        /// <summary>
+        /// The content of this window. Is only supported for some
+        /// kinds of controls (like text or list boxes).
+        /// </summary>
+        public WindowContent Content
+        {
+            get
+            {
+                return WindowContentParser.Parse(this);
+            }
+        }
+
+        internal int SendGetMessage(uint message)
+        {
+            return SendGetMessage(message, 0);
+        }
+
+        internal int SendGetMessage(uint message, uint param)
+        {
+            return SendMessage(new HandleRef(this, HWnd), message, new IntPtr(param), new IntPtr(0)).ToInt32();
+        }
+
+        internal void SendSetMessage(uint message, uint value)
+        {
+            SendMessage(new HandleRef(this, HWnd), message, new IntPtr(value), new IntPtr(0));
+        }
+
         #region Equals and HashCode
 
         ///
@@ -863,6 +936,32 @@ namespace ManagedWinapi.Windows
             NULLREGION = 1,
             SIMPLEREGION = 2,
             COMPLEXREGION = 3
+        }
+
+        static readonly uint EM_GETPASSWORDCHAR = 0xD2, EM_SETPASSWORDCHAR = 0xCC;
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+        internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = false)]
+        internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, [Out] StringBuilder lParam);
+
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X,
+           int Y, int cx, int cy, uint uFlags);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+
+        private enum GetWindow_Cmd
+        {
+            GW_HWNDFIRST = 0,
+            GW_HWNDLAST = 1,
+            GW_HWNDNEXT = 2,
+            GW_HWNDPREV = 3,
+            GW_OWNER = 4,
+            GW_CHILD = 5,
+            GW_ENABLEDPOPUP = 6
         }
         #endregion
     }

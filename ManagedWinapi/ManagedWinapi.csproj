@@ -43,6 +43,11 @@
     <Compile Include="ClipboardNotifier.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Contents\ContentParserRegistry.cs" />
+    <Compile Include="Contents\ListParser.cs" />
+    <Compile Include="Contents\TextFieldParser.cs" />
+    <Compile Include="Contents\WindowContent.cs" />
+    <Compile Include="Contents\WindowContentParser.cs" />
     <Compile Include="Crosshair.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -60,6 +65,7 @@
     </Compile>
     <Compile Include="LockKeyResetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemListBox.cs" />
     <Compile Include="SystemWindow.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
