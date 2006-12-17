@@ -298,12 +298,12 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
-        /// Create a new SystemWindow instance from a Windows Form.
+        /// Create a new SystemWindow instance from a Windows Forms Control.
         /// </summary>
-        /// <param name="form">The form.</param>
-        public SystemWindow(Form form)
+        /// <param name="control">The control.</param>
+        public SystemWindow(Control control)
         {
-            _hwnd = form.Handle;
+            _hwnd = control.Handle;
         }
 
         /// <summary>
@@ -600,7 +600,12 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
-        /// An image of this window.
+        /// An image of this window. Unlike a screen shot, this will not
+        /// contain parts of other windows (partially) cover this window.
+        /// If you want to create a screen shot, use the 
+        /// <see cref="System.Drawing.Graphics.CopyFromScreen(System.Drawing.Point,System.Drawing.Point,System.Drawing.Size)"/> 
+        /// function and use the <see cref="SystemWindow.Rectangle"/> property for
+        /// the range.
         /// </summary>
         public Image Image
         {
