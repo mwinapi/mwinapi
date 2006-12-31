@@ -32,6 +32,7 @@
     <DocumentationFile>bin\Release\ManagedWinapi.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accessibility" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -39,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SystemAccessibleObject.cs" />
     <Compile Include="ApiHelper.cs" />
     <Compile Include="ClipboardNotifier.cs">
       <SubType>Component</SubType>
