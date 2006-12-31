@@ -51,7 +51,10 @@ namespace ManagedWinapi
         {
             dragger.Image = myImage;
             dragger.Cursor = Cursors.Cross;
-            CrosshairDragged(this, new EventArgs());
+            if (CrosshairDragged != null)
+            {
+                CrosshairDragged(this, new EventArgs());
+            }
         }
 
         private void dragger_MouseMove(object sender, MouseEventArgs e)

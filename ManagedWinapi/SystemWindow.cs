@@ -198,6 +198,18 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// The Desktop window, i. e. the window that covers the
+        /// complete desktop.
+        /// </summary>
+        public static SystemWindow DesktopWindow
+        {
+            get
+            {
+                return new SystemWindow(GetDesktopWindow());
+            }
+        }
+
+        /// <summary>
         /// Returns all available toplevel windows.
         /// </summary>
         public static SystemWindow[] AllToplevelWindows
@@ -697,6 +709,23 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// Gets a device context for this window.
+        /// </summary>
+        /// <param name="clientAreaOnly">Whether to get the context for
+        /// the client area or for the full window.</param>
+        public WindowDeviceContext GetDeviceContext(bool clientAreaOnly)
+        {
+            if (clientAreaOnly)
+            {
+                return new WindowDeviceContext(this, GetDC(_hwnd));
+            }
+            else
+            {
+                return new WindowDeviceContext(this, GetWindowDC(_hwnd));
+            }
+        }
+
+        /// <summary>
         /// The content of this window. Is only supported for some
         /// kinds of controls (like text or list boxes).
         /// </summary>
@@ -958,6 +987,12 @@ namespace ManagedWinapi.Windows
         [DllImport("user32.dll")]
         private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
 
+        [DllImport("user32.dll", SetLastError = false)]
+        static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetDC(IntPtr hWnd);
+
         private enum GetWindow_Cmd
         {
             GW_HWNDFIRST = 0,
@@ -970,4 +1005,48 @@ namespace ManagedWinapi.Windows
         }
         #endregion
     }
+
+    /// <summary>
+    /// A device context of a window that allows you to draw onto that window.
+    /// </summary>
+    public class WindowDeviceContext : IDisposable
+    {
+        IntPtr hDC;
+        SystemWindow sw;
+
+        internal WindowDeviceContext(SystemWindow sw, IntPtr hDC)
+        {
+            this.sw = sw;
+            this.hDC = hDC;
+        }
+
+        /// <summary>
+        /// The device context handle.
+        /// </summary>
+        public IntPtr HDC { get { return hDC; } }
+
+        /// <summary>
+        /// Creates a Graphics object for this device context.
+        /// </summary>
+        public Graphics CreateGraphics()
+        {
+            return Graphics.FromHdc(hDC);
+        }
+
+        /// <summary>
+        /// Frees this device context.
+        /// </summary>
+        public void Dispose()
+        {
+            if (hDC != IntPtr.Zero)
+            {
+                ReleaseDC(sw.HWnd, hDC);
+                hDC = IntPtr.Zero;
+            }
+        }
+
+        [DllImport("user32.dll")]
+        private static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+    }
+     
 }
