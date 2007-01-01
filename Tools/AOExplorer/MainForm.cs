@@ -33,12 +33,14 @@ namespace AOExplorer
         {
             tree.Nodes.Clear();
             if (sao == null) return;
+            IntPtr hwnd = sao.Window.HWnd;
             List<SystemAccessibleObject> parents = new List<SystemAccessibleObject>();
             parents.Add(sao);
             while (true)
             {
                 sao = sao.Parent;
                 if (sao == null) break;
+                if (!allParents.Checked && sao.Window.HWnd != hwnd) break;
                 parents.Add(sao);
             }
             sao = parents[parents.Count-1];
