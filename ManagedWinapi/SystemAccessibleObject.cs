@@ -284,6 +284,9 @@ namespace ManagedWinapi
             }
         }
 
+        /// <summary>
+        /// The keyboard shortcut of this accessible object.
+        /// </summary>
         public string KeyboardShortcut
         {
             get
@@ -474,7 +477,7 @@ namespace ManagedWinapi
             {
                 return Name + " [" + RoleString + "]";
             }
-            catch (COMException)
+            catch
             {
                 return "??";
             }
