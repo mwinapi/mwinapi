@@ -40,6 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ShortcutBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ShortcutBox.Designer.cs">
+      <DependentUpon>ShortcutBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="SystemAccessibleObject.cs" />
     <Compile Include="ApiHelper.cs" />
     <Compile Include="ClipboardNotifier.cs">
@@ -82,6 +88,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="crosshair.cur" />
+    <EmbeddedResource Include="ShortcutBox.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ShortcutBox.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
