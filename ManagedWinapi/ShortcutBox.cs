@@ -57,7 +57,7 @@ namespace ManagedWinapi
         public bool Shift
         {
             get { return shift; }
-            set { shift = value; shiftMenuItem.Checked = value; }
+            set { shift = value; shiftMenuItem.Checked = value; RefreshText(); }
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace ManagedWinapi
         public bool Alt
         {
             get { return alt; }
-            set { alt = value; altMenuItem.Checked = value; }
+            set { alt = value; altMenuItem.Checked = value; RefreshText(); }
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace ManagedWinapi
         public bool Ctrl
         {
             get { return ctrl; }
-            set { ctrl = value; ctrlMenuItem.Checked = value; }
+            set { ctrl = value; ctrlMenuItem.Checked = value; RefreshText(); }
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace ManagedWinapi
         public bool WindowsKey
         {
             get { return windowsKey; }
-            set { windowsKey = value; winMenuItem.Checked = value; }
+            set { windowsKey = value; winMenuItem.Checked = value; RefreshText(); }
         }
 
         /// <summary>
