@@ -42,7 +42,11 @@ namespace ManagedWinapi.Windows.Contents
         {
             parsers.Add(new ComboBoxParser());
             parsers.Add(new ListBoxParser());
-            parsers.Add(new TextFieldParser());
+            parsers.Add(new TextFieldParser(true));
+            parsers.Add(new ListViewParser());
+            parsers.Add(new TreeViewParser());
+            parsers.Add(new AccessibleWindowParser());
+            parsers.Add(new TextFieldParser(false));
         }
 
         public WindowContentParser GetParser(SystemWindow sw)

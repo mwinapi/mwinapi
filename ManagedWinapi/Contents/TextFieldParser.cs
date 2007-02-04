@@ -30,17 +30,19 @@ namespace ManagedWinapi.Windows.Contents
     {
         readonly string text;
         readonly bool password;
+        readonly bool strict;
 
-        internal TextContent(string text, bool password)
+        internal TextContent(string text, bool password, bool strict)
         {
             this.text = text;
             this.password = password;
+            this.strict = strict;
         }
 
         ///
         public string ComponentType
         {
-            get { return "Text"; }
+            get { return strict ? "TextBox" : "Text"; }
         }
 
         ///
@@ -48,12 +50,13 @@ namespace ManagedWinapi.Windows.Contents
         {
             get
             {
+                string s = strict ? " <TextBox>" : "";
                 if (text.IndexOf("\n") != -1)
-                    return "<MultiLine>";
+                    return "<MultiLine>" + s;
                 else if (password)
-                    return text + " <Password>";
+                    return text + " <Password>" + s;
                 else
-                    return text;
+                    return text + s;
             }
         }
 
@@ -85,14 +88,29 @@ namespace ManagedWinapi.Windows.Contents
 
     class TextFieldParser : WindowContentParser
     {
+        readonly bool strict;
+
+        public TextFieldParser(bool strict)
+        {
+            this.strict = strict;
+        }
+
         internal override bool CanParseContent(SystemWindow sw)
         {
-            return sw.Title != "";
+            if (strict)
+            {
+                uint EM_GETLINECOUNT = 0xBA;
+                return sw.SendGetMessage(EM_GETLINECOUNT) != 0;
+            }
+            else
+            {
+                return sw.Title != "";
+            }
         }
 
         internal override WindowContent ParseContent(SystemWindow sw)
         {
-            return new TextContent(sw.Title, sw.PasswordCharacter != 0);
+            return new TextContent(sw.Title, sw.PasswordCharacter != 0, strict);
         }
     }
 }

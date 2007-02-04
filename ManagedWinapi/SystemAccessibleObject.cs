@@ -199,6 +199,26 @@ namespace ManagedWinapi
         }
 
         /// <summary>
+        /// The role of this accessible object, as an integer. If this role
+        /// is not predefined, -1 is returned.
+        /// </summary>
+        public int RoleIndex
+        {
+            get
+            {
+                object role = Role;
+                if (role is int)
+                {
+                    return (int)role;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
+
+        /// <summary>
         /// The role of this accessible object, as a localized string.
         /// </summary>
         public string RoleString
@@ -296,6 +316,7 @@ namespace ManagedWinapi
                     return iacc.get_accKeyboardShortcut(childID);
                 }
                 catch (ArgumentException) { return ""; }
+                catch (NotImplementedException) { return ""; }
             }
         }
 
