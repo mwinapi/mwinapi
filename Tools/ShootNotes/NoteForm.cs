@@ -77,6 +77,7 @@ namespace ShootNotes
             savePos();
             this.FormBorderStyle = toolWindowToolStripMenuItem.Checked ? FormBorderStyle.SizableToolWindow : FormBorderStyle.Sizable;
             this.ShowInTaskbar = !toolWindowToolStripMenuItem.Checked;
+            this.TopMost = toolWindowToolStripMenuItem.Checked;
             loadPos();
         }
 
