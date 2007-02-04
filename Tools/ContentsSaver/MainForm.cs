@@ -63,7 +63,6 @@ namespace ContentsSaver
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            saveButton.Enabled = false;
             TextForm tf = new TextForm();
             tf.SetText(getContent(sender == saveAllButton));
             tf.Show();
@@ -76,7 +75,7 @@ namespace ContentsSaver
             }
             sb.AppendLine(c.ShortDescription);
             sb.AppendLine("Class Name: " + sw.ClassName);
-            String ldesc = c.LongDescription;
+            String ldesc = c.LongDescription.Replace("\n", "\r\n").Replace("\r\r\n", "\r\n");
             if (ldesc != null && c.ShortDescription != ldesc) {
                 sb.AppendLine("------------------------------------------------------------");
                 sb.AppendLine(ldesc);

@@ -56,16 +56,19 @@ namespace ContentsSaver
             // 
             // shortText
             // 
+            this.shortText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.shortText.Location = new System.Drawing.Point(54, 12);
             this.shortText.Name = "shortText";
             this.shortText.ReadOnly = true;
-            this.shortText.Size = new System.Drawing.Size(198, 20);
+            this.shortText.Size = new System.Drawing.Size(227, 20);
             this.shortText.TabIndex = 1;
             // 
             // saveButton
             // 
+            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.saveButton.Enabled = false;
-            this.saveButton.Location = new System.Drawing.Point(258, 9);
+            this.saveButton.Location = new System.Drawing.Point(287, 9);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 2;
@@ -75,8 +78,9 @@ namespace ContentsSaver
             // 
             // saveAllButton
             // 
+            this.saveAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.saveAllButton.Enabled = false;
-            this.saveAllButton.Location = new System.Drawing.Point(258, 38);
+            this.saveAllButton.Location = new System.Drawing.Point(287, 38);
             this.saveAllButton.Name = "saveAllButton";
             this.saveAllButton.Size = new System.Drawing.Size(75, 23);
             this.saveAllButton.TabIndex = 3;
@@ -86,15 +90,18 @@ namespace ContentsSaver
             // 
             // copyright
             // 
+            this.copyright.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.copyright.Location = new System.Drawing.Point(12, 72);
             this.copyright.Name = "copyright";
-            this.copyright.Size = new System.Drawing.Size(240, 13);
+            this.copyright.Size = new System.Drawing.Size(269, 13);
             this.copyright.TabIndex = 5;
-            this.copyright.Text = "(c) 2006 Michael Schierl. Licensed under GPL.";
+            this.copyright.Text = "(c) 2006, 2007 Michael Schierl. Licensed under GPL.";
             // 
             // kbdButton
             // 
-            this.kbdButton.Location = new System.Drawing.Point(258, 67);
+            this.kbdButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.kbdButton.Location = new System.Drawing.Point(287, 67);
             this.kbdButton.Name = "kbdButton";
             this.kbdButton.Size = new System.Drawing.Size(75, 23);
             this.kbdButton.TabIndex = 6;
@@ -104,10 +111,12 @@ namespace ContentsSaver
             // 
             // className
             // 
+            this.className.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.className.Location = new System.Drawing.Point(95, 40);
             this.className.Name = "className";
             this.className.ReadOnly = true;
-            this.className.Size = new System.Drawing.Size(157, 20);
+            this.className.Size = new System.Drawing.Size(186, 20);
             this.className.TabIndex = 7;
             // 
             // label1
@@ -127,7 +136,7 @@ namespace ContentsSaver
             this.kbdControls.Controls.Add(this.label2);
             this.kbdControls.Location = new System.Drawing.Point(12, 96);
             this.kbdControls.Name = "kbdControls";
-            this.kbdControls.Size = new System.Drawing.Size(321, 221);
+            this.kbdControls.Size = new System.Drawing.Size(350, 221);
             this.kbdControls.TabIndex = 9;
             this.kbdControls.TabStop = false;
             this.kbdControls.Text = "Keyboard Selection";
@@ -135,6 +144,7 @@ namespace ContentsSaver
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 16);
             this.label2.Name = "label2";
@@ -144,16 +154,18 @@ namespace ContentsSaver
             // 
             // windowBox
             // 
+            this.windowBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.windowBox.FormattingEnabled = true;
             this.windowBox.Location = new System.Drawing.Point(6, 32);
             this.windowBox.Name = "windowBox";
-            this.windowBox.Size = new System.Drawing.Size(309, 69);
+            this.windowBox.Size = new System.Drawing.Size(338, 69);
             this.windowBox.TabIndex = 1;
             this.windowBox.SelectedIndexChanged += new System.EventHandler(this.windowBox_SelectedIndexChanged);
             this.windowBox.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.windowBox_Format);
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 104);
             this.label3.Name = "label3";
@@ -163,10 +175,11 @@ namespace ContentsSaver
             // 
             // controlBox
             // 
+            this.controlBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.controlBox.FormattingEnabled = true;
             this.controlBox.Location = new System.Drawing.Point(6, 120);
             this.controlBox.Name = "controlBox";
-            this.controlBox.Size = new System.Drawing.Size(309, 95);
+            this.controlBox.Size = new System.Drawing.Size(338, 95);
             this.controlBox.TabIndex = 3;
             this.controlBox.SelectedIndexChanged += new System.EventHandler(this.controlBox_SelectedIndexChanged);
             this.controlBox.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.controlBox_Format);
@@ -175,7 +188,7 @@ namespace ContentsSaver
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(345, 343);
+            this.ClientSize = new System.Drawing.Size(374, 343);
             this.Controls.Add(this.kbdControls);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.className);
