@@ -198,12 +198,14 @@ namespace AOExplorer
 
                 // sao.Parent not used
 
-                try { propRole.Text = sao.RoleString; }
+                try {
+                    int r = sao.RoleIndex;
+                    propRole.Text = (r == -1 ? "" : "["+r+"] ")+sao.RoleString; }
                 catch (COMException) { propRole.Text = "??"; }
 
                 // sao.SelectedObjects not used
 
-                try { propState.Text = sao.StateString; }
+                try { propState.Text = "[0x"+sao.State.ToString("x")+"] "+sao.StateString; }
                 catch (COMException) { propState.Text = "??"; }
 
                 try
@@ -224,7 +226,7 @@ namespace AOExplorer
                     propValue.Text = "?? " + ex.ToString();
                 }
 
-                try { propWindow.Text = sao.Window.Title; }
+                try { propWindow.Text = "[0x"+sao.Window.HWnd.ToString("x")+"] "+sao.Window.Title; }
                 catch (COMException) { propWindow.Text = "??"; }
             }
             lastObject = sao;

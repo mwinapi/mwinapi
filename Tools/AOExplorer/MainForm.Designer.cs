@@ -349,8 +349,6 @@ namespace AOExplorer
             // 
             // allParents
             // 
-            this.allParents.Checked = true;
-            this.allParents.CheckState = System.Windows.Forms.CheckState.Checked;
             this.allParents.Location = new System.Drawing.Point(48, 48);
             this.allParents.Name = "allParents";
             this.allParents.Size = new System.Drawing.Size(186, 18);
