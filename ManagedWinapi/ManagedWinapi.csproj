@@ -41,6 +41,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contents\AccessibleWindowParser.cs" />
+    <Compile Include="ExtendedFileInfo.cs" />
+    <Compile Include="Hook.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="JournalHook.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ShortcutBox.cs">
       <SubType>Component</SubType>
     </Compile>
