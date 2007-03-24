@@ -48,6 +48,7 @@
     <Compile Include="JournalHook.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="KeyboardKey.cs" />
     <Compile Include="ShortcutBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -100,6 +101,11 @@
       <SubType>Designer</SubType>
       <DependentUpon>ShortcutBox.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ManagedWinapiNativeHelper.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

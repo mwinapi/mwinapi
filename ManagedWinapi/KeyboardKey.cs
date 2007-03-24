@@ -1,0 +1,134 @@
+using System;
+using System.Text;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
+
+namespace ManagedWinapi
+{
+    /// <summary>
+    /// This class contains utility methods related to keys on the keyboard.
+    /// </summary>
+    public class KeyboardKey
+    {
+        Keys key;
+
+        /// <summary>
+        /// Initializes a new instance of this class for a given key.
+        /// </summary>
+        /// <param name="key"></param>
+        public KeyboardKey(Keys key)
+        {
+            this.key = key;
+        }
+
+        /// <summary>
+        /// The state of this key, as seen by this application.
+        /// </summary>
+        public short State { get { return GetKeyState((short)key); } }
+
+        /// <summary>
+        /// The global state of this key.
+        /// </summary>
+        public short AsyncState { get { return GetAsyncKeyState((short)key); } }
+
+        /// <summary>
+        /// Press this key and release it.
+        /// </summary>
+        public void PressAndRelease()
+        {
+            Press();
+            Release();
+        }
+
+        /// <summary>
+        /// Press this key.
+        /// </summary>
+        public void Press()
+        {
+            keybd_event((byte)key, 0x0, 0x0, UIntPtr.Zero);
+        }
+
+        /// <summary>
+        /// Release this key.
+        /// </summary>
+        public void Release()
+        {
+            keybd_event((byte)key, 0x0, 0x2, UIntPtr.Zero);
+        }
+
+        /// <summary>
+        /// Determine the name of a key in the current keyboard layout.
+        /// </summary>
+        /// <returns>The key's name</returns>
+        public string KeyName
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder(512);
+                int scancode = MapVirtualKey((int)key, 0);
+                switch (key)
+                {
+                    case Keys.Insert:
+                    case Keys.Delete:
+                    case Keys.PageUp:
+                    case Keys.PageDown:
+                    case Keys.Home:
+                    case Keys.End:
+                    case Keys.Up:
+                    case Keys.Down:
+                    case Keys.Left:
+                    case Keys.Right:
+                        scancode += 0x100;
+                        break;
+                }
+                GetKeyNameText(scancode << 16, sb, sb.Capacity);
+                if (sb.Length == 0)
+                {
+                    switch (key)
+                    {
+                        case Keys.BrowserBack:
+                            sb.Append("Back");
+                            break;
+                        case Keys.BrowserForward:
+                            sb.Append("Forward");
+                            break;
+                        case (Keys)19:
+                            sb.Append("Break");
+                            break;
+                        case Keys.Apps:
+                            sb.Append("ContextMenu");
+                            break;
+                        case Keys.LWin:
+                        case Keys.RWin:
+                            sb.Append("Windows");
+                            break;
+                        case Keys.PrintScreen:
+                            sb.Append("PrintScreen");
+                            break;
+                    }
+                }
+                return sb.ToString();
+            }
+        }
+
+        #region PInvoke Declarations
+
+        [DllImport("user32.dll")]
+        private static extern short GetKeyState(short nVirtKey);
+
+        [DllImport("user32.dll")]
+        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags,
+           UIntPtr dwExtraInfo);
+
+        [DllImport("user32.dll")]
+        static extern int GetKeyNameText(int lParam, [Out] StringBuilder lpString,
+           int nSize);
+
+        [DllImport("user32.dll")]
+        static extern int MapVirtualKey(int uCode, int uMapType);
+
+        [DllImport("user32.dll")]
+        static extern short GetAsyncKeyState(int vKey);
+        #endregion
+    }
+}

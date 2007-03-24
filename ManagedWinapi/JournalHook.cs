@@ -41,7 +41,8 @@ namespace ManagedWinapi.Hooks
         /// <summary>
         /// Creates a new journal hook.
         /// </summary>
-        public JournalHook(HookType type) : base(type)
+        public JournalHook(HookType type)
+            : base(type, true)
         {
             lmh = new LocalMessageHook();
             lmh.MessageOccurred += new LocalMessageHook.MessageCallback(lmh_Callback);
@@ -51,7 +52,7 @@ namespace ManagedWinapi.Hooks
         {
             if (msg.Msg == WM_CANCELJOURNAL)
             {
-                hooked=false;
+                hooked = false;
                 lmh.Unhook();
                 if (JournalCancelled != null)
                 {
@@ -73,20 +74,11 @@ namespace ManagedWinapi.Hooks
         /// <summary>
         /// Unhooks ths hook.
         /// </summary>
-        public override void Unhook() {
+        public override void Unhook()
+        {
             if (!Hooked) return;
             base.Unhook();
             lmh.Unhook();
-        }
-
-        internal override IntPtr getHModule()
-        {
-            return Marshal.GetHINSTANCE((System.Reflection.Assembly.GetExecutingAssembly().GetModules())[0]);
-        }
-
-        internal override uint getThreadID()
-        {
-            return 0;
         }
 
         #region PInvoke Declarations
@@ -126,7 +118,7 @@ namespace ManagedWinapi.Hooks
         /// </summary>
         public JournalMessage(IntPtr hWnd, uint message, uint paramL, uint paramH, uint time)
         {
-            msg= new JournalHook.EVENTMSG();
+            msg = new JournalHook.EVENTMSG();
             msg.hWnd = hWnd;
             msg.message = message;
             msg.paramL = paramL;
@@ -160,7 +152,7 @@ namespace ManagedWinapi.Hooks
         public int Time
         {
             get { return msg.time; }
-            set { msg.time = Time; }
+            set { msg.time = value; }
         }
 
         /// <summary>
@@ -309,7 +301,7 @@ namespace ManagedWinapi.Hooks
                 {
                     nextEventTime = 0;
                     nextEvent = GetNextJournalMessage(ref nextEventTime);
-                    if (nextEventTime <=tick)
+                    if (nextEventTime <= tick)
                     {
                         if (nextEvent == null)
                         {
@@ -324,7 +316,7 @@ namespace ManagedWinapi.Hooks
                     }
                     if (nextEventTime > tick)
                     {
-                        return nextEventTime-tick;
+                        return nextEventTime - tick;
                     }
                 }
                 // now we have the next event, which should be sent
@@ -334,6 +326,7 @@ namespace ManagedWinapi.Hooks
                 em.message = nextEvent.Message;
                 em.paramH = nextEvent.ParamH;
                 em.paramL = nextEvent.ParamL;
+                Marshal.StructureToPtr(em, lParam, false);
                 return 0;
             }
             else if (code == HC_SKIP)
@@ -387,7 +380,7 @@ namespace ManagedWinapi.Hooks
 
         private void hook_JournalCancelled(object sender, EventArgs e)
         {
-            if (count >=0) count++;
+            if (count >= 0) count++;
             hook.StartHook();
         }
 

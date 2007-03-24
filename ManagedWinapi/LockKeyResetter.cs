@@ -48,22 +48,21 @@ namespace ManagedWinapi
         /// </summary>
         public LockKeyResetter()
         {
-            int capslockstate = GetKeyState((short)Keys.CapsLock);
+            KeyboardKey capslockKey = new KeyboardKey(Keys.CapsLock);
+            int capslockstate = capslockKey.State;
             capslock = ((capslockstate & 0x01) == 0x01);
             if (capslock)
             {
                 // press caps lock
-                keybd_event(0x14, 0x0, 0x0, new UIntPtr(0x0));
-                keybd_event(0x14, 0x0, 0x2, new UIntPtr(0x0));
+                capslockKey.PressAndRelease();
                 Application.DoEvents();
-                if ((GetKeyState((short)Keys.CapsLock) & 0x01) == 0x01)
+                if ((capslockKey.State & 0x01) == 0x01)
                 {
                     // press shift
-                    keybd_event(0x10, 0x0, 0x0, new UIntPtr(0x0));
-                    keybd_event(0x10, 0x0, 0x2, new UIntPtr(0x0));
+                    new KeyboardKey(Keys.ShiftKey).PressAndRelease();
                 }
                 Application.DoEvents();
-                if ((GetKeyState((short)Keys.CapsLock) & 0x01) == 0x01)
+                if ((capslockKey.State & 0x01) == 0x01)
                 {
                     throw new Exception("Cannot disable caps lock.");
                 }
@@ -81,14 +80,13 @@ namespace ManagedWinapi
         {
             if (capslock) {
                 // press caps lock
-                keybd_event(0x14, 0x0, 0x0, new UIntPtr(0x0));
-                keybd_event(0x14, 0x0, 0x2, new UIntPtr(0x0));
+                KeyboardKey capslockKey = new KeyboardKey(Keys.CapsLock);
+                capslockKey.PressAndRelease();
                 Application.DoEvents();
-                if ((GetKeyState((short)Keys.CapsLock) & 0x01) != 0x01)
+                if ((capslockKey.State & 0x01) != 0x01)
                     throw new Exception("Cannot enable caps lock.");
             }
         }
-
 
         /// <summary>
         /// Convenience method to send keys with all modifiers disabled.
@@ -114,16 +112,5 @@ namespace ManagedWinapi
                 SendKeys.SendWait(keys);
             }
         }
-
-
-        #region PInvoke Declarations
-
-        [DllImport("user32.dll")]
-        private static extern short GetKeyState(short nVirtKey);
-
-        [DllImport("user32.dll")]
-        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags,
-           UIntPtr dwExtraInfo);
-        #endregion
     }
 }

@@ -39,6 +39,9 @@ namespace ManagedWinapi.Hooks
         private HookType type;
         internal bool hooked = false;
         private IntPtr hHook;
+        private bool wrapCallback;
+        private IntPtr wrappedDelegate;
+        private IntPtr hWrapperInstance;
         private readonly HookProc managedDelegate;
 
         /// <summary>
@@ -54,8 +57,8 @@ namespace ManagedWinapi.Hooks
         /// <summary>
         /// Creates a new hook and hooks it.
         /// </summary>
-        public Hook(HookType type, HookCallback callback)
-            : this(type)
+        public Hook(HookType type, HookCallback callback, bool wrapCallback)
+            : this(type, wrapCallback)
         {
             this.Callback += callback;
             StartHook();
@@ -64,10 +67,11 @@ namespace ManagedWinapi.Hooks
         /// <summary>
         /// Creates a new hook.
         /// </summary>
-        public Hook(HookType type)
+        public Hook(HookType type, bool wrapCallback)
             : this()
         {
             this.type = type;
+            this.wrapCallback = wrapCallback;
         }
 
         /// <summary>
@@ -110,21 +114,26 @@ namespace ManagedWinapi.Hooks
         public virtual void StartHook()
         {
             if (hooked) return;
-            hHook = SetWindowsHookEx(type, managedDelegate, getHModule(), getThreadID());
+            IntPtr delegt = Marshal.GetFunctionPointerForDelegate(managedDelegate);
+            if (wrapCallback)
+            {
+                wrappedDelegate = AllocHookWrapper(delegt);
+                hWrapperInstance = LoadLibrary("ManagedWinapiNativeHelper.dll");
+                hHook = SetWindowsHookEx(type, wrappedDelegate, hWrapperInstance, 0);
+            }
+            else
+            {
+                hHook = SetWindowsHookEx(type, delegt, IntPtr.Zero, getThreadID());
+            }
             if (hHook == IntPtr.Zero) throw new Win32Exception(Marshal.GetLastWin32Error());
             hooked = true;
         }
 
-        internal virtual uint getThreadID()
+        private uint getThreadID()
         {
 #pragma warning disable 0618
             return (uint)AppDomain.GetCurrentThreadId();
 #pragma warning restore 0618
-        }
-
-        internal virtual IntPtr getHModule()
-        {
-            return IntPtr.Zero;
         }
 
         /// <summary>
@@ -134,6 +143,11 @@ namespace ManagedWinapi.Hooks
         {
             if (!hooked) return;
             if (!UnhookWindowsHookEx(hHook)) throw new Win32Exception(Marshal.GetLastWin32Error());
+            if (wrapCallback)
+            {
+                if (!FreeHookWrapper(wrappedDelegate)) throw new Win32Exception();
+                if (!FreeLibrary(hWrapperInstance)) throw new Win32Exception();
+            }
             hooked = false;
         }
 
@@ -168,15 +182,28 @@ namespace ManagedWinapi.Hooks
         #region PInvoke Declarations
 
         [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr SetWindowsHookEx(HookType hook, HookProc callback,
+        private static extern IntPtr SetWindowsHookEx(HookType hook, IntPtr callback,
            IntPtr hMod, uint dwThreadId);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", SetLastError = true)]
         internal static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
         [DllImport("user32.dll")]
         internal static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam,
            IntPtr lParam);
+
+        [DllImport("ManagedWinapiNativeHelper.dll")]
+        private static extern IntPtr AllocHookWrapper(IntPtr callback);
+
+        [DllImport("ManagedWinapiNativeHelper.dll")]
+        private static extern bool FreeHookWrapper(IntPtr wrapper);
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr LoadLibrary(string lpFileName);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool FreeLibrary(IntPtr hModule);
+
         private delegate int HookProc(int code, IntPtr wParam, IntPtr lParam);
 
         internal static readonly int HC_ACTION = 0,
@@ -219,7 +246,7 @@ namespace ManagedWinapi.Hooks
         /// Creates a local message hook.
         /// </summary>
         public LocalMessageHook()
-            : base(HookType.WH_GETMESSAGE)
+            : base(HookType.WH_GETMESSAGE, false)
         {
             base.Callback += MessageHookCallback;
         }

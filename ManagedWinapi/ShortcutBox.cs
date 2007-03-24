@@ -129,57 +129,9 @@ namespace ManagedWinapi
             base.SelectionStart = s.Length;
         }
 
-        /// <summary>
-        /// Determine the name of a key in the current keyboard layout.
-        /// </summary>
-        /// <param name="key">A key</param>
-        /// <returns>The key's name</returns>
-        public static string GetKeyName(Keys key)
+        private static string GetKeyName(Keys key)
         {
-            StringBuilder sb = new StringBuilder(512);
-            int scancode = MapVirtualKey((int)key, 0);
-            switch (key)
-            {
-                case Keys.Insert:
-                case Keys.Delete:
-                case Keys.PageUp:
-                case Keys.PageDown:
-                case Keys.Home:
-                case Keys.End:
-                case Keys.Up:
-                case Keys.Down:
-                case Keys.Left:
-                case Keys.Right:
-                    scancode += 0x100;
-                    break;
-            }
-            GetKeyNameText(scancode << 16, sb, sb.Capacity);
-            if (sb.Length == 0)
-            {
-                switch (key)
-                {
-                    case Keys.BrowserBack:
-                        sb.Append("Back");
-                        break;
-                    case Keys.BrowserForward:
-                        sb.Append("Forward");
-                        break;
-                    case (Keys)19:
-                        sb.Append("Break");
-                        break;
-                    case Keys.Apps:
-                        sb.Append("ContextMenu");
-                        break;
-                    case Keys.LWin:
-                    case Keys.RWin:
-                        sb.Append("Windows");
-                        break;
-                    case Keys.PrintScreen:
-                        sb.Append("PrintScreen");
-                        break;
-                }
-            }
-            return sb.ToString();
+            return new KeyboardKey(key).KeyName;
         }
 
         private bool currWindowsKey = false;
@@ -232,17 +184,6 @@ namespace ManagedWinapi
         {
             e.Handled = true;
         }
-
-        #region PInvoke Declarations
-
-        [DllImport("user32.dll")]
-        static extern int GetKeyNameText(int lParam, [Out] StringBuilder lpString,
-           int nSize);
-
-        [DllImport("user32.dll")]
-        static extern int MapVirtualKey(int uCode, int uMapType);
-
-        #endregion
 
         private void altMenuItem_Click(object sender, EventArgs e)
         {
