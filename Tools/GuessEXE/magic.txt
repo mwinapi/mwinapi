@@ -1,0 +1,44 @@
+WNDCLASS,Windows .NET Forms 10,!>WindowsForms10\.Window\..*
+WNDCLASS,Windows .NET Forms,!>WindowsForms[0-9]+\.Window\..*
+WNDCLASS,Windows .NET Forms 10 (Without Toplevel),!~.*,WindowsForms10\..*
+WNDCLASS,Windows .NET Forms (Without Toplevel),!~.*,WindowsForms[0-9]+\..*
+WNDCLASS,MS-DOS-Box (Application for MS-DOS),!>tty
+WNDCLASS,MS-DOS-Box (Application for MS-DOS),!~.*,ttyGrab
+WNDCLASS,MS-DOS-Box (Application for MS-DOS),!=ConsoleWindowClass
+WNDCLASS,Java AWT,!~SunAwtFrame,Edit,Button,RichEdit20W,SunAwtCanvas,SunAwtLabel
+WNDCLASS,Java Swing,!=SunAwtFrame,SunAwtFrame
+WNDCLASS,Java AWT/Swing,!>SunAwtFrame
+WNDCLASS,Visual Basic 6.0 (Runtime),!>ThunderRT6FormDC
+WNDCLASS,Visual Basic 6.0 (Runtime) (Without Toplevel),!~.*,ThunderRT6FormDC,ThunderRT6CheckBox,ThunderRT6ComboBox,ThunderRT6CommandButton,ThunderRT6Data,ThunderRT6DirListBox,ThunderRT6DriveListBox,ThunderRT6FileListBox,ThunderRT6FormDC,ThunderRT6Frame,ThunderRT6HScrollBar,ThunderRT6ListBox,ThunderRT6OptionButton,ThunderRT6PictureBoxDC,ThunderRT6TextBox,ThunderRT6Timer
+WNDCLASS,Visual Basic,!>ThunderFormDC
+WNDCLASS,Borland Delphi,!~.*,TAnimate,TBitBtn,TButton,TCalendar,TChart,TCheckBox,TCheckListBox,TColorGrid,TComboBox,TControlBar,TCoolBar,TDateTimePicker,TDBChart,TDBCheckBox,TDBComboBox,TDBCtrlGrid,TDBCtrlPanel,TDBEdit,TDBGrid,TDBImage,TDBListBox,TDBLookupCombo,TDBLookupComboBox,TDBLookupList,TDBLookupListBox,TDBMemo,TDBNavigator,TDBRadioGroup,TDBRichEdit,TDirectoryListBox,TDirectoryOutline,TDrawGrid,TDriveComboBox,TEdit,TFileListBox,TFilterComboBox,TForm1,TGroupBox,THeader,THeaderControl,THotKey
+WNDCLASS,Borland Delphi,!~.*,TListBox,TListView,TMaskEdit,TMediaPlayer,TMemo,TMonthCalendar,TNotebook,TOleContainer,TOutline,TPage,TPageControl,TPageScroller,TPanel,TProgressBar,TQRBand,TQRChart,TQRChildBand,TQRDBImage,TQRDBRichText,TQRDBText,TQRExpr,TQRExprMemo,TQRGroup,TQRImage,TQRLabel,TQRMemo,TQRPreview,TQRRichEdit,TQRRichEdit,TQRRichText,TQRShape,TQRStringsBand,TQRSubDetail,TQRSysData,TQuickRep,TRadioButton,TRadioGroup,TRichEdit,TScrollBar,TScrollBox,TScroller,TSpinButton,TSpinEdit,TStaticText,
+WNDCLASS,Borland Delphi,!~.*,TStatusBar,TStringGrid,TTabbedNotebook,TTabControl,TTabPage,TTabSet,TToolBar,TTrackBar,TTreeView,TUpDown,TWinControl,TCoolListBox,TmlBitmapButton,TCoolEdit
+WNDCLASS,Microsoft Foundation Classes (MFC),!~.*,#[0-9]+,Afx:400000.*
+IMPORT,Visual Basic 1.0,!=,(?i)VBRUN100\..*
+IMPORT,Visual Basic 2.0,!=,(?i)VBRUN200\..*
+IMPORT,Visual Basic 3.0,!=,(?i)VBRUN300\..*
+IMPORT,Visual Basic 4.0 (16-bit),!=,(?i)VBRUN400\..*
+IMPORT,Visual Basic 4.0 (32-bit),!=,(?i)VB40032\.DLL
+IMPORT,Visual Basic 5.0,!=,MSVBVM50\.DLL
+IMPORT,Visual Basic 6.0,!=,MSVBVM60\.DLL
+IMPORT,Microsoft .NET,!=,mscoree\.dll
+IMPORT,Microsoft .NET,!=,MSCOREE\.DLL
+IMPORT,MFC 3.0 (DLL),~,Mfc30\.dll,Mfc30[a-z]+\.dll,Mfcn30\.dll,Mfco30\.dll
+IMPORT,MFD 4.0 (DLL),~,Mfco40\.dll,mfc40\.dll,Mfc40[a-z]+\.dll
+IMPORT,MFC 4.2 (DLL),~,Mfcn42d\.dll,Mfcd42d\.dll,Mfc42d\.dll,Mfc42[a-z]*\.dll,Mfco42d\.dll
+IMPORT,MFC (Unknown Version) (DLL),~,MFC\.DLL
+IMPORT,Maybe MFC (DLL),~,MFC? (DLL),MFC.*\.DLL
+IMPORT,Cygwin,>,cygwin1\.dll
+SECTION,UPX compressed,!>,UPX0,UPX1
+SUMMARY,Microsoft .NET 2.0,!>,IMPORTS=Microsoft \.NET,STUB=0\+default,WNDCLASS=Windows \.NET Forms 10
+SUMMARY,Visual Basic 6.0,!>,IMPORTS=Visual Basic 6\.0,STUB=56\+default,WNDCLASS=Visual Basic 6\.0 \(Runtime\)
+SUMMARY,Visual Basic 6.0,!>,IMPORTS=Visual Basic 6\.0,STUB=64\+default,WNDCLASS=Visual Basic 6\.0 \(Runtime\)
+SUMMARY,Visual Basic 6.0,!>,IMPORTS=Visual Basic 6\.0,STUB=72\+default,WNDCLASS=Visual Basic 6\.0 \(Runtime\)
+SUMMARY,Visual Basic 6.0 (P-CODE),!>,IMPORTS=Visual Basic 6\.0,STUB=48\+default,WNDCLASS=Visual Basic 6\.0 \(Runtime\)
+SUMMARY,Java AWT,!>,STUB=104\+default,WNDCLASS=Java AWT
+SUMMARY,Java Swing,!>,STUB=104\+default,WNDCLASS=Java Swing
+SUMMARY,Java AWT/Swing,!>,STUB=104\+default,WNDCLASS=Java AWT/Swing
+SUMMARY,Java AWT+CommandLine,!>,STUB=96\+default,WNDCLASS=Java AWT
+SUMMARY,Java Swing+CommandLine,!>,STUB=96\+default,WNDCLASS=Java Swing
+SUMMARY,Java AWT/Swing+CommandLine,!>,STUB=96\+default,WNDCLASS=Java AWT/Swing
