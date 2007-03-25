@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace ManagedWinapi
 {
@@ -67,5 +68,20 @@ namespace ManagedWinapi
                 }
             }
         }
+
+        /// <summary>
+        /// When a window is hidden, the .NET framework releases mouse capture.
+        /// If you hide your window while the crosshair is dragged, invoke
+        /// this method afterwards to restore mouse capture.
+        /// </summary>
+        public void RestoreMouseCapture()
+        {
+            SetCapture(dragger.Handle);
+        }
+
+        #region PInvoke Declarations
+        [DllImport("user32")]
+        private static extern int SetCapture(IntPtr hwnd);
+        #endregion
     }
 }

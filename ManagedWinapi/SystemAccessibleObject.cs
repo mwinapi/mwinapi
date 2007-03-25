@@ -291,6 +291,17 @@ namespace ManagedWinapi
         }
 
         /// <summary>
+        /// Whether this accessibile object is visible.
+        /// </summary>
+        public bool Visible
+        {
+            get
+            {
+                return (State & 0x8000) == 0;
+            }
+        }
+
+        /// <summary>
         /// The parent of this accessible object, or <b>null</b> if none exists.
         /// </summary>
         public SystemAccessibleObject Parent
