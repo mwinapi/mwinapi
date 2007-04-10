@@ -32,6 +32,7 @@ namespace AOExplorer
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tree = new System.Windows.Forms.TreeView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.events = new System.Windows.Forms.Button();
             this.propValue = new System.Windows.Forms.TextBox();
             this.propDescription = new System.Windows.Forms.TextBox();
             this.propChildID = new System.Windows.Forms.TextBox();
@@ -52,9 +53,9 @@ namespace AOExplorer
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.allParents = new System.Windows.Forms.CheckBox();
             this.selCaret = new System.Windows.Forms.Button();
             this.selMouse = new System.Windows.Forms.Button();
-            this.allParents = new System.Windows.Forms.CheckBox();
             this.selCrosshair = new ManagedWinapi.Crosshair();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -97,6 +98,7 @@ namespace AOExplorer
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.events);
             this.groupBox2.Controls.Add(this.propValue);
             this.groupBox2.Controls.Add(this.propDescription);
             this.groupBox2.Controls.Add(this.propChildID);
@@ -123,6 +125,17 @@ namespace AOExplorer
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Object Properties";
             // 
+            // events
+            // 
+            this.events.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.events.Location = new System.Drawing.Point(352, 252);
+            this.events.Name = "events";
+            this.events.Size = new System.Drawing.Size(86, 21);
+            this.events.TabIndex = 3;
+            this.events.Text = "Events...";
+            this.events.UseVisualStyleBackColor = true;
+            this.events.Click += new System.EventHandler(this.events_Click);
+            // 
             // propValue
             // 
             this.propValue.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -133,7 +146,7 @@ namespace AOExplorer
             this.propValue.Name = "propValue";
             this.propValue.ReadOnly = true;
             this.propValue.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.propValue.Size = new System.Drawing.Size(363, 52);
+            this.propValue.Size = new System.Drawing.Size(363, 49);
             this.propValue.TabIndex = 17;
             // 
             // propDescription
@@ -327,6 +340,15 @@ namespace AOExplorer
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Select Object";
             // 
+            // allParents
+            // 
+            this.allParents.Location = new System.Drawing.Point(48, 48);
+            this.allParents.Name = "allParents";
+            this.allParents.Size = new System.Drawing.Size(186, 18);
+            this.allParents.TabIndex = 3;
+            this.allParents.Text = "Include all &Parents";
+            this.allParents.UseVisualStyleBackColor = true;
+            // 
             // selCaret
             // 
             this.selCaret.Location = new System.Drawing.Point(144, 19);
@@ -346,15 +368,6 @@ namespace AOExplorer
             this.selMouse.Text = "&MousePointer";
             this.selMouse.UseVisualStyleBackColor = true;
             this.selMouse.Click += new System.EventHandler(this.selMouse_Click);
-            // 
-            // allParents
-            // 
-            this.allParents.Location = new System.Drawing.Point(48, 48);
-            this.allParents.Name = "allParents";
-            this.allParents.Size = new System.Drawing.Size(186, 18);
-            this.allParents.TabIndex = 3;
-            this.allParents.Text = "Include all &Parents";
-            this.allParents.UseVisualStyleBackColor = true;
             // 
             // selCrosshair
             // 
@@ -413,6 +426,7 @@ namespace AOExplorer
         private System.Windows.Forms.TextBox propDescription;
         private System.Windows.Forms.TextBox propValue;
         private System.Windows.Forms.CheckBox allParents;
+        private System.Windows.Forms.Button events;
     }
 }
 

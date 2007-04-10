@@ -5,9 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using ManagedWinapi;
 using System.Runtime.InteropServices;
 using ManagedWinapi.Windows;
+using ManagedWinapi.Accessibility;
 
 namespace AOExplorer
 {
@@ -144,7 +144,13 @@ namespace AOExplorer
             }
             catch (COMException) { }
         }
-        
+
+        public void SetSelectedObject(SystemAccessibleObject sao)
+        {
+            LoadProperties(sao);
+            LoadTree(sao);
+        }
+
         private void LoadProperties(SystemAccessibleObject sao)
         {
             if (sao == null)
@@ -311,6 +317,11 @@ namespace AOExplorer
         private void tree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             LoadProperties((SystemAccessibleObject)tree.SelectedNode.Tag);
+        }
+
+        private void events_Click(object sender, EventArgs e)
+        {
+            new EventForm(this).Show();
         }
     }
 }

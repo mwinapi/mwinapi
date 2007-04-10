@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessibleObjectListener.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Contents\AccessibleWindowParser.cs" />
     <Compile Include="ExtendedFileInfo.cs" />
     <Compile Include="Hook.cs">

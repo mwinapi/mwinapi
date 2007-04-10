@@ -26,7 +26,7 @@ using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Runtime.InteropServices.ComTypes;
 
-namespace ManagedWinapi
+namespace ManagedWinapi.Accessibility
 {
     /// <summary>
     /// Provides access to the Active Accessibility API. Every <see cref="SystemWindow"/>
@@ -547,7 +547,7 @@ namespace ManagedWinapi
     /// This enumeration lists all kinds of accessible objects that can
     /// be directly assigned to a window.
     /// </summary>
-    public enum AccessibleObjectID
+    public enum AccessibleObjectID : uint
     {
         /// <summary>
         /// The window itself.
@@ -557,58 +557,58 @@ namespace ManagedWinapi
         /// <summary>
         /// The system menu.
         /// </summary>
-        OBJID_SYSMENU = unchecked((int)0xFFFFFFFF),
+        OBJID_SYSMENU = 0xFFFFFFFF,
 
         /// <summary>
         /// The title bar.
         /// </summary>
-        OBJID_TITLEBAR = unchecked((int)0xFFFFFFFE),
+        OBJID_TITLEBAR = 0xFFFFFFFE,
 
         /// <summary>
         /// The menu.
         /// </summary>
-        OBJID_MENU = unchecked((int)0xFFFFFFFD),
+        OBJID_MENU = 0xFFFFFFFD,
 
         /// <summary>
         /// The client area.
         /// </summary>
-        OBJID_CLIENT = unchecked((int)0xFFFFFFFC),
+        OBJID_CLIENT = 0xFFFFFFFC,
 
         /// <summary>
         /// The vertical scroll bar.
         /// </summary>
-        OBJID_VSCROLL = unchecked((int)0xFFFFFFFB),
+        OBJID_VSCROLL = 0xFFFFFFFB,
 
         /// <summary>
         /// The horizontal scroll bar.
         /// </summary>
-        OBJID_HSCROLL = unchecked((int)0xFFFFFFFA),
+        OBJID_HSCROLL = 0xFFFFFFFA,
 
         /// <summary>
         /// The size grip (part in the lower right corner that
         /// makes resizing the window easier).
         /// </summary>
-        OBJID_SIZEGRIP = unchecked((int)0xFFFFFFF9),
+        OBJID_SIZEGRIP = 0xFFFFFFF9,
 
         /// <summary>
         /// The caret (text cursor).
         /// </summary>
-        OBJID_CARET = unchecked((int)0xFFFFFFF8),
+        OBJID_CARET = 0xFFFFFFF8,
 
         /// <summary>
         /// The mouse cursor. There is only one mouse
         /// cursor and it is not assigned to any window.
         /// </summary>
-        OBJID_CURSOR = unchecked((int)0xFFFFFFF7),
+        OBJID_CURSOR = 0xFFFFFFF7,
 
         /// <summary>
         /// An alert window.
         /// </summary>
-        OBJID_ALERT = unchecked((int)0xFFFFFFF6),
+        OBJID_ALERT = 0xFFFFFFF6,
 
         /// <summary>
         /// A sound this window is playing.
         /// </summary>
-        OBJID_SOUND = unchecked((int)0xFFFFFFF5)
+        OBJID_SOUND = 0xFFFFFFF5
     }
 }
