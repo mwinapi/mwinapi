@@ -29,6 +29,7 @@ namespace TreeSizeSharp.GUI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tree = new System.Windows.Forms.TreeView();
             this.treeIcons = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -409,6 +410,7 @@ namespace TreeSizeSharp.GUI
             this.ClientSize = new System.Drawing.Size(371, 304);
             this.Controls.Add(this.tree);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "TreeSize# 0.5";
