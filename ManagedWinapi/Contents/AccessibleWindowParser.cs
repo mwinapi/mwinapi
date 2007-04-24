@@ -172,11 +172,15 @@ namespace ManagedWinapi.Windows.Contents
 
         private bool TestClientArea(SystemWindow sw)
         {
-            SystemAccessibleObject sao = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.OBJID_CLIENT);
-            foreach (SystemAccessibleObject c in sao.Children)
+            try
             {
-                if (c.Window == sw) return true;
+                SystemAccessibleObject sao = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.OBJID_CLIENT);
+                foreach (SystemAccessibleObject c in sao.Children)
+                {
+                    if (c.Window == sw) return true;
+                }
             }
+            catch (COMException) { }
             return false;
         }
 

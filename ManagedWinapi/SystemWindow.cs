@@ -400,7 +400,7 @@ namespace ManagedWinapi.Windows
                 {
                     if (w.Rectangle.ToRectangle().Contains(x, y))
                     {
-                        int ar2 = getArea(sw);
+                        int ar2 = getArea(w);
                         if (ar2 <= area)
                         {
                             area = ar2;
@@ -927,6 +927,21 @@ namespace ManagedWinapi.Windows
             }
         }
 
+        /// <summary>
+        /// Whether this control, which is a check box or radio button, is checked.
+        /// </summary>
+        public CheckState CheckState
+        {
+            get
+            {
+                return (CheckState)SendGetMessage(BM_GETCHECK);
+            }
+            set
+            {
+                SendSetMessage(BM_SETCHECK, (uint)value);
+            }
+        }
+
         internal int SendGetMessage(uint message)
         {
             return SendGetMessage(message, 0);
@@ -1166,6 +1181,7 @@ namespace ManagedWinapi.Windows
         }
 
         static readonly uint EM_GETPASSWORDCHAR = 0xD2, EM_SETPASSWORDCHAR = 0xCC;
+        static readonly uint BM_GETCHECK = 0xF0, BM_SETCHECK = 0xF1;
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
         internal static extern IntPtr SendMessage(HandleRef hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
