@@ -70,7 +70,7 @@ namespace ClipHancer
                 try
                 {
                     if (copying) return;
-                    fetchClipboardEntry();
+                    fetchClipboardEntry(false);
                 }
                 catch (Exception ex)
                 {
@@ -82,15 +82,40 @@ namespace ClipHancer
 
         private void fetchClipboardEntry()
         {
+            fetchClipboardEntry(true);
+        }
+
+        private void fetchClipboardEntry(bool allowDuplicate)
+        {
             IDataObject ido = Clipboard.GetDataObject();
             ClipboardEntry ce = new ClipboardEntry(ido);
-            ce = new ClipboardEntry(ce.Serialize(), "");
+            byte[] serialized = ce.Serialize();
+            byte[] reserialized = new ClipboardEntry(ce.Serialize(), "").Serialize();
+            if (!ArrayEquals(serialized, reserialized))
+            {
+                MessageBox.Show("Warning: Unserializable clipboard entry detected");
+            }
+            if (!allowDuplicate && clips.Items.Count > 0 &&
+                ArrayEquals(serialized, ((ClipboardEntry)clips.Items[0].Tag).Serialize()))
+            {
+                return;
+            }
             string key = "image" + (counter++);
             previewImages.Images.Add(key, ce.PreviewImage);
 
             ListViewItem lvi = new ListViewItem(ce.Caption, previewImages.Images.IndexOfKey(key));
             lvi.Tag = ce;
             clips.Items.Insert(0, lvi);
+        }
+
+        private bool ArrayEquals(byte[] a, byte[] b)
+        {
+            if (a.Length != b.Length) return false;
+            for (int i = 0; i < a.Length; i++)
+            {
+                if (a[i] != b[i]) return false;
+            }
+            return true;
         }
 
         private void hotkeyC_HotkeyPressed(object sender, EventArgs e)

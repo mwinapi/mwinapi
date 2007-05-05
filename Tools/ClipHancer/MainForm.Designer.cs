@@ -304,6 +304,7 @@ namespace ClipHancer
             // receive
             // 
             this.receive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.receive.ContextMenuStrip = this.receiveStrip;
             this.receive.Location = new System.Drawing.Point(309, 386);
             this.receive.Name = "receive";
             this.receive.Size = new System.Drawing.Size(75, 23);
@@ -418,7 +419,6 @@ namespace ClipHancer
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(396, 421);
-            this.ContextMenuStrip = this.receiveStrip;
             this.Controls.Add(this.label1);
             this.Controls.Add(this.clips);
             this.Controls.Add(this.receive);
