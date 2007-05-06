@@ -30,8 +30,8 @@ namespace NeatKeys
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.ToolStripMenuItem kbdModeMenuItem;
-            System.Windows.Forms.NotifyIcon trayIcon;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mouseModeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -42,7 +42,6 @@ namespace NeatKeys
             this.hotkeyKeypad = new ManagedWinapi.Hotkey(this.components);
             this.hotkeyMain = new ManagedWinapi.Hotkey(this.components);
             kbdModeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.trayMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,19 +49,19 @@ namespace NeatKeys
             // 
             kbdModeMenuItem.Name = "kbdModeMenuItem";
             kbdModeMenuItem.ShortcutKeyDisplayString = "[Window]+[+]";
-            kbdModeMenuItem.Size = new System.Drawing.Size(246, 22);
+            kbdModeMenuItem.Size = new System.Drawing.Size(261, 22);
             kbdModeMenuItem.Text = "NeatKeys &Keyboard Mode";
             kbdModeMenuItem.Click += new System.EventHandler(this.startNeatKeysToolStripMenuItem_Click);
             // 
             // trayIcon
             // 
-            trayIcon.ContextMenuStrip = this.trayMenu;
-            trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
-            trayIcon.Text = "NeatKeys 0.0.1";
-            trayIcon.Visible = true;
-            trayIcon.MouseMove += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseMove);
-            trayIcon.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseUp);
-            trayIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseDown);
+            this.trayIcon.ContextMenuStrip = this.trayMenu;
+            this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
+            this.trayIcon.Text = "NeatKeys x.x";
+            this.trayIcon.Visible = true;
+            this.trayIcon.MouseMove += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseMove);
+            this.trayIcon.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseUp);
+            this.trayIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trayIcon_MouseDown);
             // 
             // trayMenu
             // 
@@ -77,45 +76,45 @@ namespace NeatKeys
             this.trayMenu.Name = "trayMenu";
             this.trayMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
             this.trayMenu.ShowImageMargin = false;
-            this.trayMenu.Size = new System.Drawing.Size(247, 126);
+            this.trayMenu.Size = new System.Drawing.Size(262, 126);
             // 
             // mouseModeMenuItem
             // 
             this.mouseModeMenuItem.Name = "mouseModeMenuItem";
             this.mouseModeMenuItem.ShortcutKeyDisplayString = "Click";
-            this.mouseModeMenuItem.Size = new System.Drawing.Size(246, 22);
+            this.mouseModeMenuItem.Size = new System.Drawing.Size(261, 22);
             this.mouseModeMenuItem.Text = "NeatKeys &Mouse Mode";
             this.mouseModeMenuItem.Click += new System.EventHandler(this.mouseModeMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(243, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(258, 6);
             // 
             // alignCurrentMenuItem
             // 
             this.alignCurrentMenuItem.Name = "alignCurrentMenuItem";
             this.alignCurrentMenuItem.ShortcutKeyDisplayString = "";
-            this.alignCurrentMenuItem.Size = new System.Drawing.Size(246, 22);
+            this.alignCurrentMenuItem.Size = new System.Drawing.Size(261, 22);
             this.alignCurrentMenuItem.Text = "Align &Current Window";
             this.alignCurrentMenuItem.Click += new System.EventHandler(this.alignCurrentMenuItem_Click);
             // 
             // alignAllMenuItem
             // 
             this.alignAllMenuItem.Name = "alignAllMenuItem";
-            this.alignAllMenuItem.Size = new System.Drawing.Size(246, 22);
+            this.alignAllMenuItem.Size = new System.Drawing.Size(261, 22);
             this.alignAllMenuItem.Text = "Align &All Windows";
             this.alignAllMenuItem.Click += new System.EventHandler(this.alignAllMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(243, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(258, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(246, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(261, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -176,6 +175,7 @@ namespace NeatKeys
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem alignCurrentMenuItem;
         private System.Windows.Forms.ToolStripMenuItem alignAllMenuItem;
+        private System.Windows.Forms.NotifyIcon trayIcon;
 
     }
 }

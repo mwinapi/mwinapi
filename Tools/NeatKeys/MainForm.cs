@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using ManagedWinapi.Windows;
 using NeatKeys.Views;
+using System.Reflection;
 
 namespace NeatKeys
 {
@@ -22,6 +23,8 @@ namespace NeatKeys
         public MainForm()
         {
             InitializeComponent();
+            trayIcon.Text = "NeatKeys " + Assembly.GetExecutingAssembly().GetName().Version.Major +
+                "." + Assembly.GetExecutingAssembly().GetName().Version.Minor;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
