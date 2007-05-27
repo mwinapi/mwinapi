@@ -1,0 +1,173 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A556FB10-2F86-4DD6-AA97-41BB55975E96}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WinternalExplorer</RootNamespace>
+    <AssemblyName>WinternalExplorer</AssemblyName>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessibilityControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AccessibilityControl.Designer.cs">
+      <DependentUpon>AccessibilityControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChildControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FrameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrameForm.Designer.cs">
+      <DependentUpon>FrameForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InputBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InputBox.Designer.cs">
+      <DependentUpon>InputBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NoneControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NoneControl.Designer.cs">
+      <DependentUpon>NoneControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProcessControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ProcessControl.Designer.cs">
+      <DependentUpon>ProcessControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AccessibilityControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AccessibilityControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrameForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FrameForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InputBox.resx">
+      <DependentUpon>InputBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NoneControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NoneControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProcessControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ProcessControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchResultForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SearchResultForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ThreadControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ThreadControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WindowControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WindowInformation.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WindowInformation.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="SearchResultForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchResultForm.Designer.cs">
+      <DependentUpon>SearchResultForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ThreadControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ThreadControl.Designer.cs">
+      <DependentUpon>ThreadControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TreeNodeData.cs" />
+    <Compile Include="WindowCache.cs" />
+    <Compile Include="WindowControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="WindowControl.Designer.cs">
+      <DependentUpon>WindowControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowInformation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WindowInformation.Designer.cs">
+      <DependentUpon>WindowInformation.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ManagedWinapi\ManagedWinapi.csproj">
+      <Project>{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}</Project>
+      <Name>ManagedWinapi</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
+    <Content Include="icons\accobj.ico" />
+    <Content Include="icons\category.ico" />
+    <Content Include="icons\hiddenaccobj.ico" />
+    <Content Include="icons\hiddenwindow.ico" />
+    <Content Include="icons\process.ico" />
+    <Content Include="icons\thread.ico" />
+    <Content Include="icons\window.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
