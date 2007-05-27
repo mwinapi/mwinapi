@@ -15,11 +15,21 @@ namespace QuickMacro
     public partial class MainForm : Form
     {
         MacroState state = MacroState.STOPPED;
+        int lastTickCount = 0;
+        bool llhook, bi;
+
+        // for journal hooks
         JournalRecordHook rec;
         JournalPlaybackHook play;
-        int lastTickCount = 0;
         int index;
         List<JournalMessage> macro = new List<JournalMessage>();
+
+        // for low-level hooks
+        LowLevelKeyboardHook kbd;
+        LowLevelMouseHook mouse;
+        InputBlocker iblock;
+        List<LowLevelMessage> llmacro = new List<LowLevelMessage>();
+        int llindex;
 
         public MainForm()
         {
@@ -47,6 +57,8 @@ namespace QuickMacro
             playHotkey.Alt = playHotkeyBox.Alt;
             playHotkey.Shift = playHotkeyBox.Shift;
             playHotkey.WindowsKey = playHotkeyBox.WindowsKey;
+            llhook = lowLevelHook.Checked;
+            bi = blockInput.Checked;
             try
             {
                 playHotkey.Enabled = true;
@@ -69,7 +81,10 @@ namespace QuickMacro
         {
             if (state == MacroState.STOPPED)
             {
-                macro.Clear();
+                if (llhook)
+                    llmacro.Clear();
+                else
+                    macro.Clear();
                 state = MacroState.RECORDING;
                 lastTickCount = 0;
                 timer1.Enabled = true;
@@ -82,11 +97,13 @@ namespace QuickMacro
             {
                 lastTickCount = Environment.TickCount;
                 state = MacroState.RECORDING_DELAY;
+                RemoveEvent(recHotkey.KeyCode);
             }
             else if (state == MacroState.RECORDING_DELAY)
             {
                 state = MacroState.RECORDING;
                 lastTickCount = Environment.TickCount - lastTickCount;
+                RemoveEvent(recHotkey.KeyCode);
             }
             UpdateIcons();
         }
@@ -127,16 +144,48 @@ namespace QuickMacro
             macro.Add(m);
         }
 
+        void ll_MessageIntercepted(LowLevelMessage m, ref bool handled)
+        {
+
+            if (state == MacroState.RECORDING)
+            {
+                m.Time = lastTickCount;
+                lastTickCount = 0;
+            }
+            else if (state == MacroState.RECORDING_DELAY)
+            {
+                int ltc = lastTickCount;
+                lastTickCount = m.Time;
+                m.Time -= ltc;
+            }
+            else
+            {
+                MessageBox.Show("Error: Invalid state");
+            }
+            llmacro.Add(m);
+
+        }
+
         private void playHotkey_HotkeyPressed(object sender, EventArgs e)
         {
             if (state == MacroState.STOPPED)
             {
-                index = 0;
                 lastTickCount = Environment.TickCount;
                 state = MacroState.PLAYING;
-                play = new JournalPlaybackHook();
-                play.GetNextJournalMessage += new JournalPlaybackHook.JournalQuery(play_GetNextJournalMessage);
-                play.StartHook();
+                if (llhook)
+                {
+                    llindex = 0;
+                    if(bi) iblock = new InputBlocker();
+                    playTimer.Interval = 1;
+                    playTimer.Enabled = true;
+                }
+                else
+                {
+                    index = 0;
+                    play = new JournalPlaybackHook();
+                    play.GetNextJournalMessage += new JournalPlaybackHook.JournalQuery(play_GetNextJournalMessage);
+                    play.StartHook();
+                }
             }
             else if (state == MacroState.PLAYING)
             {
@@ -144,10 +193,40 @@ namespace QuickMacro
             }
             else
             {
-                rec.Unhook();
+                if (llhook)
+                {
+                    kbd.Unhook();
+                    mouse.Unhook();
+                }
+                else
+                {
+                    rec.Unhook();
+                }
                 state = MacroState.STOPPED;
+                RemoveEvent(playHotkey.KeyCode);
             }
             UpdateIcons();
+        }
+
+        private void RemoveEvent(Keys keys)
+        {
+            if (llhook)
+            {
+                for (int i = llmacro.Count - 1; i >= 0; i--)
+                {
+                    LowLevelKeyboardMessage llm = llmacro[i] as LowLevelKeyboardMessage;
+                    if (llm != null && llm.VirtualKeyCode == (int)keys)
+                    {
+                        llmacro.RemoveAt(i);
+                        return;
+                    }
+                }
+                MessageBox.Show("Event not found!");
+            }
+            else
+            {
+                // not needed
+            }
         }
 
         JournalMessage play_GetNextJournalMessage(ref int timestamp)
@@ -177,6 +256,30 @@ namespace QuickMacro
             }
         }
 
+        private void playTimer_Tick(object sender, EventArgs e)
+        {
+
+            while (llindex < llmacro.Count)
+            {
+                int ltc = lastTickCount;
+                int timestamp = ltc + llmacro[llindex].Time;
+                if (timestamp > Environment.TickCount)
+                {
+                    playTimer.Interval = Math.Max(1, timestamp - Environment.TickCount - 5);
+                    return;
+                }
+                llmacro[llindex].ReplayEvent();
+                lastTickCount = timestamp;
+                llindex++;
+            }
+            llindex = -1;
+            state = MacroState.STOPPED;
+            if (bi) iblock.Dispose();
+            UpdateIcons();
+            playTimer.Enabled = false;
+
+        }
+
         private void hide_Click(object sender, EventArgs e)
         {
             Visible = false;
@@ -192,17 +295,43 @@ namespace QuickMacro
             Visible = true;
         }
 
-        private void timer1_Tick_1(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)
         {
             timer1.Enabled = false;
-            rec = new JournalRecordHook();
-            rec.RecordEvent += new EventHandler<JournalRecordEventArgs>(rec_RecordEvent);
-            rec.StartHook();
+            if (llhook)
+            {
+                kbd = new LowLevelKeyboardHook();
+                mouse = new LowLevelMouseHook();
+                kbd.MessageIntercepted += new LowLevelMessageCallback(ll_MessageIntercepted);
+                mouse.MessageIntercepted += new LowLevelMessageCallback(ll_MessageIntercepted);
+                kbd.StartHook();
+                mouse.StartHook();
+            }
+            else
+            {
+                rec = new JournalRecordHook();
+                rec.RecordEvent += new EventHandler<JournalRecordEventArgs>(rec_RecordEvent);
+                rec.StartHook();
+            }
+
         }
 
         private void trayIcon_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Visible = true;
+        }
+
+        private void radio_Click(object sender, EventArgs e)
+        {
+            if (lowLevelHook.Checked)
+            {
+                blockInput.Enabled = true;
+            }
+            else
+            {
+                blockInput.Enabled = false;
+                blockInput.Checked = true;
+            }
         }
     }
 
