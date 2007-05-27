@@ -111,6 +111,24 @@ namespace ManagedWinapi
             }
         }
 
+        /// <summary>
+        /// Inject a keyboard event into the event loop, as if the user performed
+        /// it with his keyboard.
+        /// </summary>
+        public static void InjectKeyboardEvent(Keys key, byte scanCode, uint flags, UIntPtr extraInfo)
+        {
+            keybd_event((byte)key, scanCode, flags, extraInfo);
+        }
+
+        /// <summary>
+        /// Inject a mouse event into the event loop, as if the user performed
+        /// it with his mouse.
+        /// </summary>
+        public static void InjectMouseEvent(uint flags, uint dx, uint dy, uint data, UIntPtr extraInfo)
+        {
+            mouse_event(flags, dx, dy, data, extraInfo);
+        }
+
         #region PInvoke Declarations
 
         [DllImport("user32.dll")]
@@ -118,6 +136,10 @@ namespace ManagedWinapi
 
         [DllImport("user32.dll")]
         private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags,
+           UIntPtr dwExtraInfo);
+
+        [DllImport("user32.dll")]
+        static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint dwData,
            UIntPtr dwExtraInfo);
 
         [DllImport("user32.dll")]

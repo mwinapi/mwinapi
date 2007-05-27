@@ -42,7 +42,7 @@ namespace ManagedWinapi.Hooks
         /// Creates a new journal hook.
         /// </summary>
         public JournalHook(HookType type)
-            : base(type, true)
+            : base(type, true, false)
         {
             lmh = new LocalMessageHook();
             lmh.MessageOccurred += new LocalMessageHook.MessageCallback(lmh_Callback);
@@ -72,7 +72,7 @@ namespace ManagedWinapi.Hooks
         }
 
         /// <summary>
-        /// Unhooks ths hook.
+        /// Unhooks the hook.
         /// </summary>
         public override void Unhook()
         {

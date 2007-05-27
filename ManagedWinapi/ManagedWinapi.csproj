@@ -48,10 +48,14 @@
     <Compile Include="Hook.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="InputBlocker.cs" />
     <Compile Include="JournalHook.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="KeyboardKey.cs" />
+    <Compile Include="LowLevelHook.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ProcessMemoryChunk.cs" />
     <Compile Include="ShortcutBox.cs">
       <SubType>Component</SubType>

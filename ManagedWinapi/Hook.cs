@@ -39,7 +39,7 @@ namespace ManagedWinapi.Hooks
         private HookType type;
         internal bool hooked = false;
         private IntPtr hHook;
-        private bool wrapCallback;
+        private bool wrapCallback, global;
         private IntPtr wrappedDelegate;
         private IntPtr hWrapperInstance;
         private readonly HookProc managedDelegate;
@@ -57,8 +57,8 @@ namespace ManagedWinapi.Hooks
         /// <summary>
         /// Creates a new hook and hooks it.
         /// </summary>
-        public Hook(HookType type, HookCallback callback, bool wrapCallback)
-            : this(type, wrapCallback)
+        public Hook(HookType type, HookCallback callback, bool wrapCallback, bool global)
+            : this(type, wrapCallback, global)
         {
             this.Callback += callback;
             StartHook();
@@ -67,11 +67,12 @@ namespace ManagedWinapi.Hooks
         /// <summary>
         /// Creates a new hook.
         /// </summary>
-        public Hook(HookType type, bool wrapCallback)
+        public Hook(HookType type, bool wrapCallback, bool global)
             : this()
         {
             this.type = type;
             this.wrapCallback = wrapCallback;
+            this.global = global;
         }
 
         /// <summary>
@@ -120,6 +121,10 @@ namespace ManagedWinapi.Hooks
                 wrappedDelegate = AllocHookWrapper(delegt);
                 hWrapperInstance = LoadLibrary("ManagedWinapiNativeHelper.dll");
                 hHook = SetWindowsHookEx(type, wrappedDelegate, hWrapperInstance, 0);
+            }
+            else if (global)
+            {
+                hHook = SetWindowsHookEx(type, delegt, Marshal.GetHINSTANCE(typeof(Hook).Assembly.GetModules()[0]), 0);
             }
             else
             {
@@ -246,7 +251,7 @@ namespace ManagedWinapi.Hooks
         /// Creates a local message hook.
         /// </summary>
         public LocalMessageHook()
-            : base(HookType.WH_GETMESSAGE, false)
+            : base(HookType.WH_GETMESSAGE, false, false)
         {
             base.Callback += MessageHookCallback;
         }
