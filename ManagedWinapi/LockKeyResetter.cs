@@ -67,8 +67,14 @@ namespace ManagedWinapi
                     throw new Exception("Cannot disable caps lock.");
                 }
             }
-            //TODO: disable all other modifier keys.
-            SendKeys.Send("A{Backspace}");
+            Release(Keys.ShiftKey, Keys.ControlKey, Keys.Menu, Keys.LWin, Keys.RWin);
+        }
+
+        private void Release(params Keys[] keys)
+        {
+            foreach(Keys key in keys) {
+                new KeyboardKey(key).Release();
+            }
         }
 
         /// <summary>
