@@ -31,7 +31,8 @@ Changelog
 ~~~~~~~~~
 
 
-+++ Not yet released +++ (revision 43)
++++ 2007-05-28 Released Version 0.2 +++
+
 
 - New SystemWindow features
   * Lots of new SystemWindow properties (see the documentation)
@@ -51,25 +52,33 @@ Changelog
   * AccessibleObjectListener for listening to accessible events
 - Helper method to check API return values
 - Managed Audio Mixer API
-- Managed hooks (Local message hook and journal record/playback hook)
-  (need ManagedWinapiNativeHelper.dll)
+- Managed hooks (Local message hook, low level hooks and journal 
+  record/playback hooks) (need ManagedWinapiNativeHelper.dll)
 - ExtendedFileInfo (Get icon and hard disk size for files)
-- Extract keyboard specific functions into new KeyboardKey class
+- Extract keyboard specific functions into new KeyboardKey class,
+  add functions to synthesize keystrokes and mouse actions
+- InputBlocker to block input while synthesizing input events
 - ProcessMemoryChunk: Access memory of another process
 - Add ManagedWinapi tools/samples:
   * AOExplorer: Browse accessibility objects
   * ContentsSaver: Save contents of list boxes and other controls to a text file
-  * ClipHancer: Clipboard enhancer tool that provides unlimited number of clipboards.
+  * ClipHancer: Clipboard enhancer tool that provides unlimited number of 
+    clipboards.
   * DeskIconRestore: Tool to save and restore desktop icon positions
   * GuessEXE: Tool that guesses programming language of another program.
   * NeatKeys: a program to resize windows neatly by keyboard.
   * QuickMacro: Simple macro recorder using Journal Hooks
-  * ShootNotes: Make screen shots from parts of screen, put them on your screen and annotate them
+  * ShootNotes: Make screen shots from parts of screen, put them on your screen 
+    and annotate them
   * TreeSize#: TreeSize in C# (with more features than the original one)
   * Volume fader
+  * WinternalExplorer: Explorer for windows, accessible objects and processes
 - bug fixes
   * fix VS GUI designer problem (class order) in Hotkey.cs
   * fix setter for SystemWindow's VisibilityFlag property
   * fix trivial bug in SystemWindow's FromPointEx
+  * LockKeyResetter resets stuck keys (Shift, Alt, Ctrl, ...) properly
+- new build file that builds all tools and documentation automatically
+
 
 +++ 2006-08-27 Released Version 0.1 +++
