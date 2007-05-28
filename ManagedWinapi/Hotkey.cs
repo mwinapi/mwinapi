@@ -168,26 +168,18 @@ namespace ManagedWinapi
             if (isRegistered && (!shouldBeRegistered || reregister))
             {
                 // unregister hotkey
-                winapiCall("UnregisterHotKey", UnregisterHotKey(hWnd, hotkeyIndex));
+                UnregisterHotKey(hWnd, hotkeyIndex);
                 isRegistered = false;
             }
             if (!isRegistered && shouldBeRegistered)
             {
                 // register hotkey
-                System.Diagnostics.Debug.WriteLine("KeyCode: " + (int)_keyCode);
-                bool success = winapiCall("RegisterHotKey", RegisterHotKey(hWnd, hotkeyIndex, 
+                bool success = RegisterHotKey(hWnd, hotkeyIndex, 
                     (_shift ? MOD_SHIFT : 0) + (_ctrl ? MOD_CONTROL : 0) +
-                    (_alt ? MOD_ALT : 0) + (_windows ? MOD_WIN : 0), (int)_keyCode));
+                    (_alt ? MOD_ALT : 0) + (_windows ? MOD_WIN : 0), (int)_keyCode);
                 if (!success) throw new HotkeyAlreadyInUseException();
                 isRegistered = true;
             }
-        }
-
-        private bool winapiCall(String name, bool returnValue)
-        {
-            System.Diagnostics.Debug.WriteLine(name+": "+returnValue);
-            System.Diagnostics.Debug.WriteLine("     LastError = " + Marshal.GetLastWin32Error());
-            return returnValue;
         }
 
         #region PInvoke Declarations

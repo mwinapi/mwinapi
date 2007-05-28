@@ -56,7 +56,7 @@ namespace ManagedWinapi.Accessibility
         public SystemAccessibleObject(IAccessible iacc, int childID)
         {
             if (iacc == null) throw new ArgumentNullException();
-            if (childID < 0) throw new ArgumentException();
+            //if (childID < 0) throw new ArgumentException();
             if (childID != 0)
             {
                 try
@@ -328,6 +328,7 @@ namespace ManagedWinapi.Accessibility
                 }
                 catch (ArgumentException) { return ""; }
                 catch (NotImplementedException) { return ""; }
+                catch (COMException) { return null; }
             }
         }
 
@@ -339,7 +340,11 @@ namespace ManagedWinapi.Accessibility
         {
             get
             {
-                return iacc.get_accDefaultAction(childID);
+                try
+                {
+                    return iacc.get_accDefaultAction(childID);
+                }
+                catch (COMException) { return null; }
             }
         }
 
@@ -469,7 +474,30 @@ namespace ManagedWinapi.Accessibility
             {
                 return false;
             }
-            return iacc.Equals(sao.iacc) && childID == sao.childID;
+            return childID == sao.childID && DeepEquals(iacc, sao.iacc);
+        }
+
+        private static bool DeepEquals(IAccessible ia1, IAccessible ia2)
+        {
+            if (ia1.Equals(ia2)) return true;
+            if (Marshal.GetIUnknownForObject(ia1) == Marshal.GetIUnknownForObject(ia2)) return true;
+            if (ia1.accChildCount != ia2.accChildCount) return false;
+            SystemAccessibleObject sa1 = new SystemAccessibleObject(ia1, 0);
+            SystemAccessibleObject sa2 = new SystemAccessibleObject(ia2, 0);
+            if (sa1.Window.HWnd != sa2.Window.HWnd) return false;
+            if (sa1.Location != sa2.Location) return false;
+            if (sa1.DefaultAction != sa2.DefaultAction) return false;
+            if (sa1.Description != sa2.Description) return false;
+            if (sa1.KeyboardShortcut != sa2.KeyboardShortcut) return false;
+            if (sa1.Name != sa2.Name) return false;
+            if (!sa1.Role.Equals(sa2.Role)) return false;
+            if (sa1.State != sa2.State) return false;
+            if (sa1.Value != sa2.Value) return false;
+            if (sa1.Visible != sa2.Visible) return false;
+            if (ia1.accParent == null && ia2.accParent == null) return true;
+            if (ia1.accParent == null || ia2.accParent == null) return false;
+            bool de =  DeepEquals((IAccessible)ia1.accParent, (IAccessible)ia2.accParent);
+            return de;
         }
 
         ///
