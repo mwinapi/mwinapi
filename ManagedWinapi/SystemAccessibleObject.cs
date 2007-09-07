@@ -445,12 +445,19 @@ namespace ManagedWinapi.Accessibility
                     return new SystemAccessibleObject[0];
                 if (csReal == 1 && children[0] is int && (int)children[0] < 0)
                     return new SystemAccessibleObject[0];
-                SystemAccessibleObject[] retval = new SystemAccessibleObject[csReal];
-                for (int i = 0; i < retval.Length; i++)
+                List<SystemAccessibleObject> values = new List<SystemAccessibleObject>();
+                for (int i = 0; i < children.Length; i++)
                 {
-                    retval[i] = ObjectToSAO(children[i]);
+                    if (children[i] != null)
+                    {
+                        try
+                        {
+                            values.Add(ObjectToSAO(children[i]));
+                        }
+                        catch (InvalidCastException) { }
+                    }
                 }
-                return retval;
+                return values.ToArray();
             }
         }
 
