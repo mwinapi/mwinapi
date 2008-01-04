@@ -76,12 +76,7 @@ namespace ManagedWinapi
         /// </summary>
         public void RestoreMouseCapture()
         {
-            SetCapture(dragger.Handle);
+            dragger.Capture = true;
         }
-
-        #region PInvoke Declarations
-        [DllImport("user32")]
-        private static extern int SetCapture(IntPtr hwnd);
-        #endregion
     }
 }
