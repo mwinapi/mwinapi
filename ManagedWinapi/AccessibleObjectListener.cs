@@ -41,6 +41,8 @@ namespace ManagedWinapi.Accessibility
         private AccessibleEventType max = AccessibleEventType.EVENT_MAX;
         private WinEventDelegate internalDelegate;
         private GCHandle gch;
+        private UInt32 processId = 0;
+        private UInt32 threadId = 0;
 
         /// <summary>
         /// Initializes a new instance of this class with the specified container.
@@ -95,6 +97,26 @@ namespace ManagedWinapi.Accessibility
             set { max = value; updateListener(); }
         }
 
+        /// <summary>
+        /// The Process ID to listen to.
+        /// Default 0 listens to all processes.
+        /// </summary>
+        public UInt32 ProcessId
+        {
+            get { return processId; }
+            set { processId = value; updateListener(); }
+        }
+
+        /// <summary>
+        /// The Thread ID to listen to.
+        /// Default 0 listens to all threads.
+        /// </summary> 
+        public UInt32 ThreadId
+        {
+            get { return threadId; }
+            set { threadId = value; updateListener(); }
+        }
+
         private void updateListener()
         {
             if (handle != IntPtr.Zero)
@@ -104,7 +126,7 @@ namespace ManagedWinapi.Accessibility
             }
             if (enabled)
             {
-                handle = SetWinEventHook(min, max, IntPtr.Zero, internalDelegate, 0, 0, 0);
+                handle = SetWinEventHook(min, max, IntPtr.Zero, internalDelegate, processId, threadId, 0);
             }
         }
 
