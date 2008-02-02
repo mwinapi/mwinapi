@@ -126,7 +126,7 @@ namespace ManagedWinapi.Hooks
                         {
                             currentDeadChar = buff[0];
                             callNext = false;
-                            return 0;
+                            return 1;
                         }
                         if (buff.Length != length)
                             buff.Remove(length, buff.Length - length);
