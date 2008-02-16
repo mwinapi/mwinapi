@@ -39,8 +39,15 @@ namespace ManagedWinapi
     /// </example>
     public class LockKeyResetter :IDisposable
     {
+        static readonly Keys[] MODIFIER_KEYS = { 
+            Keys.RShiftKey, Keys.LShiftKey, Keys.ShiftKey,
+            Keys.RMenu, Keys.LMenu, Keys.Menu,
+            Keys.RControlKey, Keys.LControlKey, Keys.LMenu,
+            Keys.RWin, Keys.LWin, Keys.CapsLock
+        };
 
         bool capslock;
+        bool[] simpleModifiers = new bool[MODIFIER_KEYS.Length];
 
         /// <summary>
         /// Reset all modifier keys and remember in this object which modifier keys
@@ -48,6 +55,16 @@ namespace ManagedWinapi
         /// </summary>
         public LockKeyResetter()
         {
+            for (int i = 0; i < MODIFIER_KEYS.Length; i++)
+            {
+                KeyboardKey k = new KeyboardKey(MODIFIER_KEYS[i]);
+                short dummy = k.AsyncState; // reset remembered status
+                if (k.AsyncState != 0)
+                {
+                    simpleModifiers[i] = true;
+                    k.Release();
+                }
+            }
             KeyboardKey capslockKey = new KeyboardKey(Keys.CapsLock);
             int capslockstate = capslockKey.State;
             capslock = ((capslockstate & 0x01) == 0x01);
@@ -67,14 +84,6 @@ namespace ManagedWinapi
                     throw new Exception("Cannot disable caps lock.");
                 }
             }
-            Release(Keys.ShiftKey, Keys.ControlKey, Keys.Menu, Keys.LWin, Keys.RWin);
-        }
-
-        private void Release(params Keys[] keys)
-        {
-            foreach(Keys key in keys) {
-                new KeyboardKey(key).Release();
-            }
         }
 
         /// <summary>
@@ -91,6 +100,13 @@ namespace ManagedWinapi
                 Application.DoEvents();
                 if ((capslockKey.State & 0x01) != 0x01)
                     throw new Exception("Cannot enable caps lock.");
+            }
+            for (int i = MODIFIER_KEYS.Length-1; i >= 0; i--)
+            {
+                if (simpleModifiers[i])
+                {
+                    new KeyboardKey(MODIFIER_KEYS[i]).Press();
+                }
             }
         }
 
