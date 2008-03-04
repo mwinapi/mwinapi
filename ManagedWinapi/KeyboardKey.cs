@@ -10,7 +10,8 @@ namespace ManagedWinapi
     /// </summary>
     public class KeyboardKey
     {
-        Keys key;
+        readonly Keys key;
+        readonly bool extended;
 
         /// <summary>
         /// Initializes a new instance of this class for a given key.
@@ -19,6 +20,24 @@ namespace ManagedWinapi
         public KeyboardKey(Keys key)
         {
             this.key = key;
+            switch (key)
+            {
+                case Keys.Insert:
+                case Keys.Delete:
+                case Keys.PageUp:
+                case Keys.PageDown:
+                case Keys.Home:
+                case Keys.End:
+                case Keys.Up:
+                case Keys.Down:
+                case Keys.Left:
+                case Keys.Right:
+                    this.extended = true;
+                    break;
+                default:
+                    this.extended = false;
+                    break;
+            }
         }
 
         /// <summary>
@@ -45,7 +64,7 @@ namespace ManagedWinapi
         /// </summary>
         public void Press()
         {
-            keybd_event((byte)key, 0x0, 0x0, UIntPtr.Zero);
+            keybd_event((byte)key, (byte)MapVirtualKey((int)key, 0), extended ? (uint)0x1 : 0x0, UIntPtr.Zero);
         }
 
         /// <summary>
@@ -53,7 +72,7 @@ namespace ManagedWinapi
         /// </summary>
         public void Release()
         {
-            keybd_event((byte)key, 0x0, 0x2, UIntPtr.Zero);
+            keybd_event((byte)key, (byte)MapVirtualKey((int)key, 0), extended ? (uint)0x3 : 0x2, UIntPtr.Zero);
         }
 
         /// <summary>
@@ -66,21 +85,8 @@ namespace ManagedWinapi
             {
                 StringBuilder sb = new StringBuilder(512);
                 int scancode = MapVirtualKey((int)key, 0);
-                switch (key)
-                {
-                    case Keys.Insert:
-                    case Keys.Delete:
-                    case Keys.PageUp:
-                    case Keys.PageDown:
-                    case Keys.Home:
-                    case Keys.End:
-                    case Keys.Up:
-                    case Keys.Down:
-                    case Keys.Left:
-                    case Keys.Right:
-                        scancode += 0x100;
-                        break;
-                }
+                if (extended)
+                    scancode += 0x100;
                 GetKeyNameText(scancode << 16, sb, sb.Capacity);
                 if (sb.Length == 0)
                 {
