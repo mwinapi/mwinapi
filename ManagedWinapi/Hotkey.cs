@@ -31,6 +31,7 @@ namespace ManagedWinapi
     /// <summary>
     /// Specifies a component that creates a global keyboard hotkey.
     /// </summary>
+    [DefaultEvent("HotkeyPressed")]
     public class Hotkey : Component
     {
 

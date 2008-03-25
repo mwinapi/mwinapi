@@ -680,6 +680,50 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// The window's location inside its parent or on the screen.
+        /// </summary>
+        public Point Location
+        {
+            get
+            {
+                return Position.Location;
+            }
+
+            set
+            {
+                WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
+                wp.length = Marshal.SizeOf(wp);
+                GetWindowPlacement(_hwnd, ref wp);
+                wp.rcNormalPosition.Bottom = value.X + wp.rcNormalPosition.Height;
+                wp.rcNormalPosition.Right = value.Y + wp.rcNormalPosition.Width;
+                wp.rcNormalPosition.Top = value.X;
+                wp.rcNormalPosition.Left = value.Y;
+                SetWindowPlacement(_hwnd, ref wp);
+            }
+        }
+
+        /// <summary>
+        /// The window's size.
+        /// </summary>
+        public Size Size
+        {
+            get
+            {
+                return Position.Size;
+            }
+
+            set
+            {
+                WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
+                wp.length = Marshal.SizeOf(wp);
+                GetWindowPlacement(_hwnd, ref wp);
+                wp.rcNormalPosition.Right = wp.rcNormalPosition.Left + value.Width;
+                wp.rcNormalPosition.Bottom = wp.rcNormalPosition.Top + value.Height;
+                SetWindowPlacement(_hwnd, ref wp);
+            }
+        } 
+
+        /// <summary>
         /// The window's position in absolute screen coordinates. Use 
         /// <see cref="Position"/> if you want to use the relative position.
         /// </summary>
@@ -942,6 +986,25 @@ namespace ManagedWinapi.Windows
             }
         }
 
+        /// <summary>
+        /// Whether this SystemWindow represents a valid window that existed
+        /// when this SystemWindow instance was created. To check if a window
+        /// still exists, better check its <see cref="ClassName"/> property.
+        /// </summary>
+        public bool IsValid()
+        {
+            return _hwnd != IntPtr.Zero;
+        } 
+
+        /// <summary>
+        /// Send a message to this window that it should close. This is equivalent
+        /// to clicking the "X" in the upper right corner or pressing Alt+F4.
+        /// </summary>
+        public void SendClose()
+        {
+            SendSetMessage(WM_CLOSE, 0);
+        }
+
         internal int SendGetMessage(uint message)
         {
             return SendGetMessage(message, 0);
@@ -1201,6 +1264,8 @@ namespace ManagedWinapi.Windows
 
         [DllImport("user32.dll")]
         static extern IntPtr GetDC(IntPtr hWnd);
+
+        private const int WM_CLOSE = 16;
 
         private enum GetWindow_Cmd
         {

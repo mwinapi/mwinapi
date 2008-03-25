@@ -31,6 +31,7 @@ namespace ManagedWinapi
     /// <summary>
     /// Specifies a component that monitors the system clipboard for changes.
     /// </summary>
+    [DefaultEvent("ClipboardChanged")]
     public class ClipboardNotifier : Component
     {
 

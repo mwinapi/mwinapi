@@ -14,6 +14,7 @@ namespace ManagedWinapi
     /// on screen. This is useful to select other programs by dragging the crosshair
     /// to a program window.
     /// </summary>
+    [DefaultEvent("CrosshairDragged")]
     public partial class Crosshair : UserControl
     {
         Image myImage;
