@@ -694,10 +694,10 @@ namespace ManagedWinapi.Windows
                 WINDOWPLACEMENT wp = new WINDOWPLACEMENT();
                 wp.length = Marshal.SizeOf(wp);
                 GetWindowPlacement(_hwnd, ref wp);
-                wp.rcNormalPosition.Bottom = value.X + wp.rcNormalPosition.Height;
-                wp.rcNormalPosition.Right = value.Y + wp.rcNormalPosition.Width;
-                wp.rcNormalPosition.Top = value.X;
-                wp.rcNormalPosition.Left = value.Y;
+                wp.rcNormalPosition.Bottom = value.Y + wp.rcNormalPosition.Height;
+                wp.rcNormalPosition.Right = value.X + wp.rcNormalPosition.Width;
+                wp.rcNormalPosition.Top = value.Y;
+                wp.rcNormalPosition.Left = value.X;
                 SetWindowPlacement(_hwnd, ref wp);
             }
         }
