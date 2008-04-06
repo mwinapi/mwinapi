@@ -212,6 +212,11 @@ namespace WinternalExplorer
             lastX = MousePosition.X;
             lastY = MousePosition.Y;
             UpdateSelection(true);
+			if (highlightedWindow != null)
+			{
+				highlightedWindow.Refresh();
+				highlightedWindow = null;
+			}
             this.Cursor = null;
         }
 
@@ -228,6 +233,8 @@ namespace WinternalExplorer
             }
         }
 
+		SystemWindow highlightedWindow;
+
         private SelectableTreeNodeData SelectFromPoint(int lastX, int lastY)
         {
             if (selAccObjs.Checked)
@@ -238,6 +245,19 @@ namespace WinternalExplorer
             else
             {
                 SystemWindow sw = SystemWindow.FromPointEx(lastX, lastY, selToplevel.Checked, false);
+				if (sw != highlightedWindow)
+				{
+					if (highlightedWindow != null)
+					{
+						highlightedWindow.Refresh();
+						highlightedWindow = null;
+					}
+					if (sw.HWnd != this.Handle && !sw.IsDescendantOf(new SystemWindow(this.Handle)))
+					{
+						sw.Highlight();
+						highlightedWindow = sw;
+					}
+				}
                 return new WindowData(this, sw);
             }
         }
