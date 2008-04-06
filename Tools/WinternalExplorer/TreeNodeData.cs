@@ -26,7 +26,7 @@ namespace WinternalExplorer
         {
             if (obj == null || GetType() != obj.GetType()) return false;
             if (mf != ((TreeNodeData)obj).mf) return false;
-            return Equals((TreeNodeData)obj);
+            return EqualsInternal((TreeNodeData)obj);
         }
 
         public override int GetHashCode()
@@ -34,7 +34,7 @@ namespace WinternalExplorer
             return 42;
         }
 
-        public abstract bool Equals(TreeNodeData tnd);
+        protected abstract bool EqualsInternal(TreeNodeData tnd);
     }
 
     internal abstract class SelectableTreeNodeData : TreeNodeData
@@ -90,7 +90,7 @@ namespace WinternalExplorer
             get { return NoneControl.Instance; }
         }
 
-        public override bool Equals(TreeNodeData tnd)
+        protected override bool EqualsInternal(TreeNodeData tnd)
         {
             return true;
         }
@@ -198,7 +198,7 @@ namespace WinternalExplorer
             get { return ProcessControl.Instance; }
         }
 
-        public override bool Equals(TreeNodeData tnd)
+        protected override bool EqualsInternal(TreeNodeData tnd)
         {
             return ((ProcessData)tnd).process.Id == process.Id;
         }
@@ -306,7 +306,7 @@ namespace WinternalExplorer
             get { return ThreadControl.Instance; }
         }
 
-        public override bool Equals(TreeNodeData tnd)
+        protected override bool EqualsInternal(TreeNodeData tnd)
         {
             return ((ThreadData)tnd).thread.Id.Equals(thread.Id);
         }
@@ -411,7 +411,7 @@ namespace WinternalExplorer
             get { return WindowControl.Instance; }
         }
 
-        public override bool Equals(TreeNodeData tnd)
+        protected override bool EqualsInternal(TreeNodeData tnd)
         {
             return ((WindowData)tnd).sw.HWnd == sw.HWnd;
         }
@@ -601,7 +601,7 @@ namespace WinternalExplorer
             get { return AccessibilityControl.Instance; }
         }
 
-        public override bool Equals(TreeNodeData tnd)
+        protected override bool EqualsInternal(TreeNodeData tnd)
         {
             return ((AccessibilityData)tnd).accobj.Equals(this.accobj);
         }

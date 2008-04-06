@@ -215,11 +215,17 @@ namespace WinternalExplorer
             this.Cursor = null;
         }
 
+        SelectableTreeNodeData lastNode = null;
+
         private void UpdateSelection(bool includeTree)
         {
             SelectableTreeNodeData stnd = SelectFromPoint(lastX, lastY);
             if (!Visible) Visible = true;
-            DoSelect(stnd, includeTree);
+            if (!stnd.Equals(lastNode))
+            {
+                DoSelect(stnd, includeTree);
+                lastNode = stnd;
+            }
         }
 
         private SelectableTreeNodeData SelectFromPoint(int lastX, int lastY)
