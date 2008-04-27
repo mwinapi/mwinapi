@@ -46,6 +46,7 @@
     </Compile>
     <Compile Include="Contents\AccessibleWindowParser.cs" />
     <Compile Include="ExtendedFileInfo.cs" />
+    <Compile Include="CodepointRange.cs" />
     <Compile Include="Hook.cs">
       <SubType>Component</SubType>
     </Compile>
