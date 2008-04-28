@@ -48,6 +48,57 @@ namespace ManagedWinapi
         }
 
         /// <summary>
+        /// Returns a dictionary containing codepoint ranges of all fonts.
+        /// If multiple fonts of one family (bold, italic, etc.) share their
+        /// codepoint range, only their base font is included in this list,
+        /// otherwise all different variants are included.
+        /// </summary>
+        public static Dictionary<Font, CodepointRange> GetRangesForAllFonts()
+        {
+            Dictionary<Font, CodepointRange> result = new Dictionary<Font, CodepointRange>();
+            foreach (FontFamily ff in FontFamily.Families)
+            {
+                Font[] fonts = new Font[16];
+                CodepointRange[] range = new CodepointRange[fonts.Length];
+                for (int i = 0; i < fonts.Length; i++)
+                {
+                    if (ff.IsStyleAvailable((FontStyle)i))
+                    {
+                        fonts[i] = new Font(ff, 10, (FontStyle)i);
+                        range[i] = new CodepointRange(fonts[i]);
+                    }
+                }
+                int importantBits = 0;
+                for (int bit = 1; bit < fonts.Length; bit <<= 1)
+                {
+                    for (int i = 0; i < fonts.Length; i++)
+                    {
+                        if ((i & bit) != 0) continue;
+                        if (range[i] != null && range[i | bit] != null)
+                        {
+                            if (!range[i].Equals(range[i | bit]))
+                            {
+                                importantBits |= bit;
+                                break;
+                            }
+                        }
+                        else if (range[i] != null || range[i | bit] != null)
+                        {
+                            importantBits |= bit;
+                            break;
+                        }
+                    }
+                }
+                for (int i = 0; i < fonts.Length; i++)
+                {
+                    if ((i & importantBits) != i || fonts[i] == null) continue;
+                    result.Add(fonts[i], range[i]);
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
         /// The number of codepoints supported by this font.
         /// </summary>
         public int SupportedCodepointCount { get { return codepointCount; } }
@@ -110,6 +161,30 @@ namespace ManagedWinapi
             }
             return sb.Append("]").ToString();
         }
+
+        #region Equals and HashCode
+        public override bool Equals(object obj)
+        {
+            CodepointRange cr = obj as CodepointRange;
+            if (cr == null)
+                return false;
+            if (codepointCount != cr.codepointCount || ranges.Length != cr.ranges.Length)
+                return false;
+            for (int i = 0; i < ranges.Length; i++)
+            {
+                if (ranges[i] != cr.ranges[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public override int GetHashCode()
+        {
+            return 3 * codepointCount + 7 * ranges.Length + 9 * FirstCodepoint + 11 * LastCodepoint;
+        }
+        #endregion
 
         #region PInvoke Declarations
         [DllImport("gdi32.dll")]
