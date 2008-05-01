@@ -39,6 +39,7 @@ namespace ManagedWinapi
                 rangeList.Add(firstExcluded);
             }
             SelectObject(hdc, oldFont);
+            DeleteObject(hFont);
             Marshal.FreeHGlobal(glyphSet);
             g.ReleaseHdc(hdc);
             g.Dispose();
@@ -192,6 +193,9 @@ namespace ManagedWinapi
 
         [DllImport("gdi32.dll")]
         private extern static IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+
+        [DllImport("gdi32.dll")]
+        public static extern bool DeleteObject(IntPtr hObject); 
         #endregion
     }
 }
