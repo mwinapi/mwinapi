@@ -212,28 +212,30 @@ namespace WinternalExplorer
             lastX = MousePosition.X;
             lastY = MousePosition.Y;
             UpdateSelection(true);
-			if (highlightedWindow != null)
-			{
-				highlightedWindow.Refresh();
-				highlightedWindow = null;
-			}
+            if (highlightedWindow != null)
+            {
+                highlightedWindow.Refresh();
+                highlightedWindow = null;
+            }
             this.Cursor = null;
         }
 
         SelectableTreeNodeData lastNode = null;
+        bool lastIncludeTree = false;
 
         private void UpdateSelection(bool includeTree)
         {
             SelectableTreeNodeData stnd = SelectFromPoint(lastX, lastY);
             if (!Visible) Visible = true;
-            if (!stnd.Equals(lastNode))
+            if (!stnd.Equals(lastNode) || includeTree != lastIncludeTree)
             {
                 DoSelect(stnd, includeTree);
                 lastNode = stnd;
+                lastIncludeTree = includeTree;
             }
         }
 
-		SystemWindow highlightedWindow;
+        SystemWindow highlightedWindow;
 
         private SelectableTreeNodeData SelectFromPoint(int lastX, int lastY)
         {
@@ -245,19 +247,19 @@ namespace WinternalExplorer
             else
             {
                 SystemWindow sw = SystemWindow.FromPointEx(lastX, lastY, selToplevel.Checked, false);
-				if (sw != highlightedWindow)
-				{
-					if (highlightedWindow != null)
-					{
-						highlightedWindow.Refresh();
-						highlightedWindow = null;
-					}
-					if (sw.HWnd != this.Handle && !sw.IsDescendantOf(new SystemWindow(this.Handle)))
-					{
-						sw.Highlight();
-						highlightedWindow = sw;
-					}
-				}
+                if (sw != highlightedWindow)
+                {
+                    if (highlightedWindow != null)
+                    {
+                        highlightedWindow.Refresh();
+                        highlightedWindow = null;
+                    }
+                    if (sw.HWnd != this.Handle && !sw.IsDescendantOf(new SystemWindow(this.Handle)))
+                    {
+                        sw.Highlight();
+                        highlightedWindow = sw;
+                    }
+                }
                 return new WindowData(this, sw);
             }
         }

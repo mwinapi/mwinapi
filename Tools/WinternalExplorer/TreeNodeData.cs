@@ -330,13 +330,15 @@ namespace WinternalExplorer
             {
                 List<TreeNodeData> result = new List<TreeNodeData>();
                 SystemWindow curr = sw;
+                SystemWindow last = curr;
                 while (curr != null)
                 {
                     result.Add(new WindowData(mf, curr));
+                    last = curr;
                     curr = curr.ParentSymmetric;
                 }
-                result.Add(new ThreadData(mf, sw.Process, sw.Thread));
-                result.Add(new ProcessData(mf, sw.Process));
+                result.Add(new ThreadData(mf, last.Process, last.Thread));
+                result.Add(new ProcessData(mf, last.Process));
                 return result;
             }
         }
