@@ -72,41 +72,7 @@
     </foreach>
   </target>
 
-  <target name="ndoc" depends="build-dll">
-    <ndoc>
-      <assemblies basedir="ManagedWinapi\bin\release">
-        <include name="ManagedWinapi.dll" />
-      </assemblies>
-      <documenters>
-        <documenter name="MSDN">
-          <property name="OutputDirectory" value="build\doc\" />
-          <property name="HtmlHelpName" value="ManagedWinapi" />
-          <property name="Title" value="An NDoc Documented Class Library" />
-          <property name="DocumentInheritedFrameworkMembers" value="False" />
-          <property name="FeedbackEmailAddress" value="schierlm@users.sourceforge.net" />
-          <property name="IncludeDefaultThreadSafety" value="False" />
-          <property name="StaticMembersDefaultToSafe" value="False" />
-          <property name="CleanIntermediates" value="True" />
-        </documenter>
-      </documenters>
-    </ndoc>
-    <echo file="build/doc/tree.css" append="True">
-      html { height: 100%; }
-      body { height: 95%; }
-    </echo>
-    <copy file="build/doc/ManagedWinapi.chm" todir="build/bin"/>
-    <mkdir dir="build/htmldoc"/>
-    <copy todir="build/htmldoc">
-      <fileset basedir="build/doc">
-        <include name="*.html" />
-        <include name="*.gif" />
-        <include name="*.css" />
-        <include name="tree.js" />
-      </fileset>
-    </copy>
-  </target>
-
-  <target name="dist" depends="ndoc,build">
+  <target name="dist" depends="build">
     <mkdir dir="dist/bin"/>
     <mkdir dir="dist/tools"/>
     <mkdir dir="dist/src"/>
@@ -137,7 +103,7 @@
     <copy todir="dist/src">
       <fileset basedir=".">
         <include name="COPYING"/>
-        <include name="ManagedWinap.ndoc"/>
+        <include name="ManagedWinapi.shfb"/>
         <include name="ManagedWinapi.sln"/>
         <include name="nant.build"/>
         <include name="readme.txt"/>

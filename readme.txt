@@ -1,12 +1,12 @@
-ManagedWinapi 0.2
+ManagedWinapi 0.3
 ~~~~~~~~~~~~~~~~~
 
 A collection of .NET components that wrap PInvoke calls to access 
 native API by managed code.
 
 For documentation for these functions, look at ManagedWinapi.chm in the
-binary release or generate it with ndoc from http://ndoc.sourceforge.net/
-from the source release.
+binary release or generate it with Sandcastle Help File Builder available
+from http://codeplex.com/SHFB from the source release.
 
 This library is licensed by the GNU Lesser General Public License.
 
@@ -15,7 +15,7 @@ For more information see the website at http://mwinapi.sourceforge.net/
 You may contact me at <schierlm@users.sourceforge.net>.
 
 
-ManagedWinapi Tools 0.2
+ManagedWinapi Tools 0.3
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Started as a collection of ManagedWinapi samples, the Managed Winapi tools
@@ -29,6 +29,43 @@ See the website for a list of tools and descriptions.
 
 Changelog
 ~~~~~~~~~
+
+
++++ 2008-06-14 Released Version 0.3 +++
+
+
+- Added AccessibleEventListener ProcessId and ThreadId members to limit 
+  events to process or thread. [bbauer]
+- Set default event for ClipboardNotifier, Crosshair and Hotkey,
+  Add properties Location and Size and methods IsValid and SendClose to SystemWindow.
+  [suggested by Frank Koch]
+- Add functionality to low-level keyboard hook for translating low-level
+  events to typed keys.
+- Added several new classes:
+  * Compute several kinds of machine IDs from C#
+  * Shutdown the system
+  * Set the system time
+  * Get list of codepoints supported by a font
+- Winternal Explorer: 
+  * added window-highlighting while dragging crosshair
+  * Add checkbox to disable heuristics when determining control from point
+    (these heuristics fail for some MDI applications like Visual Studio)
+  * reduce flickering when crosshair is dragged
+  * Fix a crash when calling TreeNodeData.Equals with an instance of a different 
+    subclass as its parameter
+  * Fix refresh of tree when releasing crosshair
+  * Fix PossibleParents so that windows that are children of a window of a different 
+    process (most prominent example: screensaver preview in control panel) can be
+    found in tree.
+- bug fixes:
+  * Fix a problem with applications that return invalid accessible children.
+    [submitted by Karl Gyllstrom <karl at cs dot unc dot edu>]
+  * Use the managed Control#Capture property instead of calling the SetCapture
+    PInvoke method.
+  * Fix unsetting of modifier keys in LockKeyResetter
+  * Set proper scancode for injected keyboard events
+    (some applications, like MS-DOS based ones, need them).
+- Use Sandcastle Help File Builder instead of NDoc for the API documentation
 
 
 +++ 2007-05-28 Released Version 0.2 +++
