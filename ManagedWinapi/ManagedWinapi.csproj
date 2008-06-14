@@ -66,6 +66,7 @@
     <Compile Include="ShortcutBox.Designer.cs">
       <DependentUpon>ShortcutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="PrivilegedActions.cs" />
     <Compile Include="SystemAccessibleObject.cs" />
     <Compile Include="ApiHelper.cs" />
     <Compile Include="ClipboardNotifier.cs">

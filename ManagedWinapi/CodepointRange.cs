@@ -164,6 +164,8 @@ namespace ManagedWinapi
         }
 
         #region Equals and HashCode
+
+        ///
         public override bool Equals(object obj)
         {
             CodepointRange cr = obj as CodepointRange;
@@ -181,6 +183,7 @@ namespace ManagedWinapi
             return true;
         }
 
+        ///
         public override int GetHashCode()
         {
             return 3 * codepointCount + 7 * ranges.Length + 9 * FirstCodepoint + 11 * LastCodepoint;
@@ -192,10 +195,10 @@ namespace ManagedWinapi
         private static extern uint GetFontUnicodeRanges(IntPtr hdc, IntPtr lpgs);
 
         [DllImport("gdi32.dll")]
-        private extern static IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+        private static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
 
         [DllImport("gdi32.dll")]
-        public static extern bool DeleteObject(IntPtr hObject); 
+        private static extern bool DeleteObject(IntPtr hObject);
         #endregion
     }
 }
