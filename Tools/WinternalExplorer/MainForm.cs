@@ -247,6 +247,8 @@ namespace WinternalExplorer
             else
             {
                 SystemWindow sw = SystemWindow.FromPointEx(lastX, lastY, selToplevel.Checked, false);
+                if (!heuristicSearch.Checked && !selToplevel.Checked)
+                    sw = SystemWindow.FromPoint(lastX, lastY);
                 if (sw != highlightedWindow)
                 {
                     if (highlightedWindow != null)

@@ -64,6 +64,7 @@ namespace WinternalExplorer
             this.selChildWindows = new System.Windows.Forms.RadioButton();
             this.selToplevel = new System.Windows.Forms.RadioButton();
             this.crossHair = new ManagedWinapi.Crosshair();
+            this.heuristicSearch = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -90,7 +91,7 @@ namespace WinternalExplorer
             this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(592, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(671, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -311,6 +312,7 @@ namespace WinternalExplorer
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.heuristicSearch);
             this.splitContainer1.Panel2.Controls.Add(this.allowChanges);
             this.splitContainer1.Panel2.Controls.Add(this.autoHide);
             this.splitContainer1.Panel2.Controls.Add(this.details);
@@ -319,7 +321,7 @@ namespace WinternalExplorer
             this.splitContainer1.Panel2.Controls.Add(this.selToplevel);
             this.splitContainer1.Panel2.Controls.Add(this.crossHair);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(592, 349);
+            this.splitContainer1.Size = new System.Drawing.Size(671, 349);
             this.splitContainer1.SplitterDistance = 195;
             this.splitContainer1.TabIndex = 4;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
@@ -352,7 +354,7 @@ namespace WinternalExplorer
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.details.Location = new System.Drawing.Point(3, 45);
             this.details.Name = "details";
-            this.details.Size = new System.Drawing.Size(390, 304);
+            this.details.Size = new System.Drawing.Size(469, 304);
             this.details.TabIndex = 5;
             this.details.TabStop = false;
             this.details.Text = "Details";
@@ -398,11 +400,23 @@ namespace WinternalExplorer
             this.crossHair.CrosshairDragged += new System.EventHandler(this.crossHair_CrosshairDragged);
             this.crossHair.CrosshairDragging += new System.EventHandler(this.crossHair_CrosshairDragging);
             // 
+            // heuristicSearch
+            // 
+            this.heuristicSearch.AutoSize = true;
+            this.heuristicSearch.Checked = true;
+            this.heuristicSearch.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.heuristicSearch.Location = new System.Drawing.Point(308, 22);
+            this.heuristicSearch.Name = "heuristicSearch";
+            this.heuristicSearch.Size = new System.Drawing.Size(138, 17);
+            this.heuristicSearch.TabIndex = 8;
+            this.heuristicSearch.Text = "Heuristic Control search";
+            this.heuristicSearch.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(592, 373);
+            this.ClientSize = new System.Drawing.Size(671, 373);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -457,6 +471,7 @@ namespace WinternalExplorer
         private System.Windows.Forms.ToolStripMenuItem stolenOrphanWindowsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem visibleObjectsOnlyToolStripMenuItem;
+        private System.Windows.Forms.CheckBox heuristicSearch;
     }
 }
 
