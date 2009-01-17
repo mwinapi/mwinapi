@@ -184,7 +184,7 @@ namespace ManagedWinapi.Windows.Contents
             {
                 values[i] = slb[i];
             }
-            return new ListContent("ComboBox", -1, sw.Title, values);
+            return new ListContent("ComboBox", -1, sw.Text, values);
         }
     }
 
@@ -340,7 +340,8 @@ namespace ManagedWinapi.Windows.Contents
             {
                 List<string> treeNodes = new List<string>();
                 int selected = -1;
-                foreach(SystemAccessibleObject n in sao.Children) {
+                foreach (SystemAccessibleObject n in sao.Children)
+                {
                     if (n.RoleIndex == 36)
                     {
                         if ((n.State & 0x2) != 0)

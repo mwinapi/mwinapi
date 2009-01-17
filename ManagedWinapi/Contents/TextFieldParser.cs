@@ -104,13 +104,13 @@ namespace ManagedWinapi.Windows.Contents
             }
             else
             {
-                return sw.Title != "";
+                return sw.Text != "";
             }
         }
 
         internal override WindowContent ParseContent(SystemWindow sw)
         {
-            return new TextContent(sw.Title, sw.PasswordCharacter != 0, strict);
+            return new TextContent(sw.Text, sw.PasswordCharacter != 0, strict);
         }
     }
 }
