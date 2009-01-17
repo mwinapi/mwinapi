@@ -34,7 +34,20 @@ namespace ManagedWinapi
             {
                 char firstIncluded = (char)Marshal.ReadInt16(glyphSet, 16 + i * 4);
                 char firstExcluded = (char)(firstIncluded + Marshal.ReadInt16(glyphSet, 18 + i * 4));
-                tmp += firstExcluded - firstIncluded;
+                if (firstExcluded == 0 && firstIncluded > 0)
+                {
+                    // when U+FFFF is included, firstExcluded will wrap around, so 
+                    // provide a workaround here
+                    tmp += 0x10000 - firstIncluded;
+                }
+                else if (firstExcluded > firstIncluded)
+                {
+                    tmp += firstExcluded - firstIncluded;
+                }
+                else
+                {
+                    throw new Exception("Invalid inclusion range: " + font.FontFamily.Name + " [" + ((int)firstIncluded).ToString("X4") + "-" + ((int)firstExcluded).ToString("X4") + "]");
+                }
                 rangeList.Add(firstIncluded);
                 rangeList.Add(firstExcluded);
             }
@@ -120,9 +133,11 @@ namespace ManagedWinapi
         public bool IsSupported(char codepoint)
         {
             bool result = false;
+            bool first = true;
             foreach (char c in ranges)
             {
-                if (c > codepoint) break;
+                if (c > codepoint || (c == 0 && !first)) break;
+                first = false;
                 result = !result;
             }
             return result;
