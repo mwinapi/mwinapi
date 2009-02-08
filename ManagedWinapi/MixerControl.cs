@@ -203,6 +203,10 @@ namespace ManagedWinapi.Audio.Mixer
             {
                 result = new BooleanMixerControl(mx, ml, mc);
             }
+            else if (result.Class == MixerControlClass.LIST && ((uint)result.ControlType & MIXERCONTROL_CT_SUBCLASS_MASK) == (uint)MixerControlType.MIXERCONTROL_CT_SC_SWITCH_BOOLEAN && ((uint)result.ControlType & MIXERCONTROL_CT_UNITS_MASK) == (uint)MixerControlType.MIXERCONTROL_CT_UNITS_BOOLEAN)
+            {
+                result = new ListMixerControl(mx, ml, mc);
+            }
             return result;
         }
 
@@ -268,6 +272,15 @@ namespace ManagedWinapi.Audio.Mixer
         internal struct MIXERCONTROLDETAILS_BOOLEAN
         {
             public int fValue;
+        }
+
+        internal struct MIXERCONTROLDETAILS_LISTTEXT
+        {
+            public int dwParam1;
+            public int dwParam2;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
+            public string szName;
         }
 
         private static readonly int MIXER_GETLINECONTROLSF_ALL = 0x0;
@@ -421,6 +434,45 @@ namespace ManagedWinapi.Audio.Mixer
                 {
                     throw new Win32Exception("Error #" + err + " calling mixerGetControlDetails()");
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// A control that is a list of values which can be selected or not.
+    /// Note that some lists allow only one selected element.
+    /// </summary>
+    public class ListMixerControl : BooleanMixerControl
+    {
+        internal ListMixerControl(Mixer mx, MixerLine ml, MixerControl.MIXERCONTROL mc) : base(mx, ml, mc) { }
+
+        /// <summary>
+        /// Used to get the list text labels of this list.
+        /// </summary>
+        public string[] ListTexts
+        {
+            get
+            {
+                string[] result = new string[RawValueMultiplicity];
+                MIXERCONTROLDETAILS mcd = new MIXERCONTROLDETAILS();
+                MIXERCONTROLDETAILS_LISTTEXT mcdlt = new MIXERCONTROLDETAILS_LISTTEXT();
+                mcd.cbStruct = Marshal.SizeOf(mcd);
+                mcd.dwControlID = ctrl.dwControlID;
+                mcd.cChannels = ChannelCount;
+                mcd.cMultipleItems = ctrl.cMultipleItems;
+                mcd.paDetails = Marshal.AllocCoTaskMem(Marshal.SizeOf(mcdlt) * result.Length);
+                mcd.cbDetails = Marshal.SizeOf(mcdlt);
+                int err;
+                if ((err = mixerGetControlDetailsA(mx.Handle, ref mcd, 1)) != 0)
+                {
+                    throw new Win32Exception("Error #" + err + " calling mixerGetControlDetails()");
+                }
+                for (int i = 0; i < result.Length; i++)
+                {
+                    mcdlt = (MIXERCONTROLDETAILS_LISTTEXT)Marshal.PtrToStructure(new IntPtr(mcd.paDetails.ToInt64() + Marshal.SizeOf(mcdlt) * i), typeof(MIXERCONTROLDETAILS_LISTTEXT));
+                    result[i] = mcdlt.szName;
+                }
+                return result;
             }
         }
     }
