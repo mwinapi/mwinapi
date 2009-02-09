@@ -40,6 +40,8 @@ namespace VolumeFader
             this.live = new System.Windows.Forms.CheckBox();
             this.srcLineControlContainer = new System.Windows.Forms.TableLayoutPanel();
             this.fadeTimer = new System.Windows.Forms.Timer(this.components);
+            this.muxSelect = new System.Windows.Forms.ComboBox();
+            this.muxLabel = new System.Windows.Forms.Label();
             this.destLineControl = new VolumeFader.LineControl();
             this.tableLayoutPanel1.SuspendLayout();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -100,6 +102,8 @@ namespace VolumeFader
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.muxLabel);
+            this.splitContainer1.Panel1.Controls.Add(this.muxSelect);
             this.splitContainer1.Panel1.Controls.Add(this.fadeLabel);
             this.splitContainer1.Panel1.Controls.Add(this.fadeSpeed);
             this.splitContainer1.Panel1.Controls.Add(this.fadeButton);
@@ -110,7 +114,7 @@ namespace VolumeFader
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
             this.splitContainer1.Panel2.Controls.Add(this.srcLineControlContainer);
-            this.splitContainer1.Size = new System.Drawing.Size(507, 257);
+            this.splitContainer1.Size = new System.Drawing.Size(507, 287);
             this.splitContainer1.SplitterDistance = 226;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -119,7 +123,7 @@ namespace VolumeFader
             this.fadeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.fadeLabel.Enabled = false;
-            this.fadeLabel.Location = new System.Drawing.Point(3, 144);
+            this.fadeLabel.Location = new System.Drawing.Point(3, 174);
             this.fadeLabel.Name = "fadeLabel";
             this.fadeLabel.Size = new System.Drawing.Size(220, 13);
             this.fadeLabel.TabIndex = 4;
@@ -130,7 +134,7 @@ namespace VolumeFader
             this.fadeSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.fadeSpeed.Enabled = false;
-            this.fadeSpeed.Location = new System.Drawing.Point(3, 160);
+            this.fadeSpeed.Location = new System.Drawing.Point(3, 190);
             this.fadeSpeed.Maximum = 16;
             this.fadeSpeed.Name = "fadeSpeed";
             this.fadeSpeed.Size = new System.Drawing.Size(220, 42);
@@ -142,7 +146,7 @@ namespace VolumeFader
             this.fadeButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.fadeButton.Enabled = false;
-            this.fadeButton.Location = new System.Drawing.Point(3, 208);
+            this.fadeButton.Location = new System.Drawing.Point(3, 238);
             this.fadeButton.Name = "fadeButton";
             this.fadeButton.Size = new System.Drawing.Size(220, 23);
             this.fadeButton.TabIndex = 2;
@@ -156,7 +160,7 @@ namespace VolumeFader
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.live.Checked = true;
             this.live.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.live.Location = new System.Drawing.Point(3, 237);
+            this.live.Location = new System.Drawing.Point(3, 267);
             this.live.Name = "live";
             this.live.Size = new System.Drawing.Size(220, 17);
             this.live.TabIndex = 1;
@@ -183,6 +187,27 @@ namespace VolumeFader
             this.fadeTimer.Interval = 50;
             this.fadeTimer.Tick += new System.EventHandler(this.fadeTimer_Tick);
             // 
+            // muxSelect
+            // 
+            this.muxSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.muxSelect.FormattingEnabled = true;
+            this.muxSelect.Items.AddRange(new object[] {
+            ""});
+            this.muxSelect.Location = new System.Drawing.Point(3, 150);
+            this.muxSelect.Name = "muxSelect";
+            this.muxSelect.Size = new System.Drawing.Size(220, 21);
+            this.muxSelect.TabIndex = 5;
+            this.muxSelect.SelectedIndexChanged += new System.EventHandler(this.muxSelect_SelectedIndexChanged);
+            // 
+            // muxLabel
+            // 
+            this.muxLabel.AutoSize = true;
+            this.muxLabel.Location = new System.Drawing.Point(3, 134);
+            this.muxLabel.Name = "muxLabel";
+            this.muxLabel.Size = new System.Drawing.Size(75, 13);
+            this.muxLabel.TabIndex = 6;
+            this.muxLabel.Text = "Selected Line:";
+            // 
             // destLineControl
             // 
             this.destLineControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -195,7 +220,7 @@ namespace VolumeFader
             // 
             // MainForm
             // 
-            this.ClientSize = new System.Drawing.Size(531, 319);
+            this.ClientSize = new System.Drawing.Size(531, 349);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -225,6 +250,8 @@ namespace VolumeFader
         private System.Windows.Forms.Label fadeLabel;
         private System.Windows.Forms.TrackBar fadeSpeed;
         private System.Windows.Forms.Timer fadeTimer;
+        private System.Windows.Forms.ComboBox muxSelect;
+        private System.Windows.Forms.Label muxLabel;
 
     }
 }

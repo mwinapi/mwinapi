@@ -13,10 +13,54 @@ namespace VolumeFader
     {
         private Mixer mix = null;
         private DestinationLine dline = null;
+        private ListMixerControl mux = null;
 
         public MainForm()
         {
             InitializeComponent();
+            UpdateMux();
+        }
+
+        private void UpdateMux()
+        {
+            if (mux != null)
+            {
+                mux.Changed -= mux_Changed;
+            }
+            mux = null;
+            muxSelect.Items.Clear();
+            muxSelect.Items.Add("No MUX found.");
+            muxSelect.SelectedIndex = 0;
+            muxSelect.Enabled = false;
+            if (dline != null)
+            {
+                foreach (MixerControl ctrl in dline.Controls)
+                {
+                    if (ctrl.ControlType == MixerControlType.MIXERCONTROL_CONTROLTYPE_MUX && ctrl is ListMixerControl)
+                    {
+                        muxSelect.Items.Clear();
+                        ListMixerControl listCtrl = (ListMixerControl)ctrl;
+                        foreach (string label in listCtrl.ListTexts)
+                        {
+                            muxSelect.Items.Add(label);
+                        }
+                        Boolean[] values = listCtrl.Values;
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            if (values[i])
+                                muxSelect.SelectedIndex = i;
+                        }
+                        muxSelect.Enabled = true;
+                        mux = listCtrl;
+                        mux.Changed += mux_Changed;
+                    }
+                }
+            }
+        }
+
+        private void mux_Changed(object source, EventArgs e)
+        {
+            UpdateMux();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -78,6 +122,7 @@ namespace VolumeFader
                 }
                 srcLineControlContainer.Height = sumHeight;
             }
+            UpdateMux();
         }
 
         public bool IsLiveUpdate
@@ -114,6 +159,14 @@ namespace VolumeFader
             fadeButton.Enabled = !live.Checked;
             fadeLabel.Enabled = !live.Checked;
             fadeSpeed.Enabled = !live.Checked;
+        }
+
+        private void muxSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (mux == null) return;
+            bool[] values = new Boolean[mux.RawValueMultiplicity];
+            values[muxSelect.SelectedIndex] = true;
+            mux.Values = values;
         }
     }
 }
