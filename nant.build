@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <project name="ManagedWinapi" default="build">
 
-  <!-- Path to Microsoft Visual Studio 2005 command line version to compile stuff -->
-  <property name="devenv.path" value="d:\Progs\Microsoft Visual Studio 8\Common7\IDE\devenv"/>
+  <!-- Path to MSBuild to compile stuff -->
+  <property name="msbuild.path" value="${environment::get-variable('windir')}\Microsoft.NET\Framework\v2.0.50727\MSBuild.exe"/>
 
   <target name="clean">
     <delete dir="build"/>
     <delete dir="dist"/>
-    <exec program="${devenv.path}" verbose="True">
+    <exec program="${msbuild.path}" verbose="True">
       <arg value="ManagedWinapi.sln"/>
-      <arg value="/clean"/>
-      <arg value="Release"/>
+      <arg value="/t:Clean"/>
+      <arg value="/p:Configuration=Release"/>
     </exec>
-    <exec program="${devenv.path}" verbose="True">
+    <exec program="${msbuild.path}" verbose="True">
       <arg value="ManagedWinapi.sln"/>
-      <arg value="/clean"/>
-      <arg value="Debug"/>
+      <arg value="/t:Clean"/>
+      <arg value="/p:Configuration=Debug"/>
     </exec>
     <foreach item="File" property="solutionfile">
       <in>
@@ -24,15 +24,15 @@
         </items>
       </in>
       <do>
-        <exec program="${devenv.path}" verbose="True">
+        <exec program="${msbuild.path}" verbose="True">
           <arg value="${solutionfile}"/>
-          <arg value="/clean"/>
-          <arg value="Debug"/>
+          <arg value="/t:Clean"/>
+          <arg value="/p:Configuration=Debug"/>
         </exec>
-        <exec program="${devenv.path}" verbose="True">
+        <exec program="${msbuild.path}" verbose="True">
           <arg value="${solutionfile}"/>
-          <arg value="/clean"/>
-          <arg value="Release"/>
+          <arg value="/t:Clean"/>
+          <arg value="/p:Configuration=Release"/>
         </exec>
       </do>
     </foreach>
@@ -40,10 +40,10 @@
 
   <target name="build-dll">
     <mkdir dir="build/bin" />
-    <exec program="${devenv.path}" verbose="True">
+    <exec program="${msbuild.path}" verbose="True">
       <arg value="ManagedWinapi.sln"/>
-      <arg value="/build"/>
-      <arg value="Release"/>
+      <arg value="/t:Build"/>
+      <arg value="/p:Configuration=Release"/>
     </exec>
     <copy file="ManagedWinapi\bin\release\ManagedWinapi.dll"
           todir="build/bin"/>
@@ -62,10 +62,10 @@
       </in>
       <do>
         <property name="toolname" value="${path::get-file-name(toolpath)}" />
-        <exec program="${devenv.path}" verbose="True">
+        <exec program="${msbuild.path}" verbose="True">
           <arg value="Tools/${toolname}.sln"/>
-          <arg value="/build"/>
-          <arg value="Release"/>
+          <arg value="/t:Build"/>
+          <arg value="/p:Configuration=Release"/>
         </exec>
         <copy file="Tools/${toolname}/bin/Release/${toolname}.exe" todir="build/bin"/>
       </do>
