@@ -177,6 +177,18 @@ namespace ManagedWinapi.Hooks
         /// </summary>
         public event LowLevelMessageCallback MessageIntercepted;
 
+        /// <summary>Occurs when the mouse pointer is moved.</summary>
+        public event EventHandler<MouseEventArgs> MouseMove;
+
+        /// <summary>Occurs when a mouse button is pressed.</summary>
+        public event EventHandler<MouseEventArgs> MouseDown;
+
+        /// <summary>Occurs when a mouse button is released.</summary>
+        public event EventHandler<MouseEventArgs> MouseUp;
+
+        /// <summary>Occurs when the mouse wheel moves.</summary>
+        public event EventHandler<MouseEventArgs> MouseWheel;
+
         /// <summary>
         /// Represents a method that handles an intercepted mouse action.
         /// </summary>
@@ -206,6 +218,9 @@ namespace ManagedWinapi.Hooks
             if (code == HC_ACTION)
             {
                 MSLLHOOKSTRUCT llh = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
+
+                fireMouseEvents(wParam, llh.pt, llh.mouseData);
+
                 bool handled = false;
                 if (MouseIntercepted != null)
                 {
@@ -222,6 +237,76 @@ namespace ManagedWinapi.Hooks
                 }
             }
             return 0;
+        }
+
+        private void fireMouseEvents(IntPtr wParam, POINT pt, int mouseData)
+        {
+            const int WM_MOUSEMOVE = 0x200,
+                WM_LBUTTONDOWN = 0x201, WM_LBUTTONUP = 0x202,
+                WM_RBUTTONDOWN = 0x204, WM_RBUTTONUP = 0x205,
+                WM_MBUTTONDOWN = 0x207, WM_MBUTTONUP = 0x208,
+                WM_MOUSEWHEEL = 0x20A,
+                WM_XBUTTONDOWN = 0x020B, WM_XBUTTONUP = 0x020C;
+
+            switch ((int)wParam)
+            {
+                case WM_MOUSEMOVE:
+                    if (MouseMove != null)
+                        MouseMove(this, new MouseEventArgs(MouseButtons.None, 0, pt.X, pt.Y, 0));
+                    break;
+
+                case WM_LBUTTONDOWN:
+                    if (MouseDown != null)
+                        MouseDown(this, new MouseEventArgs(MouseButtons.Left, 1, pt.X, pt.Y, 0));
+                    break;
+                case WM_LBUTTONUP:
+                    if (MouseUp != null)
+                        MouseUp(this, new MouseEventArgs(MouseButtons.Left, 1, pt.X, pt.Y, 0));
+                    break;
+
+                case WM_RBUTTONDOWN:
+                    if (MouseDown != null)
+                        MouseDown(this, new MouseEventArgs(MouseButtons.Right, 1, pt.X, pt.Y, 0));
+                    break;
+                case WM_RBUTTONUP:
+                    if (MouseUp != null)
+                        MouseUp(this, new MouseEventArgs(MouseButtons.Right, 1, pt.X, pt.Y, 0));
+                    break;
+
+                case WM_MBUTTONDOWN:
+                    if (MouseDown != null)
+                        MouseDown(this, new MouseEventArgs(MouseButtons.Middle, 1, pt.X, pt.Y, 0));
+                    break;
+                case WM_MBUTTONUP:
+                    if (MouseUp != null)
+                        MouseUp(this, new MouseEventArgs(MouseButtons.Middle, 1, pt.X, pt.Y, 0));
+                    break;
+
+                case WM_MOUSEWHEEL:
+                    if (MouseWheel != null)
+                        MouseWheel(this, new MouseEventArgs(MouseButtons.None, 0, pt.X, pt.Y, hiWord(mouseData)));
+                    break;
+
+                case WM_XBUTTONDOWN:
+                    if (MouseDown != null)
+                    {
+                        MouseButtons xbutton = hiWord(mouseData) == 1 ? MouseButtons.XButton1 : MouseButtons.XButton2;
+                        MouseDown(this, new MouseEventArgs(xbutton, 1, pt.X, pt.Y, 0));
+                    }
+                    break;
+                case WM_XBUTTONUP:
+                    if (MouseUp != null)
+                    {
+                        MouseButtons xbutton = hiWord(mouseData) == 1 ? MouseButtons.XButton1 : MouseButtons.XButton2;
+                        MouseUp(this, new MouseEventArgs(xbutton, 1, pt.X, pt.Y, 0));
+                    }
+                    break;
+            }
+        }
+
+        private static short hiWord(int n)
+        {
+            return (short)((n >> 0x10) & 0xFFFF);
         }
 
         #region PInvoke Declarations

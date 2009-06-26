@@ -25,6 +25,7 @@ using System.Runtime.InteropServices;
 using System.Net.NetworkInformation;
 using System.IO;
 using System.Net;
+using System.ComponentModel;
 
 namespace ManagedWinapi
 {
@@ -64,6 +65,24 @@ namespace ManagedWinapi
         [DllImport("advapi32.dll", SetLastError = true, PreserveSig = false)]
         private static extern void LsaClose(IntPtr ObjectHandle);
 
+        [DllImport("netapi32.dll", CharSet = CharSet.Auto)]
+        private static extern int NetWkstaGetInfo(string server,
+            int level,
+            out WKSTA_INFO_100 info);
+
+        [DllImport("netapi32.dll")]
+        private static extern int NetApiBufferFree(WKSTA_INFO_100 info);
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private class WKSTA_INFO_100
+        {
+            public int wki100_platform_id;
+            public string wki100_computername;
+            public string wki100_langroup;
+            public int wki100_ver_major;
+            public int wki100_ver_minor;
+        }
+
         /// <summary>
         /// The security identifier of this machine. This id is generated at 
         /// installation time (or when running tools like SysPrep or NewSid) 
@@ -86,6 +105,37 @@ namespace ManagedWinapi
                 LsaFreeMemory(ref info);
                 LsaClose(policyHandle);
                 return sid;
+            }
+        }
+
+        /// <summary>
+        /// The NetBIOS name of the domain to which this machine is joined, or the LAN workgroup name if not. 
+        /// For the Active Directory DNS domain name, see <see cref="DnsDomainName"/>.
+        /// </summary>
+        public static string DomainName
+        {
+            get
+            {
+                WKSTA_INFO_100 wkstaInfo;
+                int result  = NetWkstaGetInfo(null, 100, out wkstaInfo);
+                if (result != 0)
+                    throw new Win32Exception(result);
+                string domainName = wkstaInfo.wki100_langroup;
+                NetApiBufferFree(wkstaInfo);
+                return domainName;
+            }
+        }
+
+        /// <summary>
+        /// The Active Directory DNS domain of which this machine is a member. 
+        /// For the NetBIOS domain name see <see cref="DomainName"/>.
+        /// </summary>
+        public static string DnsDomainName
+        {
+            get
+            {
+                IPGlobalProperties ipGlobalProps = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties();
+                return ipGlobalProps.DomainName;
             }
         }
 
