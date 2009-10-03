@@ -47,6 +47,8 @@
     </exec>
     <copy file="ManagedWinapi\bin\release\ManagedWinapi.dll"
           todir="build/bin"/>
+		<copy file="ManagedWinapi\bin\release\ManagedWinapi.xml"
+          todir="build/bin"/>
     <copy file="ManagedWinapi\ManagedWinapiNativeHelper.dll"
           todir="build/bin"/>
   </target>
@@ -80,6 +82,7 @@
       <fileset basedir="build/bin">
         <include name="*.dll" />
         <include name="*.chm" />
+        <include name="ManagedWinapi.xml" />
       </fileset>
     </copy>
     <copy todir="dist/bin">
