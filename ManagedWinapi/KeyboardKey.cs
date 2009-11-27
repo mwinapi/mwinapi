@@ -19,6 +19,8 @@ namespace ManagedWinapi
         /// <param name="key"></param>
         public KeyboardKey(Keys key)
         {
+            if ((key & Keys.Modifiers) != 0)
+                throw new ArgumentException("Modifier keys not supported. Use ShiftKey instead of Shift etc.");
             this.key = key;
             switch (key)
             {
