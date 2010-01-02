@@ -72,12 +72,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ManagedWinapi\ManagedWinapi.csproj">
-      <Project>{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}</Project>
-      <Name>ManagedWinapi</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

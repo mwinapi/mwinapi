@@ -6,7 +6,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using ManagedWinapi.Windows;
 
 namespace ShootNotes
 {
@@ -49,8 +48,9 @@ namespace ShootNotes
 
         private void loadPos()
         {
-            Rectangle outer = new SystemWindow(this).Rectangle.ToRectangle();
-            Rectangle inner = new SystemWindow(mainNote).Rectangle.ToRectangle();
+            IntPtr q = this.Handle;
+            Rectangle outer = this.Bounds;
+            Rectangle inner = this.RectangleToScreen(mainNote.Bounds);
             this.Left = n.ScreenX - inner.X + outer.X;
             this.Top = n.ScreenY - inner.Y + outer.Y;
             this.Width = n.Width - inner.Width + outer.Width;
@@ -59,8 +59,9 @@ namespace ShootNotes
 
         private void savePos()
         {
-            Rectangle outer = new SystemWindow(this).Rectangle.ToRectangle();
-            Rectangle inner = new SystemWindow(mainNote).Rectangle.ToRectangle();
+            IntPtr q = this.Handle; 
+            Rectangle outer = this.Bounds;
+            Rectangle inner = this.RectangleToScreen(mainNote.Bounds);
             n.ScreenX = this.Left + inner.X - outer.X;
             n.ScreenY = this.Top + inner.Y - outer.Y;
             n.Width = this.Width + inner.Width - outer.Width;

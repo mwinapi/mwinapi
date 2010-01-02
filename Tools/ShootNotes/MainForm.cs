@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using ManagedWinapi.Windows;
 using System.Drawing.Imaging;
 
 namespace ShootNotes
@@ -67,7 +66,7 @@ namespace ShootNotes
         private void shotButton_Click(object sender, EventArgs e)
         {
             Hide();
-            Rectangle range = new SystemWindow(rangePanel).Rectangle.ToRectangle();
+            Rectangle range = this.RectangleToScreen(rangePanel.Bounds);
             Bitmap bmp = new Bitmap(range.Width, range.Height);
             Graphics g = Graphics.FromImage(bmp);
             g.CopyFromScreen(range.Location, new Point(0, 0), range.Size);
@@ -82,7 +81,7 @@ namespace ShootNotes
         {
             Hide();
             NoteForm nf = new NoteForm(this);
-            Rectangle range = new SystemWindow(rangePanel).Rectangle.ToRectangle();
+            Rectangle range = this.RectangleToScreen(rangePanel.Bounds);
             nf.setNote(new Note(null, range, colorBox.BackColor), true);
             nf.Show();
         }
