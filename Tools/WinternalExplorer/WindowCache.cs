@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using ManagedWinapi;
 using ManagedWinapi.Windows;
 
 namespace WinternalExplorer
@@ -120,16 +121,12 @@ namespace WinternalExplorer
         private void LoadChildProcesses()
         {
             childProcesses = new Dictionary<int, List<Process>>();
+            ProcessTree tree = new ProcessTree();
             foreach (Process proc in Process.GetProcesses())
             {
-                AddToList(childProcesses, ParentID(proc), proc);
+                Process parent = tree.FindParent(proc);
+                AddToList(childProcesses, parent == null ? 0 : parent.Id, proc);
             }
-        }
-
-        public static int ParentID(Process proc)
-        {
-            PerformanceCounter pc = new PerformanceCounter("Process", "Creating Process Id", proc.ProcessName);
-            return (int)pc.RawValue;
         }
 
         internal bool IsProcessVisible(Process p)

@@ -120,17 +120,6 @@ namespace WinternalExplorer
 
         private static Dictionary<int, int> parentId = new Dictionary<int, int>();
 
-        // not used
-        internal static int __UNUSED__GetParentID(Process proc)
-        {
-            if (!parentId.ContainsKey(proc.Id))
-            {
-                PerformanceCounter pc = new PerformanceCounter("Process", "Creating Process Id", proc.ProcessName);
-                parentId[proc.Id] = (int)pc.RawValue;
-            }
-            return parentId[proc.Id];
-        }
-
         internal int DisplayProcesses
         {
             get

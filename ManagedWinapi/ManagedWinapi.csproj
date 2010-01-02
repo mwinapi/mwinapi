@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="MachineIdentifiers.cs" />
     <Compile Include="ProcessMemoryChunk.cs" />
+    <Compile Include="ProcessTree.cs" />
     <Compile Include="ShortcutBox.cs">
       <SubType>Component</SubType>
     </Compile>

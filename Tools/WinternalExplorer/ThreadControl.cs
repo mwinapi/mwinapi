@@ -35,6 +35,10 @@ namespace WinternalExplorer
             {
                 startTime.Text = currentThread.StartTime.ToString();
             }
+            catch (InvalidOperationException ex)
+            {
+                startTime.Text = ex.Message;
+            }
             catch (Win32Exception)
             {
                 startTime.Text = "Access denied";
@@ -50,6 +54,10 @@ namespace WinternalExplorer
             {
                 priorityLevel.Text = currentThread.PriorityLevel.ToString();
             }
+            catch (InvalidOperationException ex)
+            {
+                startTime.Text = ex.Message;
+            }
             catch (Win32Exception)
             {
                 startTime.Text = "Access denied";
@@ -63,6 +71,13 @@ namespace WinternalExplorer
                 privTime.Text = currentThread.PrivilegedProcessorTime.ToString();
                 userTime.Text = currentThread.UserProcessorTime.ToString();
                 totalTime.Text = currentThread.TotalProcessorTime.ToString();
+            }
+            catch (InvalidOperationException ex)
+            {
+                priorityBoost.Text = ex.Message;
+                privTime.Text = ex.Message;
+                userTime.Text = ex.Message;
+                totalTime.Text = ex.Message;
             }
             catch (Win32Exception)
             {
