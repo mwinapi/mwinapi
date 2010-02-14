@@ -996,6 +996,21 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// A preview of the content of this window. Is only supported for some
+        /// kinds of controls (like text or list boxes). This method can be a lot
+        /// faster than the <see cref="Content"/> method, but will only
+        /// guarantee that the <see cref="WindowContent.ShortDescription"/> field is
+        /// filled accurately.
+        /// </summary>
+        public WindowContent PreviewContent
+        {
+            get
+            {
+                return WindowContentParser.ParsePreview(this);
+            }
+        }
+
+        /// <summary>
         /// Whether this control, which is a check box or radio button, is checked.
         /// </summary>
         public CheckState CheckState

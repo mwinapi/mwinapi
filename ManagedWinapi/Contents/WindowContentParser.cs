@@ -26,11 +26,26 @@ namespace ManagedWinapi.Windows.Contents
         internal abstract bool CanParseContent(SystemWindow sw);
         internal abstract WindowContent ParseContent(SystemWindow sw);
 
+        /// <summary>
+        /// Parse enough content so that the <see cref="WindowContent.ShortDescription"/> is accurate.
+        /// </summary>
+        internal virtual WindowContent ParsePreviewContent(SystemWindow sw)
+        {
+            return ParseContent(sw);
+        }
+
         internal static WindowContent Parse(SystemWindow sw)
         {
             WindowContentParser parser = ContentParserRegistry.Instance.GetParser(sw);
             if (parser == null) return null;
             return parser.ParseContent(sw);
+        }
+
+        internal static WindowContent ParsePreview(SystemWindow sw)
+        {
+            WindowContentParser parser = ContentParserRegistry.Instance.GetParser(sw);
+            if (parser == null) return null;
+            return parser.ParsePreviewContent(sw);
         }
     }
 }
