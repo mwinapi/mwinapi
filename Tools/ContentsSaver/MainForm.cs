@@ -22,20 +22,20 @@ namespace ContentsSaver
 
         private void crossHair_CrosshairDragging(object sender, EventArgs e)
         {
-            update();
+            update(false);
         }
 
         private void crossHair_CrosshairDragged(object sender, EventArgs e)
         {
-            update();
+            update(true);
         }
 
-        private void update()
+        private void update(bool finished)
         {
-            update(SystemWindow.FromPointEx(MousePosition.X, MousePosition.Y, false, false));
+            update(SystemWindow.FromPointEx(MousePosition.X, MousePosition.Y, false, false), finished);
         }
 
-        private void update(SystemWindow sw)
+        private void update(SystemWindow sw, bool finished)
         {
             current = sw;
             if (sw == null)
@@ -47,7 +47,7 @@ namespace ContentsSaver
             {
                 saveAllButton.Enabled = true;
                 className.Text = sw.ClassName;
-                content = sw.Content;
+                content = finished ? sw.Content: sw.PreviewContent;
                 if (content == null)
                 {
                     shortText.Text = "<Unknown Type>";
@@ -97,7 +97,7 @@ namespace ContentsSaver
                 }
             }
             sb.AppendLine("************************************************************");
-            sb.AppendLine("  Created by ContentsSaver, (c) 2006 Michael Schierl        ");
+            sb.AppendLine("  Created by ContentsSaver, (c) 2006, 2007, 2010 Michael Schierl        ");
             return sb.ToString();
         }
 
@@ -131,11 +131,11 @@ namespace ContentsSaver
             if (controlBox.SelectedIndex == -1) return;
             if (controlBox.SelectedItem is string)
             {
-                update((SystemWindow)windowBox.SelectedItem);
+                update((SystemWindow)windowBox.SelectedItem, true);
             }
             else
             {
-                update((SystemWindow)controlBox.SelectedItem);
+                update((SystemWindow)controlBox.SelectedItem, true);
             }
         }
 
