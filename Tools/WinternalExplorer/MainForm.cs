@@ -200,11 +200,12 @@ namespace WinternalExplorer
             this.Cursor = Cursors.WaitCursor;
             lastX = MousePosition.X;
             lastY = MousePosition.Y;
-            UpdateSelection(true);
+            UpdateSelection(true, false);
             if (highlightedWindow != null)
             {
                 highlightedWindow.Refresh();
                 highlightedWindow = null;
+                highlightedAccessibleObject = null;
             }
             this.Cursor = null;
         }
@@ -212,9 +213,10 @@ namespace WinternalExplorer
         SelectableTreeNodeData lastNode = null;
         bool lastIncludeTree = false;
 
-        private void UpdateSelection(bool includeTree)
+        private void UpdateSelection(bool includeTree, bool highlightOnly)
         {
             SelectableTreeNodeData stnd = SelectFromPoint(lastX, lastY);
+            if (highlightOnly) return;
             if (!Visible) Visible = true;
             if (!stnd.Equals(lastNode) || includeTree != lastIncludeTree)
             {
@@ -225,12 +227,29 @@ namespace WinternalExplorer
         }
 
         SystemWindow highlightedWindow;
+        SystemAccessibleObject highlightedAccessibleObject;
 
         private SelectableTreeNodeData SelectFromPoint(int lastX, int lastY)
         {
             if (selAccObjs.Checked)
             {
                 SystemAccessibleObject sao = SystemAccessibleObject.FromPoint(lastX, lastY);
+                if (sao != highlightedAccessibleObject)
+                {
+                    if (highlightedWindow != null)
+                    {
+                        highlightedWindow.Refresh();
+                        highlightedWindow = null;
+                        highlightedAccessibleObject = null;
+                    }
+                    SystemWindow sw = sao.Window;
+                    if (sw.HWnd != this.Handle && !sw.IsDescendantOf(new SystemWindow(this.Handle)))
+                    {
+                        sao.Highlight();
+                        highlightedWindow = sw;
+                        highlightedAccessibleObject = sao;
+                    }
+                }
                 return new AccessibilityData(this, sao);
             }
             else
@@ -244,6 +263,7 @@ namespace WinternalExplorer
                     {
                         highlightedWindow.Refresh();
                         highlightedWindow = null;
+                        highlightedAccessibleObject = null;
                     }
                     if (sw.HWnd != this.Handle && !sw.IsDescendantOf(new SystemWindow(this.Handle)))
                     {
@@ -319,7 +339,7 @@ namespace WinternalExplorer
                     if (!found)
                     {
                         MessageBox.Show("Could not find window below " + curr.Text);
-                        return null;
+                        return curr;
                     }
                 }
                 if (existingNodes[wd] != curr) throw new Exception();
@@ -336,13 +356,13 @@ namespace WinternalExplorer
                 Visible = false;
                 crossHair.RestoreMouseCapture();
             }
-            else if (!autoHide.Checked)
+            else
             {
                 if (MousePosition.X != lastX || MousePosition.Y != lastY)
                 {
                     lastX = MousePosition.X;
                     lastY = MousePosition.Y;
-                    UpdateSelection(false);
+                    UpdateSelection(false, autoHide.Checked);
                     Update();
                 }
             }

@@ -271,9 +271,21 @@ namespace AOExplorer
             LoadAll(SystemAccessibleObject.Caret);
         }
 
+        private SystemAccessibleObject highlightedObject = null;
+
         private void selCrosshair_CrosshairDragging(object sender, EventArgs e)
         {
             SystemAccessibleObject sao = SystemAccessibleObject.FromPoint(MousePosition.X, MousePosition.Y);
+            if (highlightedObject == null || !highlightedObject.Equals(sao))
+            {
+                if (highlightedObject != null)
+                {
+                    highlightedObject.Window.Refresh();
+                    highlightedObject = null;
+                }
+                sao.Highlight();
+                highlightedObject = sao;
+            }
             LoadProperties(sao);
             tree.Enabled = false;
         }
@@ -281,6 +293,11 @@ namespace AOExplorer
         private void selCrosshair_CrosshairDragged(object sender, EventArgs e)
         {
             selCrosshair_CrosshairDragging(sender, e);
+            if (highlightedObject != null)
+            {
+                highlightedObject.Window.Refresh();
+                highlightedObject = null;
+            }
             LoadTree(lastObject);
             tree.Enabled = true;
             

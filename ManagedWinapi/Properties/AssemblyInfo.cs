@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ManagedWinapi")]
-[assembly: AssemblyCopyright("Copyright ©  2005, 2006, 2007, 2008, 2009, 2010 Michael Schierl")]
+[assembly: AssemblyCopyright("Copyright ©  2005, 2006, 2007, 2008, 2009, 2010, 2011 Michael Schierl")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

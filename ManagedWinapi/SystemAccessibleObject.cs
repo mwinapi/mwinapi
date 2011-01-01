@@ -265,7 +265,14 @@ namespace ManagedWinapi.Accessibility
         {
             get
             {
-                return iacc.get_accValue(childID);
+                try
+                {
+                    return iacc.get_accValue(childID);
+                }
+                catch (COMException)
+                {
+                    return null;
+                }
             }
         }
 
@@ -276,7 +283,14 @@ namespace ManagedWinapi.Accessibility
         {
             get
             {
-                return (int)iacc.get_accState(childID);
+                try
+                {
+                    return (int)iacc.get_accState(childID);
+                }
+                catch (COMException)
+                {
+                    return 0;
+                }
             }
         }
 
@@ -462,6 +476,23 @@ namespace ManagedWinapi.Accessibility
             }
         }
 
+        /// <summary>
+        /// Highlight the accessible object with a red border.
+        /// </summary>
+        public void Highlight()
+        {
+            Rectangle objectLocation = Location;
+            SystemWindow window = Window;
+            Rectangle windowLocation = window.Rectangle;
+            using (WindowDeviceContext windowDC = window.GetDeviceContext(false))
+            {
+                using (Graphics g = windowDC.CreateGraphics())
+                {
+                    g.DrawRectangle(new Pen(Color.Red, 4), objectLocation.X - windowLocation.X, objectLocation.Y - windowLocation.Y, objectLocation.Width, objectLocation.Height);
+                }
+            }
+        }
+
         #region Equals and HashCode
 
         ///
@@ -489,22 +520,29 @@ namespace ManagedWinapi.Accessibility
         {
             if (ia1.Equals(ia2)) return true;
             if (Marshal.GetIUnknownForObject(ia1) == Marshal.GetIUnknownForObject(ia2)) return true;
-            if (ia1.accChildCount != ia2.accChildCount) return false;
-            SystemAccessibleObject sa1 = new SystemAccessibleObject(ia1, 0);
-            SystemAccessibleObject sa2 = new SystemAccessibleObject(ia2, 0);
-            if (sa1.Window.HWnd != sa2.Window.HWnd) return false;
-            if (sa1.Location != sa2.Location) return false;
-            if (sa1.DefaultAction != sa2.DefaultAction) return false;
-            if (sa1.Description != sa2.Description) return false;
-            if (sa1.KeyboardShortcut != sa2.KeyboardShortcut) return false;
-            if (sa1.Name != sa2.Name) return false;
-            if (!sa1.Role.Equals(sa2.Role)) return false;
-            if (sa1.State != sa2.State) return false;
-            if (sa1.Value != sa2.Value) return false;
-            if (sa1.Visible != sa2.Visible) return false;
-            if (ia1.accParent == null && ia2.accParent == null) return true;
-            if (ia1.accParent == null || ia2.accParent == null) return false;
-            bool de =  DeepEquals((IAccessible)ia1.accParent, (IAccessible)ia2.accParent);
+            try
+            {
+                if (ia1.accChildCount != ia2.accChildCount) return false;
+                SystemAccessibleObject sa1 = new SystemAccessibleObject(ia1, 0);
+                SystemAccessibleObject sa2 = new SystemAccessibleObject(ia2, 0);
+                if (sa1.Window.HWnd != sa2.Window.HWnd) return false;
+                if (sa1.Location != sa2.Location) return false;
+                if (sa1.DefaultAction != sa2.DefaultAction) return false;
+                if (sa1.Description != sa2.Description) return false;
+                if (sa1.KeyboardShortcut != sa2.KeyboardShortcut) return false;
+                if (sa1.Name != sa2.Name) return false;
+                if (!sa1.Role.Equals(sa2.Role)) return false;
+                if (sa1.State != sa2.State) return false;
+                if (sa1.Value != sa2.Value) return false;
+                if (sa1.Visible != sa2.Visible) return false;
+                if (ia1.accParent == null && ia2.accParent == null) return true;
+                if (ia1.accParent == null || ia2.accParent == null) return false;
+            }
+            catch (COMException)
+            {
+                return false;
+            }
+            bool de = DeepEquals((IAccessible)ia1.accParent, (IAccessible)ia2.accParent);
             return de;
         }
 

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("WinternalExplorer")]
-[assembly: AssemblyCopyright("Copyright © 2007, 2008, 2010 Michael Schierl")]
+[assembly: AssemblyCopyright("Copyright © 2007, 2008, 2010, 2011 Michael Schierl")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

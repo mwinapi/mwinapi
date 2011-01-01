@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("AOExplorer")]
-[assembly: AssemblyCopyright("Copyright ©  2006, 2007 Michael Schierl")]
+[assembly: AssemblyCopyright("Copyright ©  2006, 2007, 2011 Michael Schierl")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
