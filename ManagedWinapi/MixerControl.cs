@@ -274,6 +274,7 @@ namespace ManagedWinapi.Audio.Mixer
             public int fValue;
         }
 
+#pragma warning disable 649
         internal struct MIXERCONTROLDETAILS_LISTTEXT
         {
             public int dwParam1;
@@ -282,6 +283,7 @@ namespace ManagedWinapi.Audio.Mixer
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
             public string szName;
         }
+#pragma warning restore 649
 
         private static readonly int MIXER_GETLINECONTROLSF_ALL = 0x0;
         private static readonly uint MIXERCONTROL_CT_CLASS_MASK = 0xF0000000;

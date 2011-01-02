@@ -282,7 +282,6 @@ namespace ManagedWinapi.Windows.Contents
             catch
             {
                 // fallback to slower accessible object method
-                if (true) throw;
             }
             SystemAccessibleObject o = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.OBJID_CLIENT);
             if (o.RoleIndex == 33)
