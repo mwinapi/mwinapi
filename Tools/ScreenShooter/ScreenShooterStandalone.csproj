@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2723EC84-45DE-4B04-9D90-770B7846A9B1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ScreenShooter</RootNamespace>
+    <AssemblyName>ScreenShooterStandalone</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\ManagedWinapi\ApiHelper.cs">
+      <Link>Standalone\ApiHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\EventDispatchingNativeWindow.cs">
+      <Link>Standalone\EventDispatchingNativeWindow.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\Hook.cs">
+      <Link>Standalone\Hook.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\Hotkey.cs">
+      <Link>Standalone\Hotkey.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\KeyboardKey.cs">
+      <Link>Standalone\KeyboardKey.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\LowLevelHook.cs">
+      <Link>Standalone\LowLevelHook.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\PInvokeTypes.cs">
+      <Link>Standalone\PInvokeTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\Screenshot.cs">
+      <Link>Standalone\Screenshot.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\ShortcutBox.cs">
+      <Link>Standalone\ShortcutBox.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\ShortcutBox.designer.cs">
+      <Link>Standalone\ShortcutBox.designer.cs</Link>
+      <DependentUpon>ShortcutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\SystemAccessibleObject.cs">
+      <Link>SystemAccessibleObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ManagedWinapi\SystemWindow.cs">
+      <Link>SystemWindow.cs</Link>
+    </Compile>
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenshotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScreenshotForm.Designer.cs">
+      <DependentUpon>ScreenshotForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenshotSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ScreenshotSettings.Designer.cs">
+      <DependentUpon>ScreenshotSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SelectorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SelectorForm.Designer.cs">
+      <DependentUpon>SelectorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Standalone\StandaloneStubs.cs" />
+    <EmbeddedResource Include="..\..\ManagedWinapi\ShortcutBox.resx">
+      <Link>Standalone\ShortcutBox.resx</Link>
+      <DependentUpon>ShortcutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScreenshotForm.resx">
+      <DependentUpon>ScreenshotForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScreenshotSettings.resx">
+      <DependentUpon>ScreenshotSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SelectorForm.resx">
+      <DependentUpon>SelectorForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
