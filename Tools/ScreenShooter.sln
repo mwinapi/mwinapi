@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C# Express 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenShooter", "ScreenShooter\ScreenShooter.csproj", "{2723EC84-45DE-4B04-9D90-770B7846A9B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedWinapi", "..\ManagedWinapi\ManagedWinapi.csproj", "{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2723EC84-45DE-4B04-9D90-770B7846A9B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2723EC84-45DE-4B04-9D90-770B7846A9B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2723EC84-45DE-4B04-9D90-770B7846A9B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2723EC84-45DE-4B04-9D90-770B7846A9B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
