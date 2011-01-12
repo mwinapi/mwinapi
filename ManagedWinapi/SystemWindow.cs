@@ -758,6 +758,25 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// The position of the window's contents in absolute screen coordinates. Use 
+        /// <see cref="Rectangle"/> if you want to include the title bar etc.
+        /// </summary>
+        public RECT ClientRectangle
+        {
+            get
+            {
+                RECT r = new RECT();
+                ApiHelper.FailIfZero(GetClientRect(_hwnd, out r));
+                Point p = new Point();
+                p.X = p.Y = 0;
+                ApiHelper.FailIfZero(ClientToScreen(_hwnd, ref p));
+                Rectangle result = r;
+                result.Location = p;
+                return result;
+            }
+        }
+
+        /// <summary>
         /// Check whether this window is a descendant of <c>ancestor</c>
         /// </summary>
         /// <param name="ancestor">The suspected ancestor</param>
@@ -1260,6 +1279,12 @@ namespace ManagedWinapi.Windows
 
         [DllImport("user32.dll")]
         static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        static extern int GetClientRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll")]
+        static extern int ClientToScreen(IntPtr hWnd, ref Point lpPoint);
 
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
