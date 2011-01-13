@@ -268,6 +268,7 @@ namespace ManagedWinapi.Windows
             Bitmap buffer = screenshot(rect);
             int usedHeight = buffer.Height;
             buffer = ResizeBitmap(buffer, buffer.Height * 4);
+            bool lastMayBeIncomplete = false;
             while (Cursor.Position == mousePoint)
             {
                 scrollCount++;
@@ -282,7 +283,7 @@ namespace ManagedWinapi.Windows
                 }
                 Application.DoEvents();
                 Bitmap nextPart = screenshot(rect);
-                int scrollHeight = AppendBelow(buffer, usedHeight, nextPart);
+                int scrollHeight = AppendBelow(buffer, usedHeight, nextPart, false);
                 foreach (int delay in new int[] { 0, 2, 10, 100, 200, 1000 })
                 {
                     if (scrollHeight > 0 || Cursor.Position != mousePoint)
@@ -290,12 +291,24 @@ namespace ManagedWinapi.Windows
                     Thread.Sleep(delay);
                     Application.DoEvents();
                     nextPart = screenshot(rect);
-                    scrollHeight = AppendBelow(buffer, usedHeight, nextPart);
+                    scrollHeight = AppendBelow(buffer, usedHeight, nextPart, false);
+                }
+                if (scrollHeight == -1)
+                {
+                    if (lastMayBeIncomplete)
+                    {
+                        scrollHeight = AppendBelow(buffer, usedHeight, nextPart, true);
+                    }
+                    lastMayBeIncomplete = false;
+                }
+                else
+                {
+                    lastMayBeIncomplete = true;
                 }
                 if (scrollHeight == -1)
                 {
                     CropToSimilarRange(centerPoint, ref rect, ref buffer, ref usedHeight, ref nextPart);
-                    scrollHeight = AppendBelow(buffer, usedHeight, nextPart);
+                    scrollHeight = AppendBelow(buffer, usedHeight, nextPart, false);
                 }
                 if (scrollHeight <= 0)
                     break;
@@ -313,9 +326,21 @@ namespace ManagedWinapi.Windows
             int relX = centerPoint.X - rect.X;
             int relY = centerPoint.Y - rect.Y;
 
+            // copy all pixel values
+            int[,] bufferPixels = new int[rect.Width, rect.Height];
+            int[,] nextPartPixels = new int[rect.Width, rect.Height];
+            for (int x = 0; x < rect.Width; x++)
+            {
+                for (int y = 0; y < rect.Height; y++)
+                {
+                    bufferPixels[x, y] = buffer.GetPixel(x, y + offs).ToArgb();
+                    nextPartPixels[x, y] = nextPart.GetPixel(x, y).ToArgb();
+                }
+            }
+
             // find a different point
             int diffX = relX, diffY = relY;
-            if (buffer.GetPixel(relX, relY + offs) == nextPart.GetPixel(relX, relY))
+            if (bufferPixels[relX, relY] == nextPartPixels[relX, relY])
             {
                 bool found = false;
                 int maxDistance = Math.Min(Math.Min(relX, relY), Math.Min(nextPart.Width - relX, nextPart.Height - relY));
@@ -325,28 +350,28 @@ namespace ManagedWinapi.Windows
                     {
                         int x = relX - i + j;
                         int y = relY - i;
-                        if (buffer.GetPixel(x, y + offs) != nextPart.GetPixel(x, y))
+                        if (bufferPixels[x, y] != nextPartPixels[x, y])
                         {
                             diffX = x; diffY = y; found = true;
                             break;
                         }
                         x = relX + i;
                         y = relY - i + j;
-                        if (buffer.GetPixel(x, y + offs) != nextPart.GetPixel(x, y))
+                        if (bufferPixels[x, y] != nextPartPixels[x, y])
                         {
                             diffX = x; diffY = y; found = true;
                             break;
                         }
                         x = relX + i - j;
                         y = relY + i;
-                        if (buffer.GetPixel(x, y + offs) != nextPart.GetPixel(x, y))
+                        if (bufferPixels[x, y] != nextPartPixels[x, y])
                         {
                             diffX = x; diffY = y; found = true;
                             break;
                         }
                         x = relX - i;
                         y = relY + i - j;
-                        if (buffer.GetPixel(x, y + offs) != nextPart.GetPixel(x, y))
+                        if (bufferPixels[x, y] != nextPartPixels[x, y])
                         {
                             diffX = x; diffY = y; found = true;
                             break;
@@ -366,13 +391,13 @@ namespace ManagedWinapi.Windows
                 for (int y = 0; y < rect.Height; y++)
                 {
                     // look at every pixel that does not match unmoved
-                    Color pixel = nextPart.GetPixel(x, y);
-                    if (buffer.GetPixel(x, y + offs) != pixel)
+                    int pixel = nextPartPixels[x, y];
+                    if (bufferPixels[x, y] != pixel)
                     {
-                        int score = 1000 / (Math.Abs(relX - x) + Math.Abs(relY - y)) + 1;
-                        for (int scrollHeight = 1; scrollHeight < scrollScores.Length; scrollHeight++)
+                        int score = 1000 / (Math.Abs(relX - x) + Math.Abs(relY - y)+1 ) + 1;
+                        for (int scrollHeight = 1; scrollHeight < Math.Min(scrollScores.Length, rect.Height - y); scrollHeight++)
                         {
-                            if (buffer.GetPixel(x, y + offs + scrollHeight) == pixel)
+                            if (bufferPixels[x, y + scrollHeight] == pixel)
                             {
                                 scrollScores[scrollHeight] += score;
                             }
@@ -384,8 +409,8 @@ namespace ManagedWinapi.Windows
             // remove scores that do not preserve relX/relY or diffX/diffY
             for (int scrollHeight = 1; scrollHeight < scrollScores.Length; scrollHeight++)
             {
-                if (buffer.GetPixel(relX, relY + offs + scrollHeight) != nextPart.GetPixel(relX, relY)
-                    || buffer.GetPixel(diffX, diffY + offs + scrollHeight) != nextPart.GetPixel(diffX, diffY))
+                if ((relY + scrollHeight < rect.Height && bufferPixels[relX, relY + scrollHeight] != nextPartPixels[relX, relY])
+                    || (diffY + scrollHeight < rect.Height && bufferPixels[diffX, diffY + scrollHeight] != nextPartPixels[diffX, diffY]))
                 {
                     scrollScores[scrollHeight] = 0;
                 }
@@ -417,14 +442,14 @@ namespace ManagedWinapi.Windows
                         scrollScores[scrollHeight] = 0;
 
                         // check the maximum rectangle that scrolls and its size
-                        int minY = 0, maxY = rect.Height - 1;
+                        int minY = 0, maxY = rect.Height - 1 - scrollHeight;
                         // first scan up and down with a width of 7 pixels
                         for (int y = relY - 1; y >= minY; y--)
                         {
                             bool same = true;
                             for (int x = relX - 3; x <= relX + 3; x++)
                             {
-                                if (buffer.GetPixel(x, y + offs + scrollHeight) != nextPart.GetPixel(x, y))
+                                if (bufferPixels[x, y + scrollHeight] != nextPartPixels[x, y])
                                 {
                                     same = false;
                                     break;
@@ -440,7 +465,7 @@ namespace ManagedWinapi.Windows
                             bool same = true;
                             for (int x = relX - 3; x <= relX + 3; x++)
                             {
-                                if (buffer.GetPixel(x, y + offs + scrollHeight) != nextPart.GetPixel(x, y))
+                                if (bufferPixels[x, y + scrollHeight] != nextPartPixels[x, y])
                                 {
                                     same = false;
                                     break;
@@ -452,14 +477,14 @@ namespace ManagedWinapi.Windows
                             }
                         }
                         // now check left and right
-                        int minX = 0, maxX = rect.Height - 1;
+                        int minX = 0, maxX = rect.Width - 1;
                         for (int x = relX - 1; x >= minX; x--)
                         {
                             bool same = true;
                             for (int y = minY; y <= maxY; y++)
                             {
 
-                                if (buffer.GetPixel(x, y + offs + scrollHeight) != nextPart.GetPixel(x, y))
+                                if (bufferPixels[x, y + scrollHeight] != nextPartPixels[x, y])
                                 {
                                     same = false;
                                     break;
@@ -473,7 +498,7 @@ namespace ManagedWinapi.Windows
                             bool same = true;
                             for (int y = minY; y <= maxY; y++)
                             {
-                                if (buffer.GetPixel(x, y + offs + scrollHeight) != nextPart.GetPixel(x, y))
+                                if (bufferPixels[x, y + scrollHeight] != nextPartPixels[x, y])
                                 {
                                     same = false;
                                     break;
@@ -519,17 +544,31 @@ namespace ManagedWinapi.Windows
             return result;
         }
 
-        private static int AppendBelow(Bitmap buffer, int usedHeight, Bitmap nextPart)
+        private static int AppendBelow(Bitmap buffer, int usedHeight, Bitmap nextPart, bool ignoreLastPart)
         {
             int offs = usedHeight - nextPart.Height;
-            for (int scrollHeight = 0; scrollHeight < nextPart.Height / 2; scrollHeight++)
+
+            // copy all pixel values
+            int[,] bufferPixels = new int[nextPart.Width, nextPart.Height];
+            int[,] nextPartPixels = new int[nextPart.Width, nextPart.Height];
+            for (int x = 0; x < nextPart.Width; x++)
+            {
+                for (int y = 0; y < nextPart.Height; y++)
+                {
+                    bufferPixels[x, y] = buffer.GetPixel(x, y + offs).ToArgb();
+                    nextPartPixels[x, y] = nextPart.GetPixel(x, y).ToArgb();
+                }
+            }
+
+            // find offset and append
+            for (int scrollHeight = 0; scrollHeight < nextPart.Height / (ignoreLastPart ? 4 : 2); scrollHeight++)
             {
                 bool same = true;
-                for (int y = 0; same && y < nextPart.Height - scrollHeight; y++)
+                for (int y = 0; same && y < nextPart.Height - scrollHeight * (ignoreLastPart ? 2 : 1); y++)
                 {
                     for (int x = 0; same && x < nextPart.Width; x++)
                     {
-                        if (nextPart.GetPixel(x, y) != buffer.GetPixel(x, y + offs + scrollHeight))
+                        if (nextPartPixels[x, y] != bufferPixels[x, y + scrollHeight])
                             same = false;
                     }
                 }
