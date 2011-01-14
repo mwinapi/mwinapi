@@ -48,6 +48,7 @@ namespace ManagedWinapi
         private Keys _keyCode;
         private bool _ctrl, _alt, _shift, _windows;
         private readonly IntPtr hWnd;
+        private readonly EventDispatchingNativeWindow nativeWindow;
 
         /// <summary>
         /// Initializes a new instance of this class with the specified container.
@@ -63,12 +64,13 @@ namespace ManagedWinapi
         /// </summary>
         public Hotkey() 
         {
-            EventDispatchingNativeWindow.Instance.EventHandler += nw_EventHandler;
+            nativeWindow = EventDispatchingNativeWindow.Instance;
+            nativeWindow.EventHandler += nw_EventHandler;
             lock(myStaticLock) 
             {
                 hotkeyIndex = ++hotkeyCounter;
             }
-            hWnd = EventDispatchingNativeWindow.Instance.Handle;
+            hWnd = nativeWindow.Handle;
         }
 
         /// <summary>
@@ -159,7 +161,7 @@ namespace ManagedWinapi
         {
             isDisposed = true;
             updateHotkey(false);
-            EventDispatchingNativeWindow.Instance.EventHandler -= nw_EventHandler;
+            nativeWindow.EventHandler -= nw_EventHandler;
             base.Dispose(disposing);
         }
 

@@ -66,6 +66,7 @@ namespace ManagedWinapi.Audio.Mixer
         private MIXERCAPS mc;
         private IList<DestinationLine> destLines = null;
         private bool createEvents;
+        private readonly EventDispatchingNativeWindow nativeWindow;
 
         /// <summary>
         /// Occurs when a control of this mixer changes value.
@@ -80,7 +81,8 @@ namespace ManagedWinapi.Audio.Mixer
         private Mixer(IntPtr hMixer)
         {
             this.hMixer = hMixer;
-            EventDispatchingNativeWindow.Instance.EventHandler += ednw_EventHandler;
+            nativeWindow = EventDispatchingNativeWindow.Instance;
+            nativeWindow.EventHandler += ednw_EventHandler;
             mixerGetDevCapsA(hMixer, ref mc, Marshal.SizeOf(mc));
         }
 
@@ -188,7 +190,7 @@ namespace ManagedWinapi.Audio.Mixer
             if (hMixer.ToInt32() != 0)
             {
                 mixerClose(hMixer);
-                EventDispatchingNativeWindow.Instance.EventHandler -= ednw_EventHandler;
+                nativeWindow.EventHandler -= ednw_EventHandler;
                 hMixer = IntPtr.Zero;
             }
         }

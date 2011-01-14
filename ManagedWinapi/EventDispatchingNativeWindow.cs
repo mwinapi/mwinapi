@@ -44,6 +44,7 @@ namespace ManagedWinapi.Windows
     {
 
         private static Object myLock = new Object();
+        [ThreadStatic]
         private static EventDispatchingNativeWindow _instance;
 
         /// <summary>
