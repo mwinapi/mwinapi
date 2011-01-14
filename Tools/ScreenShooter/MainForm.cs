@@ -10,8 +10,10 @@ namespace ScreenShooter
         {
             InitializeComponent();
             trayIcon.Icon = this.Icon;
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length > 1)
+                settings.Settings = args[1];
             settings.EnableHotkey();
-            ////setHotkeyButton_Click(setHotkeyButton, null);
         }
 
         private void settings_ScreenshotTaken(Bitmap bitmap)
@@ -38,6 +40,12 @@ namespace ScreenShooter
 
         private void hideButton_Click(object sender, EventArgs e)
         {
+            Keys mask = Keys.Shift | Keys.Control;
+            if ((Control.ModifierKeys & mask) == mask)
+            {
+                Clipboard.Clear();
+                Clipboard.SetText(settings.Settings);
+            }
             Visible = false;
         }
     }

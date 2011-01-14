@@ -1,0 +1,6 @@
+To compile the Paint.NET plugin, add the following files from the Paint.NET
+installation folder of Paint.NET 3.5.6 or later here:
+
+PaintDotNet.Base.dll
+PaintDotNet.Core.dll
+PaintDotNet.Data.dll

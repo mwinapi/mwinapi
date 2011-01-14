@@ -76,7 +76,7 @@
             this.groupBox2.Size = new System.Drawing.Size(270, 48);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "&Hotkey";
+            this.groupBox2.Text = "Hot&key";
             // 
             // setHotkeyButton
             // 
@@ -195,7 +195,7 @@
             this.autodetectScrollOption.Size = new System.Drawing.Size(196, 17);
             this.autodetectScrollOption.TabIndex = 0;
             this.autodetectScrollOption.TabStop = true;
-            this.autodetectScrollOption.Text = "Autodetect (try the next four options)";
+            this.autodetectScrollOption.Text = "Auto&detect (try the next four options)";
             this.autodetectScrollOption.UseVisualStyleBackColor = true;
             // 
             // wmPrintScrollOption
@@ -207,7 +207,7 @@
             this.wmPrintScrollOption.Name = "wmPrintScrollOption";
             this.wmPrintScrollOption.Size = new System.Drawing.Size(112, 17);
             this.wmPrintScrollOption.TabIndex = 1;
-            this.wmPrintScrollOption.Text = "Send WM_PRINT";
+            this.wmPrintScrollOption.Text = "Send &WM_PRINT";
             this.wmPrintScrollOption.UseVisualStyleBackColor = true;
             // 
             // wmPrintClientScrollOption
@@ -219,7 +219,7 @@
             this.wmPrintClientScrollOption.Name = "wmPrintClientScrollOption";
             this.wmPrintClientScrollOption.Size = new System.Drawing.Size(150, 17);
             this.wmPrintClientScrollOption.TabIndex = 2;
-            this.wmPrintClientScrollOption.Text = "Send WM_PRINTCLIENT";
+            this.wmPrintClientScrollOption.Text = "Send WM_PRINTC&LIENT";
             this.wmPrintClientScrollOption.UseVisualStyleBackColor = true;
             // 
             // vWheelScrollOption
@@ -231,7 +231,7 @@
             this.vWheelScrollOption.Name = "vWheelScrollOption";
             this.vWheelScrollOption.Size = new System.Drawing.Size(175, 17);
             this.vWheelScrollOption.TabIndex = 3;
-            this.vWheelScrollOption.Text = "Send vertical scroll wheel event";
+            this.vWheelScrollOption.Text = "Send &vertical scroll wheel event";
             this.vWheelScrollOption.UseVisualStyleBackColor = true;
             // 
             // hWheelScrollOption
@@ -243,7 +243,7 @@
             this.hWheelScrollOption.Name = "hWheelScrollOption";
             this.hWheelScrollOption.Size = new System.Drawing.Size(186, 17);
             this.hWheelScrollOption.TabIndex = 4;
-            this.hWheelScrollOption.Text = "Send horizontal scroll wheel event";
+            this.hWheelScrollOption.Text = "Send &horizontal scroll wheel event";
             this.hWheelScrollOption.UseVisualStyleBackColor = true;
             // 
             // scrollingAreaBox
@@ -270,9 +270,9 @@
             this.vBarScrollOption.AutoSize = true;
             this.vBarScrollOption.Location = new System.Drawing.Point(6, 135);
             this.vBarScrollOption.Name = "vBarScrollOption";
-            this.vBarScrollOption.Size = new System.Drawing.Size(137, 17);
+            this.vBarScrollOption.Size = new System.Drawing.Size(126, 17);
             this.vBarScrollOption.TabIndex = 9;
-            this.vBarScrollOption.Text = "Use horizontal scroll bar";
+            this.vBarScrollOption.Text = "Use vertical scroll &bar";
             this.vBarScrollOption.UseVisualStyleBackColor = true;
             // 
             // hBarScrollOption
@@ -282,9 +282,9 @@
             this.hBarScrollOption.AutoSize = true;
             this.hBarScrollOption.Location = new System.Drawing.Point(6, 157);
             this.hBarScrollOption.Name = "hBarScrollOption";
-            this.hBarScrollOption.Size = new System.Drawing.Size(126, 17);
+            this.hBarScrollOption.Size = new System.Drawing.Size(137, 17);
             this.hBarScrollOption.TabIndex = 8;
-            this.hBarScrollOption.Text = "Use vertical scroll bar";
+            this.hBarScrollOption.Text = "&Use horizontal scroll bar";
             this.hBarScrollOption.UseVisualStyleBackColor = true;
             // 
             // shortcutBox
