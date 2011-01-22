@@ -625,7 +625,7 @@ namespace ManagedWinapi.Windows
         {
             get
             {
-                return (WindowStyleFlags)GetWindowLongPtr(_hwnd, (int)(GWL.GWL_STYLE));
+                return unchecked((WindowStyleFlags)GetWindowLongPtr(_hwnd, (int)(GWL.GWL_STYLE)).ToInt64());
             }
             set
             {
@@ -641,7 +641,7 @@ namespace ManagedWinapi.Windows
         {
             get
             {
-                return (WindowExStyleFlags)GetWindowLongPtr(_hwnd, (int)(GWL.GWL_EXSTYLE));
+                return unchecked((WindowExStyleFlags)GetWindowLongPtr(_hwnd, (int)(GWL.GWL_EXSTYLE)).ToInt64());
             }
             set
             {
