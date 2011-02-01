@@ -172,7 +172,14 @@ namespace ManagedWinapi.Accessibility
         {
             get
             {
-                return iacc.get_accDescription(childID);
+                try
+                {
+                    return iacc.get_accDescription(childID);
+                }
+                catch (NotImplementedException)
+                {
+                    return "";
+                }
             }
         }
 
