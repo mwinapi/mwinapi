@@ -227,7 +227,7 @@ namespace ManagedWinapi.Windows
         public static Bitmap TakeVerticalScrollingScreenshot(Point scrollPoint, Rectangle rect, Point? clickPoint)
         {
             int scrollCount;
-            return TakeScrollingScreenshot(scrollPoint, rect, clickPoint.HasValue ? clickPoint.Value : scrollPoint, clickPoint.HasValue, r => TakeScreenshot(r, false, null), out scrollCount);
+            return TakeScrollingScreenshot(scrollPoint, rect, clickPoint.HasValue ? clickPoint.Value : scrollPoint, clickPoint.HasValue, r => TakeScreenshot(r, false, null), r => HighlightRect(r), out scrollCount);
         }
 
         /// <summary>
@@ -256,12 +256,13 @@ namespace ManagedWinapi.Windows
         public static Bitmap TakeHorizontalScrollingScreenshot(Point scrollPoint, Rectangle rect, Point? clickPoint)
         {
             int scrollCount;
-            return FlipRotate(TakeScrollingScreenshot(new Point(scrollPoint.Y, scrollPoint.X), FlipRotate(rect), clickPoint.HasValue ? clickPoint.Value : scrollPoint, clickPoint.HasValue, r => FlipRotate(TakeScreenshot(FlipRotate(r), false, null)), out scrollCount));
+            return FlipRotate(TakeScrollingScreenshot(new Point(scrollPoint.Y, scrollPoint.X), FlipRotate(rect), clickPoint.HasValue ? clickPoint.Value : scrollPoint, clickPoint.HasValue, r => FlipRotate(TakeScreenshot(FlipRotate(r), false, null)), r => HighlightRect(FlipRotate(r)), out scrollCount));
         }
 
         private delegate Bitmap ScreenshotFunction(Rectangle rect);
+        private delegate void HighlightFunction(Rectangle rect);
 
-        private static Bitmap TakeScrollingScreenshot(Point centerPoint, Rectangle rect, Point mousePoint, bool click, ScreenshotFunction screenshot, out int scrollCount)
+        private static Bitmap TakeScrollingScreenshot(Point centerPoint, Rectangle rect, Point mousePoint, bool click, ScreenshotFunction screenshot, HighlightFunction highlight, out int scrollCount)
         {
             scrollCount = 0;
             Cursor.Position = mousePoint;
@@ -282,6 +283,7 @@ namespace ManagedWinapi.Windows
                     KeyboardKey.InjectMouseEvent(0x0800, 0, 0, unchecked((uint)-120), UIntPtr.Zero);
                 }
                 Application.DoEvents();
+                highlight(rect);
                 Bitmap nextPart = screenshot(rect);
                 int scrollHeight = AppendBelow(buffer, usedHeight, nextPart, false);
                 foreach (int delay in new int[] { 0, 2, 10, 100, 200, 1000 })
@@ -290,6 +292,7 @@ namespace ManagedWinapi.Windows
                         break;
                     Thread.Sleep(delay);
                     Application.DoEvents();
+                    highlight(rect);
                     nextPart = screenshot(rect);
                     scrollHeight = AppendBelow(buffer, usedHeight, nextPart, false);
                 }
@@ -308,6 +311,7 @@ namespace ManagedWinapi.Windows
                 if (scrollHeight == -1)
                 {
                     CropToSimilarRange(centerPoint, ref rect, ref buffer, ref usedHeight, ref nextPart);
+                    highlight(rect);
                     scrollHeight = AppendBelow(buffer, usedHeight, nextPart, false);
                 }
                 if (scrollHeight <= 0)
@@ -394,7 +398,7 @@ namespace ManagedWinapi.Windows
                     int pixel = nextPartPixels[x, y];
                     if (bufferPixels[x, y] != pixel)
                     {
-                        int score = 1000 / (Math.Abs(relX - x) + Math.Abs(relY - y)+1 ) + 1;
+                        int score = 1000 / (Math.Abs(relX - x) + Math.Abs(relY - y) + 1) + 1;
                         for (int scrollHeight = 1; scrollHeight < Math.Min(scrollScores.Length, rect.Height - y); scrollHeight++)
                         {
                             if (bufferPixels[x, y + scrollHeight] == pixel)
@@ -592,6 +596,18 @@ namespace ManagedWinapi.Windows
                 g.DrawImage(original, 0, 0);
             }
             return result;
+        }
+
+        private static void HighlightRect(Rectangle rect)
+        {
+            SystemWindow window = SystemWindow.DesktopWindow;
+            using (WindowDeviceContext windowDC = window.GetDeviceContext(false))
+            {
+                using (Graphics g = windowDC.CreateGraphics())
+                {
+                    g.DrawRectangle(Pens.Blue, rect.X - 1, rect.Y - 1, rect.Width + 2, rect.Height + 2);
+                }
+            }
         }
 
         private static Bitmap FlipRotate(Bitmap original)
