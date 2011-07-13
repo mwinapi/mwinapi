@@ -256,11 +256,11 @@ namespace ManagedWinapi.Hooks
             base.Callback += MessageHookCallback;
         }
 
-        private int MessageHookCallback(int code, IntPtr lParam, IntPtr wParam, ref bool callNext)
+        private int MessageHookCallback(int code, IntPtr wParam, IntPtr lParam, ref bool callNext)
         {
             if (code == HC_ACTION)
             {
-                Message msg = (Message)Marshal.PtrToStructure(wParam, typeof(Message));
+                Message msg = (Message)Marshal.PtrToStructure(lParam, typeof(Message));
                 if (MessageOccurred != null)
                 {
                     MessageOccurred(msg);
