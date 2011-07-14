@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using ManagedWinapi.Windows;
 
 namespace ManagedWinapi.Hooks
 {
@@ -45,12 +46,12 @@ namespace ManagedWinapi.Hooks
             : base(type, true, false)
         {
             lmh = new LocalMessageHook();
-            lmh.MessageOccurred += new LocalMessageHook.MessageCallback(lmh_Callback);
+            lmh.MSGOccurred += new LocalMessageHook.MSGCallback(lmh_Callback);
         }
 
-        private void lmh_Callback(System.Windows.Forms.Message msg)
+        private void lmh_Callback(MSG msg)
         {
-            if (msg.Msg == WM_CANCELJOURNAL)
+            if (msg.message == WM_CANCELJOURNAL)
             {
                 hooked = false;
                 lmh.Unhook();

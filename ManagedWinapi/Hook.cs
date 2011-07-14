@@ -26,6 +26,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
+using ManagedWinapi.Windows;
 
 namespace ManagedWinapi.Hooks
 {
@@ -226,24 +227,55 @@ namespace ManagedWinapi.Hooks
     public class LocalMessageHook : Hook
     {
         /// <summary>
+        /// Called when a message has been intercepted. Since this callback uses an incorrect
+        /// <see cref="System.Windows.Forms.Message"/> marshalling, it has been replaced by the
+        /// <see cref="MSGOccurred"/> event.
+        /// </summary>
+        [Obsolete("Use MSGOccurred instead")]
+        public event MessageCallback MessageOccurred;
+
+        /// <summary>
+        /// Represents a method that handles a message from a message hook. Since this callback
+        /// uses an incorrect <see cref="System.Windows.Forms.Message"/> marshalling, it has 
+        /// been replaced by the <see cref="MSGCallback"/> event.
+        /// </summary>
+        /// <param name="msg"></param>
+        [Obsolete("Use MSGCallback instead")]
+        public delegate void MessageCallback(Message msg);
+
+        /// <summary>
         /// Called when a message has been intercepted.
         /// </summary>
-        public event MessageCallback MessageOccurred;
+        public event MSGCallback MSGOccurred;
 
         /// <summary>
         /// Represents a method that handles a message from a message hook.
         /// </summary>
         /// <param name="msg"></param>
-        public delegate void MessageCallback(Message msg);
+        public delegate void MSGCallback(MSG msg);
+
+        /// <summary>
+        /// Creates a local message hook and hooks it. Since this constructor
+        /// uses an incorrect <see cref="System.Windows.Forms.Message"/> marshalling, it has 
+        /// been replaced by constructor taking a <see cref="MSGCallback"/>.
+        /// </summary>
+        /// <param name="callback"></param>
+        [Obsolete]
+        public LocalMessageHook(MessageCallback callback)
+            : this()
+        {
+            this.MessageOccurred = callback;
+            StartHook();
+        }
 
         /// <summary>
         /// Creates a local message hook and hooks it.
         /// </summary>
         /// <param name="callback"></param>
-        public LocalMessageHook(MessageCallback callback)
+        public LocalMessageHook(MSGCallback callback)
             : this()
         {
-            this.MessageOccurred = callback;
+            this.MSGOccurred = callback;
             StartHook();
         }
 
@@ -260,9 +292,14 @@ namespace ManagedWinapi.Hooks
         {
             if (code == HC_ACTION)
             {
-                Message msg = (Message)Marshal.PtrToStructure(lParam, typeof(Message));
+                if (MSGOccurred != null)
+                {
+                    MSG msg = (MSG)Marshal.PtrToStructure(lParam, typeof(MSG));
+                    MSGOccurred(msg);
+                }
                 if (MessageOccurred != null)
                 {
+                    Message msg = (Message)Marshal.PtrToStructure(lParam, typeof(MSG));
                     MessageOccurred(msg);
                 }
             }
