@@ -1,3 +1,4 @@
+WNDCLASS,Windows Presentation Foundation,!>HwndWrapper\[.*;;[0-9a-f-]+\],HwndWrapper\[.*;;[0-9a-f-]+\]
 WNDCLASS,Windows .NET Forms 10,!>WindowsForms10\.Window\..*
 WNDCLASS,Windows .NET Forms,!>WindowsForms[0-9]+\.Window\..*
 WNDCLASS,Windows .NET Forms 10 (Without Toplevel),!~.*,WindowsForms10\..*
@@ -31,6 +32,7 @@ IMPORT,MFC (Unknown Version) (DLL),~,MFC\.DLL
 IMPORT,Maybe MFC (DLL),~,MFC? (DLL),MFC.*\.DLL
 IMPORT,Cygwin,>,cygwin1\.dll
 SECTION,UPX compressed,!>,UPX0,UPX1
+SUMMARY,Microsoft .NET 2.0 WPF,!>,IMPORTS=Microsoft \.NET,STUB=0\+default,WNDCLASS=Windows Presentation Foundation
 SUMMARY,Microsoft .NET 2.0,!>,IMPORTS=Microsoft \.NET,STUB=0\+default,WNDCLASS=Windows \.NET Forms 10
 SUMMARY,Visual Basic 6.0,!>,IMPORTS=Visual Basic 6\.0,STUB=56\+default,WNDCLASS=Visual Basic 6\.0 \(Runtime\)
 SUMMARY,Visual Basic 6.0,!>,IMPORTS=Visual Basic 6\.0,STUB=64\+default,WNDCLASS=Visual Basic 6\.0 \(Runtime\)
