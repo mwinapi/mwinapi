@@ -100,6 +100,17 @@ namespace ManagedWinapi.Accessibility
         }
 
         /// <summary>
+        /// Gets the automation object for a given window. 
+        /// This is a COM object implementing the IDispatch interface, commonly 
+        /// available from Microsoft Office windows.
+        /// </summary>
+        /// <param name="window">The window</param>
+        public static object COMObjectFromWindow(SystemWindow window)
+        {
+            return AccessibleObjectFromWindow(window == null ? IntPtr.Zero : window.HWnd, OBJID_NATIVEOM, new Guid("{00020400-0000-0000-C000-000000000046}"));
+        }
+
+        /// <summary>
         /// Gets an accessibility object for the mouse cursor.
         /// </summary>
         public static SystemAccessibleObject MouseCursor
@@ -599,6 +610,8 @@ namespace ManagedWinapi.Accessibility
         #endregion
 
         #region PInvoke Declarations
+
+        const uint OBJID_NATIVEOM = 0xFFFFFFF0;
 
         [DllImport("oleacc.dll")]
         private static extern IntPtr AccessibleObjectFromPoint(POINT pt, [Out, MarshalAs(UnmanagedType.Interface)] out IAccessible accObj, [Out] out object ChildID);
