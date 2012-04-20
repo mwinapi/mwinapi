@@ -36,7 +36,7 @@ namespace ManagedWinapi.Windows
         /// </summary>
         public static SystemTreeView FromSystemWindow(SystemWindow sw)
         {
-            if (sw.SendGetMessage(TVM_GETCOUNT) == 0) return null;
+            if (sw.SendGetMessage(TVM_GETCOUNT) == 0 && sw.ClassName != "SysTreeView32") return null;
             return new SystemTreeView(sw);
         }
 

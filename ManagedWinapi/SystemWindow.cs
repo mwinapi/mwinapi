@@ -786,6 +786,8 @@ namespace ManagedWinapi.Windows
             return IsChild(ancestor._hwnd, _hwnd);
         }
 
+        private Process _cachedProcess = null;
+
         /// <summary>
         /// The process which created this window.
         /// </summary>
@@ -793,9 +795,13 @@ namespace ManagedWinapi.Windows
         {
             get
             {
-                int pid;
-                GetWindowThreadProcessId(HWnd, out pid);
-                return Process.GetProcessById(pid);
+                if (_cachedProcess == null)
+                {
+                    int pid;
+                    GetWindowThreadProcessId(HWnd, out pid);
+                    _cachedProcess = Process.GetProcessById(pid);
+                }
+                return _cachedProcess;
             }
         }
 

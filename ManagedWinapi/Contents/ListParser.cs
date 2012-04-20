@@ -206,14 +206,14 @@ namespace ManagedWinapi.Windows.Contents
         {
             uint LVM_GETITEMCOUNT = (0x1000 + 4);
             int cnt = sw.SendGetMessage(LVM_GETITEMCOUNT);
-            return cnt != 0;
+            return cnt != 0 || sw.ClassName == "SysListView32";
         }
 
         internal override WindowContent ParsePreviewContent(SystemWindow sw)
         {
             uint LVM_GETITEMCOUNT = (0x1000 + 4);
             int cnt = sw.SendGetMessage(LVM_GETITEMCOUNT);
-            if (cnt == 0) throw new Exception();
+            if (cnt == 0 && sw.ClassName != "SysListView32") throw new Exception();
             SystemAccessibleObject o = SystemAccessibleObject.FromWindow(sw, AccessibleObjectID.OBJID_CLIENT);
             if (o.RoleIndex == 33)
             {
@@ -229,7 +229,7 @@ namespace ManagedWinapi.Windows.Contents
         {
             uint LVM_GETITEMCOUNT = (0x1000 + 4);
             int cnt = sw.SendGetMessage(LVM_GETITEMCOUNT);
-            if (cnt == 0) throw new Exception();
+            if (cnt == 0 && sw.ClassName != "SysListView32") throw new Exception();
             try
             {
                 SystemListView slv = SystemListView.FromSystemWindow(sw);
@@ -410,7 +410,7 @@ namespace ManagedWinapi.Windows.Contents
         internal override bool CanParseContent(SystemWindow sw)
         {
             int cnt = sw.SendGetMessage(TVM_GETCOUNT, 0);
-            return cnt != 0;
+            return cnt != 0 || sw.ClassName == "SysTreeView32";
         }
 
         internal override WindowContent ParsePreviewContent(SystemWindow sw)
