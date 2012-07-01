@@ -41,28 +41,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessibleObjectListener.cs">
+    <Compile Include="Accessibility\AccessibleObjectListener.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="BitmapDataHandler.cs" />
     <Compile Include="COMTypeInformation.cs" />
-    <Compile Include="Contents\AccessibleWindowParser.cs" />
+    <Compile Include="Windows\Contents\AccessibleWindowParser.cs" />
     <Compile Include="ExtendedFileInfo.cs" />
     <Compile Include="CodepointRange.cs" />
-    <Compile Include="Hook.cs">
+    <Compile Include="Hooks\Hook.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="InputBlocker.cs" />
-    <Compile Include="JournalHook.cs">
+    <Compile Include="Hooks\JournalHook.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="KeyboardKey.cs" />
-    <Compile Include="LowLevelHook.cs">
+    <Compile Include="Hooks\LowLevelHook.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MachineIdentifiers.cs" />
+    <Compile Include="PixelData.cs" />
     <Compile Include="ProcessMemoryChunk.cs" />
     <Compile Include="ProcessTree.cs" />
-    <Compile Include="Screenshot.cs" />
+    <Compile Include="Windows\Screenshot.cs" />
     <Compile Include="ShortcutBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -70,37 +72,41 @@
       <DependentUpon>ShortcutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="PrivilegedActions.cs" />
-    <Compile Include="SystemAccessibleObject.cs" />
+    <Compile Include="Accessibility\SystemAccessibleObject.cs" />
     <Compile Include="ApiHelper.cs" />
     <Compile Include="ClipboardNotifier.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Contents\ContentParserRegistry.cs" />
-    <Compile Include="Contents\ListParser.cs" />
-    <Compile Include="Contents\TextFieldParser.cs" />
-    <Compile Include="Contents\WindowContent.cs" />
-    <Compile Include="Contents\WindowContentParser.cs" />
+    <Compile Include="Windows\Contents\ContentParserRegistry.cs" />
+    <Compile Include="Windows\Contents\ListParser.cs" />
+    <Compile Include="Windows\Contents\TextFieldParser.cs" />
+    <Compile Include="Windows\Contents\WindowContent.cs" />
+    <Compile Include="Windows\Contents\WindowContentParser.cs" />
     <Compile Include="Crosshair.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Crosshair.Designer.cs">
       <DependentUpon>Crosshair.cs</DependentUpon>
     </Compile>
-    <Compile Include="Mixer.cs" />
-    <Compile Include="MixerControl.cs" />
-    <Compile Include="MixerLine.cs" />
-    <Compile Include="PInvokeTypes.cs" />
+    <Compile Include="Audio\Mixer\Mixer.cs" />
+    <Compile Include="Audio\Mixer\MixerControl.cs" />
+    <Compile Include="Audio\Mixer\MixerLine.cs" />
+    <Compile Include="Windows\PInvokeTypes.cs" />
     <Compile Include="SendKeysEscaper.cs" />
-    <Compile Include="EventDispatchingNativeWindow.cs" />
+    <Compile Include="Windows\EventDispatchingNativeWindow.cs" />
     <Compile Include="Hotkey.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="LockKeyResetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemListBox.cs" />
-    <Compile Include="SystemListView.cs" />
-    <Compile Include="SystemTreeView.cs" />
-    <Compile Include="SystemWindow.cs" />
+    <Compile Include="Windows\SystemListBox.cs" />
+    <Compile Include="Windows\SystemListView.cs" />
+    <Compile Include="Windows\SystemTreeView.cs" />
+    <Compile Include="Windows\SystemWindow.cs" />
+    <Compile Include="TextCursor.cs" />
+    <Compile Include="TextCursorProvider.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
