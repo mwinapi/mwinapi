@@ -47,10 +47,10 @@
     <Compile Include="..\..\ManagedWinapi\ApiHelper.cs">
       <Link>Standalone\ApiHelper.cs</Link>
     </Compile>
-    <Compile Include="..\..\ManagedWinapi\EventDispatchingNativeWindow.cs">
+    <Compile Include="..\..\ManagedWinapi\Windows\EventDispatchingNativeWindow.cs">
       <Link>Standalone\EventDispatchingNativeWindow.cs</Link>
     </Compile>
-    <Compile Include="..\..\ManagedWinapi\Hook.cs">
+    <Compile Include="..\..\ManagedWinapi\Hooks\Hook.cs">
       <Link>Standalone\Hook.cs</Link>
       <SubType>Component</SubType>
     </Compile>
@@ -61,14 +61,14 @@
     <Compile Include="..\..\ManagedWinapi\KeyboardKey.cs">
       <Link>Standalone\KeyboardKey.cs</Link>
     </Compile>
-    <Compile Include="..\..\ManagedWinapi\LowLevelHook.cs">
+    <Compile Include="..\..\ManagedWinapi\Hooks\LowLevelHook.cs">
       <Link>Standalone\LowLevelHook.cs</Link>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="..\..\ManagedWinapi\PInvokeTypes.cs">
+    <Compile Include="..\..\ManagedWinapi\Windows\PInvokeTypes.cs">
       <Link>Standalone\PInvokeTypes.cs</Link>
     </Compile>
-    <Compile Include="..\..\ManagedWinapi\Screenshot.cs">
+    <Compile Include="..\..\ManagedWinapi\Windows\Screenshot.cs">
       <Link>Standalone\Screenshot.cs</Link>
     </Compile>
     <Compile Include="..\..\ManagedWinapi\ShortcutBox.cs">
@@ -79,10 +79,10 @@
       <Link>Standalone\ShortcutBox.designer.cs</Link>
       <DependentUpon>ShortcutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="..\..\ManagedWinapi\SystemAccessibleObject.cs">
+    <Compile Include="..\..\ManagedWinapi\Accessibility\SystemAccessibleObject.cs">
       <Link>Standalone\SystemAccessibleObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\ManagedWinapi\SystemWindow.cs">
+    <Compile Include="..\..\ManagedWinapi\Windows\SystemWindow.cs">
       <Link>Standalone\SystemWindow.cs</Link>
     </Compile>
     <Compile Include="MainForm.cs">
