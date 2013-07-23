@@ -35,6 +35,7 @@ namespace ManagedWinapi.Audio.Mixer
         /// <summary>
         /// Gets the number of available mixers in this system.
         /// </summary>
+        [CLSCompliant(false)]
         public static uint MixerCount
         {
             get
@@ -48,6 +49,7 @@ namespace ManagedWinapi.Audio.Mixer
         /// </summary>
         /// <param name="index">The zero-based index of this mixer.</param>
         /// <returns>A reference to this mixer.</returns>
+        [CLSCompliant(false)]
         public static Mixer OpenMixer(uint index)
         {
             if (index < 0 || index > MixerCount)

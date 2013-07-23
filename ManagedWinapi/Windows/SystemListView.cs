@@ -209,6 +209,7 @@ namespace ManagedWinapi.Windows
         /// <summary>
         /// State bits of this item.
         /// </summary>
+        [CLSCompliant(false)]
         public uint State { get { return state; } }
 
         /// <summary>

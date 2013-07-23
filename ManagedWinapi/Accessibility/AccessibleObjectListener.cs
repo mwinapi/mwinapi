@@ -101,6 +101,7 @@ namespace ManagedWinapi.Accessibility
         /// The Process ID to listen to.
         /// Default 0 listens to all processes.
         /// </summary>
+        [CLSCompliant(false)]
         public UInt32 ProcessId
         {
             get { return processId; }
@@ -111,6 +112,7 @@ namespace ManagedWinapi.Accessibility
         /// The Thread ID to listen to.
         /// Default 0 listens to all threads.
         /// </summary> 
+        [CLSCompliant(false)]
         public UInt32 ThreadId
         {
             get { return threadId; }
@@ -202,6 +204,7 @@ namespace ManagedWinapi.Accessibility
         /// <summary>
         /// Initializes a new instance of the AccessibleEventArgs class.
         /// </summary>
+        [CLSCompliant(false)]
         public AccessibleEventArgs(AccessibleEventType eventType,
             IntPtr hwnd, uint idObject, uint idChild, uint dwEventThread, uint dwmsEventTime)
         {
@@ -232,6 +235,7 @@ namespace ManagedWinapi.Accessibility
         /// <summary>
         /// Object ID.
         /// </summary>
+        [CLSCompliant(false)]
         public uint ObjectID
         {
             get { return idObject; }
@@ -240,6 +244,7 @@ namespace ManagedWinapi.Accessibility
         /// <summary>
         /// Child ID.
         /// </summary>
+        [CLSCompliant(false)]
         public uint ChildID
         {
             get { return idChild; }
@@ -248,6 +253,7 @@ namespace ManagedWinapi.Accessibility
         /// <summary>
         /// The thread that generated this event.
         /// </summary>
+        [CLSCompliant(false)]
         public uint Thread
         {
             get { return dwEventThread; }
@@ -256,6 +262,7 @@ namespace ManagedWinapi.Accessibility
         /// <summary>
         /// Time in milliseconds when the event was generated.
         /// </summary>
+        [CLSCompliant(false)]
         public uint Time
         {
             get { return dwmsEventTime; }

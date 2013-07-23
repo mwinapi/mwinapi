@@ -106,6 +106,7 @@ namespace ManagedWinapi
         /// Get the size a file requires on disk. This takes NTFS
         /// compression into account.
         /// </summary>
+        [CLSCompliant(false)]
         public static ulong GetPhysicalFileSize(string filename)
         {
             uint high;
@@ -125,6 +126,7 @@ namespace ManagedWinapi
         /// <summary>
         /// Get the cluster size for the filesystem that contains the given file.
         /// </summary>
+        [CLSCompliant(false)]
         public static uint GetClusterSize(string filename)
         {
             uint sectors, bytes, dummy;

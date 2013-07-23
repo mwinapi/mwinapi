@@ -423,6 +423,7 @@ namespace ManagedWinapi.Hooks
         /// <summary>
         /// Mouse event flags needed to replay this message.
         /// </summary>
+        [CLSCompliant(false)]
         public uint MouseEventFlags
         {
             get
@@ -534,6 +535,7 @@ namespace ManagedWinapi.Hooks
         /// <summary>
         /// Flags needed to replay this event.
         /// </summary>
+        [CLSCompliant(false)]
         public uint KeyboardEventFlags
         {
             get

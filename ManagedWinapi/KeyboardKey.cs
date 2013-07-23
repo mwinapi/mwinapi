@@ -123,6 +123,7 @@ namespace ManagedWinapi
         /// Inject a keyboard event into the event loop, as if the user performed
         /// it with his keyboard.
         /// </summary>
+        [CLSCompliant(false)]
         public static void InjectKeyboardEvent(Keys key, byte scanCode, uint flags, UIntPtr extraInfo)
         {
             keybd_event((byte)key, scanCode, flags, extraInfo);
@@ -132,6 +133,7 @@ namespace ManagedWinapi
         /// Inject a mouse event into the event loop, as if the user performed
         /// it with his mouse.
         /// </summary>
+        [CLSCompliant(false)]
         public static void InjectMouseEvent(uint flags, uint dx, uint dy, uint data, UIntPtr extraInfo)
         {
             mouse_event(flags, dx, dy, data, extraInfo);

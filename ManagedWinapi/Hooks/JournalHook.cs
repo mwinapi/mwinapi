@@ -117,6 +117,7 @@ namespace ManagedWinapi.Hooks
         /// <summary>
         /// Creates a new journal message.
         /// </summary>
+        [CLSCompliant(false)]
         public JournalMessage(IntPtr hWnd, uint message, uint paramL, uint paramH, uint time)
         {
             msg = new JournalHook.EVENTMSG();
@@ -135,16 +136,19 @@ namespace ManagedWinapi.Hooks
         /// <summary>
         /// The message.
         /// </summary>
+        [CLSCompliant(false)]
         public uint Message { get { return msg.message; } }
 
         /// <summary>
         /// The first parameter of the message.
         /// </summary>
+        [CLSCompliant(false)]
         public uint ParamL { get { return msg.paramL; } }
 
         /// <summary>
         /// The second parameter of the message.
         /// </summary>
+        [CLSCompliant(false)]
         public uint ParamH { get { return msg.paramH; } }
 
         /// <summary>

@@ -93,6 +93,7 @@ namespace ManagedWinapi.Accessibility
         /// <param name="window">The window</param>
         /// <param name="objectID">Which accessibility object to get</param>
         /// <returns></returns>
+        [CLSCompliant(false)]
         public static SystemAccessibleObject FromWindow(SystemWindow window, AccessibleObjectID objectID)
         {
             IAccessible iacc = (IAccessible)AccessibleObjectFromWindow(window == null ? IntPtr.Zero : window.HWnd, (uint)objectID, new Guid("{618736E0-3C3D-11CF-810C-00AA00389B71}"));
@@ -641,6 +642,7 @@ namespace ManagedWinapi.Accessibility
     /// This enumeration lists all kinds of accessible objects that can
     /// be directly assigned to a window.
     /// </summary>
+    [CLSCompliant(false)]
     public enum AccessibleObjectID : uint
     {
         /// <summary>
