@@ -204,6 +204,11 @@ namespace ManagedWinapi.Accessibility
             {
                 return iacc.get_accName(childID);
             }
+            set
+            {
+                iacc.set_accName(childID, value);
+            }
+
         }
 
         /// <summary>
@@ -295,6 +300,14 @@ namespace ManagedWinapi.Accessibility
                 {
                     return null;
                 }
+            }
+            set
+            {
+                try
+                {
+                    iacc.set_accValue(childID, value);
+                }
+                catch (COMException) { }
             }
         }
 
