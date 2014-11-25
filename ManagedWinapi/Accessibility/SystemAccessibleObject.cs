@@ -270,10 +270,13 @@ namespace ManagedWinapi.Accessibility
         {
             get
             {
-                int x, y, w, h;
-                iacc.accLocation(out x, out y, out w, out h, childID);
-                return new Rectangle(x, y, w, h);
-
+                try
+                {
+                    int x, y, w, h;
+                    iacc.accLocation(out x, out y, out w, out h, childID);
+                    return new Rectangle(x, y, w, h);
+                }
+                catch { return Rectangle.Empty; }
             }
         }
 
