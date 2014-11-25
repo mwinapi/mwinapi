@@ -161,6 +161,18 @@ namespace ManagedWinapi.Accessibility
             IAccessible iacc;
             object child;
             uint result = AccessibleObjectFromEvent(e.HWnd, e.ObjectID, e.ChildID, out iacc, out child);
+
+            // Note: AccessibleObjectFromEvent() sometimes fails due to missing IAccessible implementation of object and/or child
+            // This often happens for HTML content in Internet Explorer (e.g. for any <DIV> w/o 'role' attribute set).
+            // Try again without using ChildID and/or ObjectID, 
+            // i.e. ChildID==0 will return the parent object; ObjectID==0 will return the parent window
+            if (result != 0 && e.ChildID != 0)
+                // second chance: try to receive object instead of child
+                result = AccessibleObjectFromEvent(e.HWnd, e.ObjectID, 0, out iacc, out child);
+            if (result != 0)
+                // third chance: try to receive window instead of object or child
+                result = AccessibleObjectFromEvent(e.HWnd, 0, 0, out iacc, out child);
+
             if (result != 0) throw new Exception("AccessibleObjectFromPoint returned " + result);
             return new SystemAccessibleObject(iacc, (int)child);
         }
