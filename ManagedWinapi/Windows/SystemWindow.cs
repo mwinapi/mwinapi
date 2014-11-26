@@ -755,6 +755,24 @@ namespace ManagedWinapi.Windows
             {
                 RECT r = new RECT();
                 GetWindowRect(_hwnd, out r);
+
+                // GetWindowRect returns wrong values for maximized windows when using Windows Aero desktop.
+                // Reduce bounds by negative padding of "glass" pixels for maximized windows.
+                if ((Style & WindowStyleFlags.MAXIMIZE) > 0)
+                {
+                    // check whether top or left is negative 
+                    // check both to support dual screen setup where bounds.Left might be larger than 0 on right screen
+                    int glass = Math.Min(r.Left, r.Top); 
+                    if (glass < 0)
+                    {
+                        // remove glass pixels from rectangle
+                        r.Left -= glass;
+                        r.Top -= glass;
+                        r.Right += glass;
+                        r.Bottom += glass;
+                    }
+                }
+
                 return r;
             }
         }
@@ -1087,8 +1105,7 @@ namespace ManagedWinapi.Windows
         /// </summary>
         public void Highlight()
         {
-            RECT rect;
-            GetWindowRect(_hwnd, out rect);
+            RECT rect = Rectangle;
             using (WindowDeviceContext windowDC = GetDeviceContext(false))
             {
                 using (Graphics g = windowDC.CreateGraphics())
