@@ -358,6 +358,31 @@ namespace ManagedWinapi.Accessibility
         {
             get
             {
+                try
+                {
+                    // Internet Explorer recognition sometimes is stuck (permanently returning RPC_E_SERVERFAULT) 
+                    // after requesting SAO that corresponds to a frame of an HTML frameset.
+                    // Such a frame is a RoleSystemClient with Name=<URI> and Description="MSAAHTML Registered Handler".
+                    // The child is a RoleSystemPane with Value=<URI>. 
+                    // Hence stop requesting for parent when RoleSystemPane with URI value is found
+                    //
+                    // see also:
+                    // About IE crashes after querying "MSAAHTML Registered Handler":
+                    // http://community.nvda-project.org/changeset/96cd890c7878fd4f8805409dd83f3dde5c996b4f
+                    // Some hint to ignore "MSAAHTML Registered Handler" in accessible ancestry:
+                    // http://community.nvda-project.org/changeset/88c491d954743a6a02f14b1f144e234587f68430
+                    // similar special case handling and ignoring of "MSAAHTML Registered Handler":
+                    // http://www.projky.com/dotnet/4.5.1/MS/Internal/AutomationProxies/Accessible.cs.html
+
+                    Uri uri = null;
+                    if (RoleIndex == (int)AccRoles.ROLE_SYSTEM_PANE && Uri.TryCreate(Value, UriKind.Absolute, out uri)
+                        && string.Equals(Window.Process.ProcessName, "iexplore", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // do not call parent
+                        return null;
+                    }
+                }
+                catch { }
                 if (childID != 0) return new SystemAccessibleObject(iacc, 0);
                 IAccessible p = (IAccessible)iacc.accParent;
                 if (p == null) return null;
