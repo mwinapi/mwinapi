@@ -756,23 +756,20 @@ namespace ManagedWinapi.Windows
                 RECT r = new RECT();
                 GetWindowRect(_hwnd, out r);
 
-                // GetWindowRect returns wrong values for maximized windows when using Windows Aero Glass desktop.
-                // see http://social.msdn.microsoft.com/Forums/en-US/windowsuidevelopment/thread/6c1c67a9-5548-4e9b-989f-c7dbac0b1375/
-                // Reduce bounds by negative padding of "glass" pixels for maximized windows.
-                if ((Style & WindowStyleFlags.MAXIMIZE) > 0)
+                try
                 {
-                    // check whether top or left is negative 
-                    // check both to support dual screen setup where bounds.Left might be larger than 0 on right screen
-                    int glass = Math.Min(r.Left, r.Top); 
-                    if (glass < 0)
+                    // GetWindowRect returns wrong values for maximized windows when using Windows Aero Glass desktop
+                    // because there is negative padding of "glass" pixels for maximized windows.
+                    // see http://social.msdn.microsoft.com/Forums/en-US/windowsuidevelopment/thread/6c1c67a9-5548-4e9b-989f-c7dbac0b1375/
+                    // Limit miximized window size to working area of the corresponding desktop (supporting multi screen setups)
+                    if ((Style & WindowStyleFlags.MAXIMIZE) > 0)
                     {
-                        // remove glass pixels from rectangle
-                        r.Left -= glass;
-                        r.Top -= glass;
-                        r.Right += glass;
-                        r.Bottom += glass;
+                        foreach (var screen in Screen.AllScreens)
+                            if (((Rectangle)r).Contains(screen.WorkingArea))
+                                return screen.WorkingArea;
                     }
                 }
+                catch { } // special handling should not cause failure
 
                 return r;
             }
