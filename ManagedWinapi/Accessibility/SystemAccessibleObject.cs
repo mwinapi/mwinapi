@@ -68,8 +68,9 @@ namespace ManagedWinapi.Accessibility
                         childID = 0;
                     }
                 }
-                catch (ArgumentException) { }
-                catch (InvalidCastException) { }
+                //catch (ArgumentException) { }
+                //catch (InvalidCastException) { }
+                catch (Exception) { } // general error handling, e.g. IBM/Lotus Notes otherwise crashes with COMException here
             }
             this.iacc = iacc;
             this.childID = childID;
