@@ -572,11 +572,11 @@ namespace ManagedWinapi.Windows
             {
                 if (value)
                 {
-                    SetWindowPos(_hwnd, new IntPtr(-1), 0, 0, 0, 0, 3);
+                    SetWindowPos(_hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
                 }
                 else
                 {
-                    SetWindowPos(_hwnd, new IntPtr(-2), 0, 0, 0, 0, 3);
+                    SetWindowPos(_hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
                 }
             }
         }
@@ -1389,6 +1389,21 @@ namespace ManagedWinapi.Windows
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X,
            int Y, int cx, int cy, uint uFlags);
+
+        // special values for hWndInsertAfter
+        static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+        static readonly IntPtr HWND_TOP = new IntPtr(0);
+        static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
+
+        // window sizing and positioning flags
+        const uint SWP_NOSIZE = 0x0001;
+        const uint SWP_NOMOVE = 0x0002;
+        const uint SWP_NOACTIVATE = 0x0010;
+        const uint SWP_DRAWFRAME = 0x0020;
+        const uint SWP_SHOWWINDOW = 0x0040;
+        const uint SWP_NOOWNERZORDER = 0x0200;
+        const uint SWP_ASYNCWINDOWPOS = 0x4000;
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
