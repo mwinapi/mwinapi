@@ -1,0 +1,11 @@
+[Bb]in/
+[Oo]bj/
+
+#VS2015
+/.vs/
+
+#copied from svn:ignores
+*.csproj.user
+*.suo
+build
+dist
