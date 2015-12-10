@@ -1,0 +1,12 @@
+version: 0.3.0.{build}
+configuration:
+- Debug
+- ReleaseSigned
+build:
+  project: ManagedWinapi-2010.sln
+  verbosity: normal
+artifacts:
+- path: ManagedWinapi\bin\Debug\
+  name: bin_Debug
+- path: ManagedWinapi\bin\ReleaseSigned\
+  name: bin_ReleaseSigned

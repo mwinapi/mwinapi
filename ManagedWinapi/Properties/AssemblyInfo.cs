@@ -8,7 +8,13 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("ManagedWinapi")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
+
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif 
+
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ManagedWinapi")]
 [assembly: AssemblyCopyright("Copyright ©  2005, 2006, 2007, 2008, 2009, 2010, 2011 Michael Schierl")]
