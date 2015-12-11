@@ -347,7 +347,7 @@ namespace ManagedWinapi.Windows
         public static SystemWindow[] FilterToplevelWindows(Predicate<SystemWindow> predicate)
         {
             List<SystemWindow> wnds = new List<SystemWindow>();
-            EnumWindows(new EnumWindowsProc(delegate(IntPtr hwnd, IntPtr lParam)
+            EnumWindows(new EnumWindowsProc(delegate (IntPtr hwnd, IntPtr lParam)
             {
                 SystemWindow tmp = new SystemWindow(hwnd);
                 if (predicate(tmp))
@@ -470,7 +470,7 @@ namespace ManagedWinapi.Windows
         public SystemWindow[] FilterDescendantWindows(bool directOnly, Predicate<SystemWindow> predicate)
         {
             List<SystemWindow> wnds = new List<SystemWindow>();
-            EnumChildWindows(_hwnd, delegate(IntPtr hwnd, IntPtr lParam)
+            EnumChildWindows(_hwnd, delegate (IntPtr hwnd, IntPtr lParam)
             {
                 SystemWindow tmp = new SystemWindow(hwnd);
                 bool add = true;
@@ -489,6 +489,17 @@ namespace ManagedWinapi.Windows
         /// The Window handle of this window.
         /// </summary>
         public IntPtr HWnd { get { return _hwnd; } }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return "HWND 0x" + _hwnd.ToString("X");
+        }
 
         /// <summary>
         /// The title of this window (by the <c>GetWindowText</c> API function).

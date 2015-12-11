@@ -59,6 +59,17 @@ namespace ManagedWinapi.Windows
         }
 
         /// <summary>
+        /// The number of selected items (icons) in this list view.
+        /// </summary>
+        public int SelectedItemsCount
+        {
+            get
+            {
+                return sw.SendGetMessage(LVM_GETSELECTEDCOUNT);
+            }
+        }
+
+        /// <summary>
         /// An item of this list view.
         /// </summary>
         public SystemListViewItem this[int index]
@@ -67,6 +78,69 @@ namespace ManagedWinapi.Windows
             {
                 return this[index, 0];
             }
+        }
+
+        /// <summary>
+        /// Ensures that a list-view item is either entirely or partially visible, scrolling the list-view control if necessary.
+        /// </summary>
+        /// <param name="rowIndex">Index of the row.</param>
+        /// <param name="entirelyVisible">if set to <c>true</c> the item will be entirely visible.</param>
+        public void EnsureItemIsVisible(int rowIndex, bool entirelyVisible)
+        {
+            SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), LVM_ENSUREVISIBLE, new IntPtr(rowIndex), new IntPtr(entirelyVisible ? 1 : 0));
+        }
+
+        /// <summary>
+        /// Sets the focused-state of the item.
+        /// </summary>
+        /// <param name="rowIndex">Index of the row.</param>
+        /// <param name="focused">if set to <c>true</c> the item will be focused.</param>
+        public void SetItemFocusedState(int rowIndex, bool focused)
+        {
+            LVITEM lvi = new LVITEM();
+            lvi.stateMask = (uint)(ListViewItemState.LVIS_FOCUSED);
+            lvi.state = focused ? (uint)(ListViewItemState.LVIS_FOCUSED) : 0;
+            ProcessMemoryChunk lc = ProcessMemoryChunk.AllocStruct(sw.Process, lvi);
+            SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), LVM_SETITEMSTATE, new IntPtr(rowIndex), lc.Location);
+            lc.Dispose();
+        }
+
+        /// <summary>
+        /// Sets the selected-state of the item.
+        /// </summary>
+        /// <param name="rowIndex">Index of the row.</param>
+        /// <param name="selected">if set to <c>true</c> the item will be selected.</param>
+        public void SetItemSelectedState(int rowIndex, bool selected)
+        {
+            LVITEM lvi = new LVITEM();
+            lvi.stateMask = (uint)(ListViewItemState.LVIS_SELECTED);
+            lvi.state = selected ? (uint)(ListViewItemState.LVIS_SELECTED) : 0;
+            ProcessMemoryChunk lc = ProcessMemoryChunk.AllocStruct(sw.Process, lvi);
+            SystemWindow.SendMessage(new HandleRef(sw, sw.HWnd), LVM_SETITEMSTATE, new IntPtr(rowIndex), lc.Location);
+            lc.Dispose();
+        }
+
+        /// <summary>
+        /// Clears the current selection by unselecting all selected rows.
+        /// </summary>
+        public void ClearSelection()
+        {
+            for (int rowIndex = 0; rowIndex < this.Count; rowIndex++)
+            {
+                SetItemSelectedState(rowIndex, false);
+            }
+        }
+
+        /// <summary>
+        /// Sets the given row as single-selection and ensures that the row is visible.
+        /// </summary>
+        /// <param name="rowIndex">Index of the row ttaht should be highlighted.</param>
+        public void HighlightRow(int rowIndex)
+        {
+            ClearSelection();
+            SetItemSelectedState(rowIndex, true);
+            SetItemFocusedState(rowIndex, true);
+            EnsureItemIsVisible(rowIndex, false);
         }
 
         /// <summary>
@@ -140,7 +214,10 @@ namespace ManagedWinapi.Windows
             LVM_GETITEMPOSITION = (0x1000 + 16),
             LVM_GETITEMCOUNT = (0x1000 + 4),
             LVM_GETITEM = 0x1005,
-            LVM_GETCOLUMN = (0x1000 + 25);
+            LVM_ENSUREVISIBLE = (0x1000 + 19),
+            LVM_GETCOLUMN = (0x1000 + 25),
+            LVM_SETITEMSTATE = (0x1000 + 43),
+            LVM_GETSELECTEDCOUNT = (0x1000 + 50);
 
         private static readonly uint LVIF_TEXT = 0x1,
             LVIF_IMAGE = 0x2,
@@ -177,6 +254,13 @@ namespace ManagedWinapi.Windows
         #endregion
     }
 
+    [Flags]
+    internal enum ListViewItemState
+    {
+        LVIS_FOCUSED = 0x0001,
+        LVIS_SELECTED = 0x0002
+    }
+
     /// <summary>
     /// An item of a list view.
     /// </summary>
@@ -205,6 +289,16 @@ namespace ManagedWinapi.Windows
         /// The index of this item's image in the image list of this list view.
         /// </summary>
         public int Image { get { return image; } }
+
+        /// <summary>
+        /// The appearance of a selected item depends on whether it has the focus and also on the system colors used for selection.
+        /// </summary>
+        public bool IsSelected { get { return (state & (uint)ListViewItemState.LVIS_SELECTED) != 0; } }
+
+        /// <summary>
+        /// The item has the focus, so it is surrounded by a standard focus rectangle. Although more than one item may be selected, only one item can have the focus.
+        /// </summary>
+        public bool IsFocused { get { return (state & (uint)ListViewItemState.LVIS_FOCUSED) != 0; } }
 
         /// <summary>
         /// State bits of this item.
