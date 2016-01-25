@@ -514,9 +514,9 @@ namespace ManagedWinapi.Accessibility
                 if (childID != 0) return new SystemAccessibleObject[0];
 
                 int cs = iacc.accChildCount, csReal;
-                object[] children = new object[cs * 2];
+                object[] children = new object[cs];
 
-                uint result = AccessibleChildren(iacc, 0, cs * 2, children, out csReal);
+                uint result = AccessibleChildren(iacc, 0, cs, children, out csReal);
                 if (result != 0 && result != 1)
                     return new SystemAccessibleObject[0];
                 if (csReal == 1 && children[0] is int && (int)children[0] < 0)
