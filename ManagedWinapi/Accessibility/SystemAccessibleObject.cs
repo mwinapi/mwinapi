@@ -514,9 +514,9 @@ namespace ManagedWinapi.Accessibility
                 if (childID != 0) return new SystemAccessibleObject[0];
 
                 int cs = iacc.accChildCount, csReal;
-                object[] children = new object[cs * 2];
+                object[] children = new object[cs];
 
-                uint result = AccessibleChildren(iacc, 0, cs * 2, children, out csReal);
+                uint result = AccessibleChildren(iacc, 0, cs, children, out csReal);
                 if (result != 0 && result != 1)
                     return new SystemAccessibleObject[0];
                 if (csReal == 1 && children[0] is int && (int)children[0] < 0)
@@ -534,6 +534,49 @@ namespace ManagedWinapi.Accessibility
                     }
                 }
                 return values.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// Get specific child of accessible object.
+        /// </summary>
+        public SystemAccessibleObject GetChild(int index)
+        {
+            // ID-referenced objects cannot have children
+            if (childID != 0) return null;
+
+            int cs = iacc.accChildCount, csReal;
+            object[] children = new object[1];
+
+            uint result = AccessibleChildren(iacc, index, 1, children, out csReal);
+            if (result != 0 && result != 1)
+                return null;
+            if (csReal == 1 && children[0] is int && (int)children[0] < 0)
+                return null;
+            List<SystemAccessibleObject> values = new List<SystemAccessibleObject>();
+            if (children[0] != null)
+            {
+                try
+                {
+                    return ObjectToSAO(children[0]);
+                }
+                catch (InvalidCastException) { }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Get number of children.
+        /// </summary>
+        public int ChildCount
+        {
+            get
+            {
+                if (childID != 0)
+                    // ID-referenced objects cannot have children
+                    return 0;
+                else
+                    return iacc.accChildCount;
             }
         }
 
