@@ -566,6 +566,21 @@ namespace ManagedWinapi.Accessibility
         }
 
         /// <summary>
+        /// Get number of children.
+        /// </summary>
+        public int ChildCount
+        {
+            get
+            {
+                if (childID != 0)
+                    // ID-referenced objects cannot have children
+                    return 0;
+                else
+                    return iacc.accChildCount;
+            }
+        }
+
+        /// <summary>
         /// Highlight the accessible object with a red border.
         /// </summary>
         public void Highlight()
