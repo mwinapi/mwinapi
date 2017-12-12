@@ -543,17 +543,21 @@ namespace ManagedWinapi.Windows
         {
             get
             {
-                int length = 64;
-                while (true)
+                try
                 {
-                    StringBuilder sb = new StringBuilder(length);
-                    ApiHelper.FailIfZero(GetClassName(_hwnd, sb, sb.Capacity));
-                    if (sb.Length != length - 1)
+                    int length = 64;
+                    while (true)
                     {
-                        return sb.ToString();
+                        StringBuilder sb = new StringBuilder(length);
+                        ApiHelper.FailIfZero(GetClassName(_hwnd, sb, sb.Capacity));
+                        if (sb.Length != length - 1)
+                        {
+                            return sb.ToString();
+                        }
+                        length *= 2;
                     }
-                    length *= 2;
                 }
+                catch { return null; }
             }
         }
 
