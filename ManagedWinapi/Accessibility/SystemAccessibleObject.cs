@@ -327,6 +327,10 @@ namespace ManagedWinapi.Accessibility
                 {
                     return 0;
                 }
+                catch (NullReferenceException)
+                {
+                    return 0;
+                }
             }
         }
 
@@ -348,9 +352,16 @@ namespace ManagedWinapi.Accessibility
         {
             get
             {
-                return (State & (int)AccStates.STATE_SYSTEM_INVISIBLE) == 0
-                    && (State & (int)AccStates.STATE_SYSTEM_OFFSCREEN) == 0;
+                return (State & (int)AccStates.STATE_SYSTEM_INVISIBLE) == 0;
             }
+        }
+
+        /// <summary>
+        /// Whether this accessibile state is set.
+        /// </summary>
+        public bool IsState(AccStates state)
+        {
+            return (State & (int)state) > 0;
         }
 
         /// <summary>
