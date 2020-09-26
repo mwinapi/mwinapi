@@ -1,21 +1,19 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Automated Build
 
 # Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# events
 on:
   push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: [windows-latest]
+    runs-on: windows-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -28,5 +26,20 @@ jobs:
       #- name: Setup NuGet.exe for use with actions
       #  uses: NuGet/setup-nuget@v1.0.2
         
-      - name: Build the solution
-        run: msbuild ManagedWinapi-2010.sln
+      - name: Build the solution (Debug)
+        run: msbuild ManagedWinapi-2010.sln /property:Configuration=Debug
+      
+      - name: Build the solution (ReleaseSigned)
+        run: msbuild ManagedWinapi-2010.sln /property:Configuration=ReleaseSigned
+
+      - name: Upload artifact bin_Debug
+        uses: actions/upload-artifact@v2
+        with:
+            name: bin_Debug
+            path: D:\a\mwinapi\mwinapi\ManagedWinapi\bin\Debug\
+            
+      - name: Upload artifact bin_ReleaseSigned
+        uses: actions/upload-artifact@v2
+        with:
+            name: bin_ReleaseSigned
+            path: D:\a\mwinapi\mwinapi\ManagedWinapi\bin\ReleaseSigned\
