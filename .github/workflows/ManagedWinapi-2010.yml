@@ -36,10 +36,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
             name: bin_Debug
-            path: D:\a\mwinapi\mwinapi\ManagedWinapi\bin\Debug\
+            path: ManagedWinapi\bin\Debug\
             
       - name: Upload artifact bin_ReleaseSigned
         uses: actions/upload-artifact@v2
         with:
             name: bin_ReleaseSigned
-            path: D:\a\mwinapi\mwinapi\ManagedWinapi\bin\ReleaseSigned\
+            path: ManagedWinapi\bin\ReleaseSigned\
