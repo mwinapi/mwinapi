@@ -18,19 +18,16 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         
       - name: setup-msbuild
-        uses: microsoft/setup-msbuild@v1.0.1
-  
-      #- name: Setup NuGet.exe for use with actions
-      #  uses: NuGet/setup-nuget@v1.0.2
-        
+        uses: microsoft/setup-msbuild@v2
+
       - name: Build the solution (Debug)
-        run: msbuild ManagedWinapi-2010.sln /property:Configuration=Debug
+        run: msbuild ManagedWinapi-2010-4.8.1.sln /property:Configuration=Debug
       
       - name: Build the solution (ReleaseSigned)
-        run: msbuild ManagedWinapi-2010.sln /property:Configuration=ReleaseSigned
+        run: msbuild ManagedWinapi-2010-4.8.1.sln /property:Configuration=ReleaseSigned
 
       - name: Upload artifact bin_Debug
         uses: actions/upload-artifact@v2
