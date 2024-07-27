@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedWinapi", "ManagedWinapi\ManagedWinapi.csproj", "{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagedWinapi", "ManagedWinapi\ManagedWinapi-2022.csproj", "{FBD3EC1E-47E2-4D2D-81C9-D6506125A09A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
